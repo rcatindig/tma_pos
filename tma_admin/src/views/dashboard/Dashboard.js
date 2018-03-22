@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 
-class Content extends Component {
+
+class Dashboard extends Component {
     render() {
         return (
+
             <div class="page-wrapper">
                 <div class="row page-titles">
                     <div class="col-md-5 align-self-center">
@@ -388,8 +390,9 @@ class Content extends Component {
                 </div>
                 <footer class="footer"> © 2018 All rights reserved. Template designed by <a href="https://colorlib.com">Colorlib</a></footer>
             </div>
+
         );
     }
 }
 
-export {Content};
+export {Dashboard};
