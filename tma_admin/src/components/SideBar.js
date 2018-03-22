@@ -7,24 +7,24 @@ class SideBar extends Component {
     render() {
         return (
             <Router>
-                <div class="left-sidebar">
-                    <div class="scroll-sidebar">
-                        <nav class="sidebar-nav">
+                <div className="left-sidebar">
+                    <div className="scroll-sidebar">
+                        <nav className="sidebar-nav">
                             <ul id="sidebarnav">
-                                <li class="nav-devider"></li>
-                                <li class="nav-label">Home</li>
-                                <li><Link to="/"><i class="fa fa-home"></i>Dashboard</Link></li>
-                                <li class="nav-label">Main</li>
-                                <li><Link to="/"><i class="fa fa-car"></i>Transactions</Link></li>
-                                <li> <a class="has-arrow  " onClick={() => console.log('click') } aria-expanded="false"><i class="fa fa-wpforms"></i><span class="hide-menu">Reports</span></a>
-                                    <ul aria-expanded="false" class="collapse">
+                                <li className="nav-devider"></li>
+                                <li className="nav-label">Home</li>
+                                <li><Link to="#/"><i className="fa fa-tachometer"></i>Dashboard</Link></li>
+                                <li className="nav-label">Main</li>
+                                <li><Link to="/"><i className="fa fa-car"></i>Transactions</Link></li>
+                                <li> <a className="has-arrow  " onClick={() => console.log('collapse') } aria-expanded="false"><i className="fa fa-wpforms"></i><span className="hide-menu">Reports</span></a>
+                                    <ul aria-expanded="false" className="collapse">
                                         <li><a href="uc-calender.html">Weekly Report</a></li>
                                         <li><a href="uc-datamap.html">Monthly Report</a></li>
                                         <li><a href="uc-nestedable.html">Yearly Report</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-label">Setup</li>
-                                <li><Link to="/"><i class="fa fa-user-circle"></i>Users</Link></li>
+                                <li className="nav-label">Setup</li>
+                                <li><Link to="/"><i className="fa fa-user-circle"></i>Users</Link></li>
                                 
                             </ul>
                         </nav>
