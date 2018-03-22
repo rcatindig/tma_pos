@@ -7,8 +7,7 @@ class Header extends Component {
                 <nav class="navbar top-navbar navbar-expand-md navbar-light">
                     <div class="navbar-header">
                         <a class="navbar-brand" href="index.html">
-                            <b><img src="images/logo.png" alt="homepage" class="dark-logo" /></b>
-                            <span><img src="images/logo-text.png" alt="homepage" class="dark-logo" /></span>
+                            <b><img src="images/tmalogo-small.png" alt="homepage" class="dark-logo" /></b>
                         </a>
                     </div>
                     <div class="navbar-collapse">
