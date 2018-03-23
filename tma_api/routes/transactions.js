@@ -45,54 +45,6 @@ router.post('/', function (req, res, next) {
   });
 });
 
-function getTransactionList(req, res, next)
-{
-	Transaction.getTransactions(req.body, function (err, rows){
-
-		var results = "";
-		
-		if (err) {
-			console.log("GET ROWS", err);
-			res.json(err);
-		} else {
-
-			req.transactions = rows;
-			next();
-			//console.log("Data ROWS");
-			//res.json(rows); //or return count for 1 &amp;amp;amp; 0
-			
-		}
-	});
-}
-
-function countTransactions(req, res)
-{
-	Transaction.countTotalTransactions(req.body, function (err, fields){
-
-		var results = "";
-
-		
-		if (err) {
-			console.log("COUNT TOTAL TRANSACTIONS", err);
-			res.json(err);
-		} else {
-
-
-
-			var data = {
-				totalRecords: fields[0].total,
-				transactions: req.transactions
-			}
-			
-			res.json(data);
-			console.log(res);
-			//next();
-			//res.json(rows); //or return count for 1 &amp;amp;amp; 0
-			
-		}
-	});
-}
-
 router.post('/getTransactions/', getTransactionList, countTransactions);
 
 router.delete('/:id', function (req, res, next) {
@@ -107,6 +59,8 @@ router.delete('/:id', function (req, res, next) {
 
   });
 });
+
+
 router.put('/:id', function (req, res, next) {
 
   Transaction.updateTransaction(req.params.id, req.body, function (err, rows) {
@@ -118,4 +72,48 @@ router.put('/:id', function (req, res, next) {
     }
   });
 });
+
+
+// Middleware
+function getTransactionList(req, res, next)
+{
+	Transaction.getTransactions(req.body, function (err, rows){
+
+		var results = "";
+		
+		if (err) {
+			res.json(err);
+		} else {
+
+			req.transactions = rows;
+			next();
+			
+		}
+	});
+}
+
+function countTransactions(req, res)
+{
+	Transaction.countTotalTransactions(req.body, function (err, fields){
+
+		var results = "";
+
+		
+		if (err) {
+			res.json(err);
+		} else {
+
+
+
+			var data = {
+				totalRecords: fields[0].total,
+				transactions: req.transactions
+			}
+			
+			res.json(data);
+			
+		}
+	});
+}
+
 module.exports = router;

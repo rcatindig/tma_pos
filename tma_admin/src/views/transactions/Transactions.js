@@ -24,28 +24,6 @@ class Transactions extends Component {
         this.fetchData = this.fetchData.bind(this);
     }
 
-    // componentWillMount() {
-
-    //     let self = this;
-
-    //     let url = API.TRANSACTIONS;
-
-    //     fetch(url)
-    //         .then((response) => {
-    //             return response.json() // << This is the problem
-    //         })
-    //         .then((responseData) => { // responseData = undefined
-                
-    //             self.setState({data: responseData});
-    //         })
-    //     .catch(function(err) {
-    //         console.log(err);
-    //     })
-
-        
-
-    // }
-
     fetchData(state, instance) {
 
         this.setState({ loading: true })

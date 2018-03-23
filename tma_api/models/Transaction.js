@@ -13,14 +13,30 @@ var Transaction = {
     },
     getTransactions: function(ReactTable, callback)
     {
+        console.log(ReactTable);
         const { pageSize, page, sorted, filtered } = ReactTable;
         let totalTransactions  = 0;
+
+
+        let whereClause = "";
+
+        for(let i = 0; i < filtered.length; i++)
+        {
+            let filter = filtered[i];
+            var column = filter.id;
+            var value = filter.value;
+            whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
+        }
+
 
         const sql = `
                 SELECT * FROM transactions
                 WHERE 1=1
-                LIMIT ${page},${pageSize}
+                ${whereClause}
+                LIMIT ${page * pageSize},${pageSize}
             `;
+
+       
 
         return db.query(sql, callback);
 
