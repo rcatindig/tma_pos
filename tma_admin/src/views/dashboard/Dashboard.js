@@ -205,7 +205,7 @@ class Dashboard extends Component {
                                             <tr>
                                                 <td>
                                                     <div className="round-img">
-                                                        <a href=""><img src="images/avatar/4.jpg" alt=""/></a>
+                                                        <a onClick={() => console.log('click') }><img src="images/avatar/4.jpg" alt=""/></a>
                                                     </div>
                                                 </td>
                                                 <td>John Abraham</td>
@@ -216,7 +216,7 @@ class Dashboard extends Component {
                                             <tr>
                                                 <td>
                                                     <div className="round-img">
-                                                        <a href=""><img src="images/avatar/2.jpg" alt=""/></a>
+                                                        <a onClick={() => console.log('click') }><img src="images/avatar/2.jpg" alt=""/></a>
                                                     </div>
                                                 </td>
                                                 <td>John Abraham</td>
@@ -227,7 +227,7 @@ class Dashboard extends Component {
                                             <tr>
                                                 <td>
                                                     <div className="round-img">
-                                                        <a href=""><img src="images/avatar/3.jpg" alt=""/></a>
+                                                        <a onClick={() => console.log('click') }><img src="images/avatar/3.jpg" alt=""/></a>
                                                     </div>
                                                 </td>
                                                 <td>John Abraham</td>
@@ -238,7 +238,7 @@ class Dashboard extends Component {
                                             <tr>
                                                 <td>
                                                     <div className="round-img">
-                                                        <a href=""><img src="images/avatar/4.jpg" alt=""/></a>
+                                                        <a onClick={() => console.log('click') }><img src="images/avatar/4.jpg" alt=""/></a>
                                                     </div>
                                                 </td>
                                                 <td>John Abraham</td>

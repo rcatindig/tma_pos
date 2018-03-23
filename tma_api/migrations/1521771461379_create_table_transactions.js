@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "CREATE TABLE `transactions`( `id` int AUTO_INCREMENT, `company` varchar(50) DEFAULT NULL, `txndate` datetime DEFAULT NULL, `epan` varchar(50) NOT NULL, `licplate` varchar(10) DEFAULT NULL, `userid` int(11) DEFAULT NULL, `machineid` varchar(50) DEFAULT NULL, `serialno` varchar(50) DEFAULT NULL, `uniquetxnno` varchar(20) DEFAULT NULL, `receiptno` varchar(20) DEFAULT NULL, `entrydatetime` datetime DEFAULT NULL, `exitdatetime` datetime DEFAULT NULL, `duration` varchar(10) DEFAULT NULL, `tariff` int(11) DEFAULT NULL, `totalamount` float DEFAULT NULL, `acceptedtotal` float DEFAULT NULL, `nettotal` float DEFAULT NULL, `vat` float DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=latin1; ",
+    "down": "DROP TABLE `transactions`"
+}
