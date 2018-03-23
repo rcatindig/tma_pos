@@ -17,36 +17,79 @@ class Transactions extends Component {
         super(props);
         this.state = {
             data: [],
-            loaded: false
+            pages: null,
+            loading: true,
         }
+
+        this.fetchData = this.fetchData.bind(this);
     }
 
-    componentWillMount() {
+    // componentWillMount() {
 
-        let self = this;
+    //     let self = this;
 
-        let url = API.TRANSACTIONS;
+    //     let url = API.TRANSACTIONS;
 
-        fetch(url)
-            .then((response) => {
-                return response.json() // << This is the problem
-            })
-            .then((responseData) => { // responseData = undefined
-                //addTestToPage(responseData.title);
-                var respData = responseData;
-                self.setState({data: respData, loaded: true});
-                // return responseData.json();
-            })
-        .catch(function(err) {
-            console.log(err);
-        })
+    //     fetch(url)
+    //         .then((response) => {
+    //             return response.json() // << This is the problem
+    //         })
+    //         .then((responseData) => { // responseData = undefined
+                
+    //             self.setState({data: responseData});
+    //         })
+    //     .catch(function(err) {
+    //         console.log(err);
+    //     })
 
         
 
+    // }
+
+    fetchData(state, instance) {
+
+        this.setState({ loading: true })
+
+        let self = this;
+
+        const url = API.TRANSACTIONS + 'getTransactions/';
+
+        const { pageSize, page, sorted, filtered } = state;
+
+        const data =  {
+            pageSize: pageSize,
+            page: page,
+            sorted: sorted,
+            filtered: filtered
+        }
+
+        fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                })
+            }).then((response) => { 
+                return response.json();
+            }).then((res) => {
+                //self.setState({data: responseData});
+
+                const pages = Math.ceil(res.totalRecords / pageSize) ;
+                self.setState({
+                    data: res.transactions,
+                    pages: pages,
+                    loading: false
+                });
+            })
+        .catch(function(err){
+            console.log(err);
+        })
     }
 
     render () {
 
+        const { data, pages, loading } = this.state;
      
         return (
             <PageWrapper>
@@ -58,11 +101,15 @@ class Transactions extends Component {
                                 <div className="table-responsive m-t-40">
                                     <ReactTable
                                         className="-striped -highlight"
-                                        data={this.state.data}
+                                        manual
                                         columns={columns}
+                                        data={data}
+                                        pages={pages}
+                                        loading={loading}
                                         defaultPageSize={10}
+                                        onFetchData={this.fetchData}
                                         minRows={0}
-                                        filterable={true}
+                                        filterable
                                         resizable={true}
                                         style={{fontFamily: "Lato,'Helvetica Neue', Arial,Helvetica,sans-serif", fontSize: "14px"}}
                                     />

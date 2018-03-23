@@ -11,6 +11,29 @@ var Transaction = {
 
         return db.query("SELECT * FROM transactions where id=?", [id], callback);
     },
+    getTransactions: function(ReactTable, callback)
+    {
+        const { pageSize, page, sorted, filtered } = ReactTable;
+        let totalTransactions  = 0;
+
+        const sql = `
+                SELECT * FROM transactions
+                WHERE 1=1
+                LIMIT ${page},${pageSize}
+            `;
+
+        return db.query(sql, callback);
+
+
+    },
+    countTotalTransactions: function(ReactTable, callback)
+    {
+       return db.query("SELECT COUNT(*) as total  FROM transactions", callback);
+
+        
+    },
+
+
     addTransaction: function (Transaction, callback) {
 
         const sql = `
