@@ -328,27 +328,27 @@ class Dashboard extends Component {
                                                     <li>
                                                         <label>
                                                             <input type="checkbox"/><i className="bg-primary"></i><span>Build an angular app</span>
-                                                            <a href='#' className="ti-close"></a>
+                                                            <a  onClick={() => console.log('href') }  className="ti-close"></a>
                                                         </label>
                                                     </li>
                                                     <li>
                                                         <label>
                                                             <input type="checkbox" defaultChecked />
                                                             <i className="bg-success"></i><span>Creating component page</span>
-                                                            <a href='#' className="ti-close"></a>
+                                                            <a  onClick={() => console.log('href') }  className="ti-close"></a>
                                                         </label>
                                                     </li>
                                                     <li>
                                                         <label>
                                                             <input type="checkbox" defaultChecked />
                                                             <i className="bg-warning"></i><span>Follow back those who follow you</span>
-                                                            <a href='#' className="ti-close"></a>
+                                                            <a  onClick={() => console.log('href') }  className="ti-close"></a>
                                                         </label>
                                                     </li>
                                                     <li>
                                                         <label>
                                                             <input type="checkbox" defaultChecked /><i className="bg-danger"></i><span>Design One page theme</span>
-                                                            <a href='#' className="ti-close"></a>
+                                                            <a  onClick={() => console.log('href') }  className="ti-close"></a>
                                                         </label>
                                                     </li>
 
@@ -357,7 +357,7 @@ class Dashboard extends Component {
                                                             <input type="checkbox" defaultChecked/>
                                                             <i className="bg-success"></i>
                                                             <span>Creating component page</span>
-                                                            <a href='#' className="ti-close"></a>
+                                                            <a  onClick={() => console.log('href') }  className="ti-close"></a>
                                                         </label>
                                                     </li>
                                                 </ul>

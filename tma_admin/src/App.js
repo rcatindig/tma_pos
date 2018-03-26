@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+
 import './App.css';
 import {HashRouter, Route, Switch} from 'react-router-dom';
-import { Dashboard } from './views';
 
 import Main from './containers/Main';
-
-import routes from './routes';
-
-import { Header, SideBar, Content } from './components/';
 
 class App extends Component {
 
