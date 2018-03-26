@@ -28,6 +28,10 @@ var Transaction = {
             let filter = filtered[i];
             var column = filter.id;
             var value = filter.value;
+
+            if(column == "txndate" || column == "entrydatetime" || column == "exitdatetime")
+                column = "DATE_FORMAT(" + column + ", '%M %d, %Y %r ')";
+
             whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
         }
 

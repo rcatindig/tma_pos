@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
+// moment
+import Moment from 'moment';
+
 // custom components
 import { Card, PageHeader, PageWrapper, Modal } from '../../components';
 
@@ -153,8 +156,12 @@ class Transactions extends Component {
                 Header: 'Company',
                 accessor: 'company'
             }, {
+                id: 'txndate',
                 Header: 'Transaction Date',
-                accessor: 'txndate'
+                accessor: t => {
+                    return Moment(t.txndate)
+                            .local().format("MMMM DD, YYYY hh:mm a")
+                }
             }, {
                 Header: 'Epan',
                 accessor: 'epan'
@@ -171,11 +178,19 @@ class Transactions extends Component {
                 Header: 'Serial Number',
                 accessor: 'serialno'
             }, {
+                id: 'entrydatetime',
                 Header: 'Entry Date/Time',
-                accessor: 'entrydatetime',
+                accessor: t => {
+                    return Moment(t.entrydatetime)
+                            .local().format("MMMM DD, YYYY hh:mm a")
+                }
             }, {
+                id: 'exitdatetime',
                 Header: 'Exit Date/Time',
-                accessor: 'exitdatetime'
+                accessor: t => {
+                    return Moment(t.exitdatetime)
+                            .local().format("MMMM DD, YYYY hh:mm a")
+                }
             }, {
                 Header: 'Action',
                 id: 'edit-button',
