@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
 // custom components
-import { Card, PageHeader, PageWrapper } from '../../components';
+import { Card, PageHeader, PageWrapper, Modal } from '../../components';
 
 // constants 
 import { API } from '../../constants';
@@ -19,6 +19,7 @@ class Transactions extends Component {
             data: [],
             pages: null,
             loading: true,
+            openModal: false
         }
 
         this.fetchData = this.fetchData.bind(this);
@@ -38,7 +39,8 @@ class Transactions extends Component {
             pageSize: pageSize,
             page: page,
             sorted: sorted,
-            filtered: filtered
+            filtered: filtered,
+            showModal: false,
         }
 
         fetch(url, {
@@ -67,11 +69,15 @@ class Transactions extends Component {
 
     handleEditButtonClick (e, row) {
         console.log(row);
+
+        this.setState({openModal: true})
     }
+
+    closeModal = () => this.setState({openModal: false});
 
     render () {
 
-        const { data, pages, loading } = this.state;
+        const { data, pages, loading, showModal } = this.state;
 
         const columns = [{
                 Header: 'Company',
@@ -135,6 +141,21 @@ class Transactions extends Component {
                         </div> 
                     </div>
                 </div>
+
+
+                <Modal
+                    className="modal-component"
+                    title="Edit Transaction"
+                    show={this.state.openModal}
+                    >
+                    <div className="modal-body">
+                        <p>Modal body text goes here.</p>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-primary">Save changes</button>
+                        <button type="button" className="btn btn-secondary" onClick={()=> this.setState({openModal: false}) } data-dismiss="modal" >Close</button>
+                    </div>
+                </Modal>
 
             </PageWrapper>
         );
