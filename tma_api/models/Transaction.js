@@ -31,20 +31,32 @@ var Transaction = {
             whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
         }
 
-        for(let i = 0; i < sorted.length; i++)
+        if(sorted.length > 0)
         {
-            let sort = sorted[i];
-            var column = sort.id;
-            var desc = sort.desc;
-            var ascDesc = "ASC";
 
-            if(desc)
+            orderBy = " ORDER BY ";
+            for(let i = 0; i < sorted.length; i++)
             {
-                ascDesc = "DESC";
-            }
+                let sort = sorted[i];
+                var column = sort.id;
+                var desc = sort.desc;
+                var ascDesc = "ASC";
 
-            orderBy = " ORDER BY " + column + " " + ascDesc;
+                if(desc)
+                {
+                    ascDesc = "DESC";
+                }
+
+                if(i > 0)
+                {
+                    orderBy = orderBy + ", ";
+                }
+
+                orderBy = orderBy + column + " " + ascDesc;
+                
+            }
         }
+        
 
         const sql = `
                 SELECT * FROM transactions

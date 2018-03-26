@@ -65,9 +65,47 @@ class Transactions extends Component {
         })
     }
 
+    handleEditButtonClick (e, row) {
+        console.log(row);
+    }
+
     render () {
 
         const { data, pages, loading } = this.state;
+
+        const columns = [{
+                Header: 'Company',
+                accessor: 'company'
+            }, {
+                Header: 'Transaction Date',
+                accessor: 'txndate'
+            }, {
+                Header: 'Epan',
+                accessor: 'epan'
+            }, {
+                Header: 'Licence Plate',
+                accessor: 'licplate'
+            }, {
+                Header: 'User Id',
+                accessor: 'userid'
+            }, {
+                Header: 'Machine Id',
+                accessor: 'machineid'
+            }, {
+                Header: 'Serial Number',
+                accessor: 'serialno'
+            }, {
+                Header: 'Entry Date/Time',
+                accessor: 'entrydatetime',
+            }, {
+                Header: 'Exit Date/Time',
+                accessor: 'exitdatetime'
+            }, {
+                Header: 'Action',
+                id: 'edit-button',
+                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
+            }
+        ];
      
         return (
             <PageWrapper>
@@ -104,35 +142,7 @@ class Transactions extends Component {
     }
 }
 
-const columns = [{
-        Header: 'Company',
-        accessor: 'company'
-    }, {
-        Header: 'Transaction Date',
-        accessor: 'txndate'
-    }, {
-        Header: 'Epan',
-        accessor: 'epan'
-    }, {
-        Header: 'Licence Plate',
-        accessor: 'licplate'
-    }, {
-        Header: 'User Id',
-        accessor: 'userid'
-    }, {
-        Header: 'Machine Id',
-        accessor: 'machineid'
-    }, {
-        Header: 'Serial Number',
-        accessor: 'serialno'
-    }, {
-        Header: 'Entry Date/Time',
-        accessor: 'entrydatetime',
-    }, {
-        Header: 'Exit Date/Time',
-        accessor: 'exitdatetime'
-    }
-];
+
 
 
 // const data = [{
