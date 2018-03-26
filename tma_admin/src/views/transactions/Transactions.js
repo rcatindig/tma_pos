@@ -81,28 +81,6 @@ class Transactions extends Component {
         })
     }
 
-    handleCloseModal = () => {
-
-        console.log("Handle Close Modal");
-
-        this.setState({openModal: false, 
-            transactionId: "",
-            company: "",
-            txndate: "",
-            epan: "",
-            licplate: "",
-            userid: "",
-            machineid: "",
-            serialno: "",
-            uniquetxnno: "",
-            entrydatetime: "",
-            exitdatetime: ""
-        });
-
-    }
-
-    
-
     handleEditButtonClick (e, row) {
         var data = row._original;
         var id = data.id;
@@ -154,6 +132,11 @@ class Transactions extends Component {
                                         entrydatetime: "",
                                         exitdatetime: ""
                                     });
+
+
+    handleChangeInput = (event) => {
+        console.log(event);
+    }
 
     render () {
 
@@ -256,59 +239,110 @@ class Transactions extends Component {
                     className="modal-component"
                     title="Edit Transaction"
                     show={openModal}
-                    handleCloseClick={this.handleCloseModal}
+                    handleCloseClick={this.closeModal}
                     >
                     <div className="modal-body">
                         <form>
+                            <input type="hidden" value={transactionId}/>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="company">Company</label>
-                                    <input type="text" className="form-control" id="company" placeholder="Company" value={company}/>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="company" 
+                                        placeholder="Company" 
+                                        value={company} 
+                                        onChange={(event) => this.setState({company: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="txndate">Transaction Date</label>
-                                    <input type="text" className="form-control" id="txndate" placeholder="Transaction Date" value={txndate}/>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="txndate"
+                                        placeholder="Transaction Date"
+                                        value={txndate}
+                                        onChange={(event) => this.setState({txndate: event.target.value })}/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="epan">EPAN</label>
-                                    <input type="text" className="form-control" id="epan" placeholder="Epan" value={epan}/>
+                                    <input type="text"
+                                        className="form-control" 
+                                        id="epan" 
+                                        placeholder="Epan" 
+                                        value={epan}
+                                        onChange={(event) => this.setState({epan: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="licplate">Licence Plate</label>
-                                    <input type="text" className="form-control" id="licplate" placeholder="License Plate" value={licplate} />
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="licplate" 
+                                        placeholder="License Plate" 
+                                        value={licplate} 
+                                        onChange={(event) => this.setState({licplate: event.target.value })}/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="userid">User Id</label>
-                                    <input type="text" className="form-control" id="userid" placeholder="User Id" value={userid}/>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="userid" 
+                                        placeholder="User Id" 
+                                        value={userid}
+                                        onChange={(event) => this.setState({userid: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="machineid">Machine Id</label>
-                                    <input type="text" className="form-control" id="machineid" placeholder="Machine Id" value={machineid}/>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="machineid" 
+                                        placeholder="Machine Id" 
+                                        value={machineid}
+                                        onChange={(event) => this.setState({machineid: event.target.value })}/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="serialno">Serial Number</label>
-                                    <input type="text" className="form-control" id="serialno" placeholder="Serial Number" value={serialno}/>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="serialno" 
+                                        placeholder="Serial Number" 
+                                        value={serialno}
+                                        onChange={(event) => this.setState({serialno: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="uniquetxnno">Unique Transaction No.</label>
-                                    <input type="text" className="form-control" id="uniquetxnno" placeholder="Unique Transaction No." value={uniquetxnno} />
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="uniquetxnno" 
+                                        placeholder="Unique Transaction No."
+                                        value={uniquetxnno}
+                                        onChange={(event) => this.setState({uniquetxnno: event.target.value })} />
                                 </div>
                                 
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="entrydatetime">Entry Date Time</label>
-                                    <input type="text" className="form-control" id="entrydatetime" placeholder="MM/DD/YYYY" value={entrydatetime} />
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="entrydatetime"
+                                        placeholder="MM/DD/YYYY"
+                                        value={entrydatetime} 
+                                        onChange={(event) => this.setState({entrydatetime: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="userid">Exit Date Time</label>
-                                    <input type="text" className="form-control" id="userid" placeholder="MM/DD/YYYY"  value={exitdatetime} />
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="userid" 
+                                        placeholder="MM/DD/YYYY" 
+                                        value={exitdatetime} 
+                                        onChange={(event) => this.setState({exitdatetime: event.target.value })} />
                                 </div>
                                 
                             </div>
@@ -316,7 +350,7 @@ class Transactions extends Component {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary">Save changes</button>
-                        <button type="button" className="btn btn-secondary" onClick={()=> this.setState({openModal: false}) } data-dismiss="modal" >Close</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>
 

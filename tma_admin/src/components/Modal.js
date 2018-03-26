@@ -12,33 +12,13 @@ class Modal extends Component {
         super(props);
     }
 
-    // handleCloseModal = () => {
-
-    //     console.log("Handle Close Modal");
-
-    //     this.setState({openModal: false, 
-    //         transactionId: "",
-    //         company: "",
-    //         txndate: "",
-    //         epan: "",
-    //         licplate: "",
-    //         userid: "",
-    //         machineid: "",
-    //         serialno: "",
-    //         uniquetxnno: "",
-    //         entrydatetime: "",
-    //         exitdatetime: ""
-    //     });
-
-    // }
-
     render() {
 
         const { title, children, className, show, handleCloseClick } = this.props;
 
         return(
             <div className={ show ? "ui dimmer modals page transition visible active" : "ui dimmer modals page transition  hidden" }>
-                <div className={"modal " + className} tabindex="-1" role="dialog" style={{display: show ? 'block': 'none' }}>
+                <div className={"modal " + className} tabIndex="-1" role="dialog" style={{display: show ? 'block': 'none' }}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
