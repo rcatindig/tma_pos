@@ -8,7 +8,6 @@ const { getTransactionList, countTransactions } = TransactionsMW;
 router.get('/:id?', function (req, res, next) {
 
   if (req.params.id) {
-
     Transaction.getTransactionById(req.params.id, function (err, rows) {
 
       if (err) {

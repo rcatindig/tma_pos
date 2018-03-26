@@ -19,7 +19,18 @@ class Transactions extends Component {
             data: [],
             pages: null,
             loading: true,
-            openModal: false
+            openModal: false,
+            transactionId: "",
+            company: "",
+            txndate: "",
+            epan: "",
+            licplate: "",
+            userid: "",
+            machineid: "",
+            serialno: "",
+            uniquetxnno: "",
+            entrydatetime: "",
+            exitdatetime: ""
         }
 
         this.fetchData = this.fetchData.bind(this);
@@ -68,16 +79,75 @@ class Transactions extends Component {
     }
 
     handleEditButtonClick (e, row) {
-        console.log(row);
+        var data = row._original;
+        var id = data.id;
+
+        var self = this;
+
+        const url = API.TRANSACTIONS + id;
+
+        fetch(url)
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    var result = res[0];
+                    self.setState({
+                        transactionId: result.id,
+                        company: result.company,
+                        txndate: result.txndate,
+                        epan: result.epan,
+                        licplate: result.licplate,
+                        userid: result.userid,
+                        machineid: result.machineid,
+                        serialno: result.serialno,
+                        uniquetxnno: result.uniquetxnno,
+                        entrydatetime: result.entrydatetime,
+                        exitdatetime: result.exitdatetime
+                    });
+                }
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+
 
         this.setState({openModal: true})
     }
 
-    closeModal = () => this.setState({openModal: false});
+    closeModal = () => this.setState({openModal: false, 
+                                        transactionId: "",
+                                        company: "",
+                                        txndate: "",
+                                        epan: "",
+                                        licplate: "",
+                                        userid: "",
+                                        machineid: "",
+                                        serialno: "",
+                                        uniquetxnno: "",
+                                        entrydatetime: "",
+                                        exitdatetime: ""
+                                    });
 
     render () {
 
-        const { data, pages, loading, showModal } = this.state;
+        const { data,
+                pages,
+                loading,
+                openModal,
+                transactionId,
+                company,
+                txndate,
+                epan,
+                licplate,
+                userid,
+                machineid,
+                serialno,
+                uniquetxnno,
+                entrydatetime,
+                exitdatetime
+             } = this.state;
 
         const columns = [{
                 Header: 'Company',
@@ -146,10 +216,63 @@ class Transactions extends Component {
                 <Modal
                     className="modal-component"
                     title="Edit Transaction"
-                    show={this.state.openModal}
+                    show={openModal}
                     >
                     <div className="modal-body">
-                        <p>Modal body text goes here.</p>
+                        <form>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label for="company">Company</label>
+                                    <input type="text" className="form-control" id="company" placeholder="Company" value={company}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label for="txndate">Transaction Date</label>
+                                    <input type="text" className="form-control" id="txndate" placeholder="Transaction Date" value={txndate}/>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label for="epan">EPAN</label>
+                                    <input type="text" className="form-control" id="epan" placeholder="Epan" value={epan}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label for="licplate">Licence Plate</label>
+                                    <input type="text" className="form-control" id="licplate" placeholder="License Plate" value={licplate} />
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label for="userid">User Id</label>
+                                    <input type="text" className="form-control" id="userid" placeholder="User Id" value={userid}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label for="machineid">Machine Id</label>
+                                    <input type="text" className="form-control" id="machineid" placeholder="Machine Id" value={machineid}/>
+                                </div>
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label for="serialno">Serial Number</label>
+                                    <input type="text" className="form-control" id="serialno" placeholder="Serial Number" value={serialno}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label for="uniquetxnno">Unique Transaction No.</label>
+                                    <input type="text" className="form-control" id="uniquetxnno" placeholder="Unique Transaction No." value={uniquetxnno} />
+                                </div>
+                                
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label for="entrydatetime">Entry Date Time</label>
+                                    <input type="text" className="form-control" id="entrydatetime" placeholder="MM/DD/YYYY" value={entrydatetime} />
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label for="userid">Exit Date Time</label>
+                                    <input type="text" className="form-control" id="userid" placeholder="MM/DD/YYYY"  value={exitdatetime} />
+                                </div>
+                                
+                            </div>
+                        </form>
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-primary">Save changes</button>
@@ -162,64 +285,6 @@ class Transactions extends Component {
         
     }
 }
-
-
-
-
-// const data = [{
-//         name: 'Reynard Catindig',
-//         position: 'Software Developer',
-//         office: 'TMA Tech',
-//         age: '23',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '1'
-//     }, {
-//         name: 'John Doe',
-//         position: 'Software Developer',
-//         office: 'TMA Tech',
-//         age: '18',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '1'
-//     }, {
-//         name: 'John Peter',
-//         position: 'Software Developer',
-//         office: 'TMA Tech',
-//         age: '12',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '1'
-//     }, {
-//         name: 'Peter Solomon',
-//         position: 'Software Developer',
-//         office: 'TMA Tech',
-//         age: '12',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '1'
-//     }, {
-//         name: 'Karen Solomon',
-//         position: 'Software Developer',
-//         office: 'TMA Tech',
-//         age: '12',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '1'
-//     }, {
-//         name: 'David Roque',
-//         position: 'Technical Lead',
-//         office: 'TMA Tech',
-//         age: '12',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '12356'
-//     }, {
-//         name: 'Xander Ford',
-//         position: 'Project Manager',
-//         office: 'TMA Tech',
-//         age: '12',
-//         startDate: 'Jan. 12, 2018',
-//         salary: '1'
-//     }
-// ]
-
-
-
 
 
 export { Transactions };
