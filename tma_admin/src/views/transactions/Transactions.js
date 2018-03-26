@@ -81,6 +81,28 @@ class Transactions extends Component {
         })
     }
 
+    handleCloseModal = () => {
+
+        console.log("Handle Close Modal");
+
+        this.setState({openModal: false, 
+            transactionId: "",
+            company: "",
+            txndate: "",
+            epan: "",
+            licplate: "",
+            userid: "",
+            machineid: "",
+            serialno: "",
+            uniquetxnno: "",
+            entrydatetime: "",
+            exitdatetime: ""
+        });
+
+    }
+
+    
+
     handleEditButtonClick (e, row) {
         var data = row._original;
         var id = data.id;
@@ -197,6 +219,8 @@ class Transactions extends Component {
                 Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
             }
         ];
+
+        var self = this;
      
         return (
             <PageWrapper>
@@ -232,57 +256,58 @@ class Transactions extends Component {
                     className="modal-component"
                     title="Edit Transaction"
                     show={openModal}
+                    handleCloseClick={this.handleCloseModal}
                     >
                     <div className="modal-body">
                         <form>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
-                                    <label for="company">Company</label>
+                                    <label htmlFor="company">Company</label>
                                     <input type="text" className="form-control" id="company" placeholder="Company" value={company}/>
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label for="txndate">Transaction Date</label>
+                                    <label htmlFor="txndate">Transaction Date</label>
                                     <input type="text" className="form-control" id="txndate" placeholder="Transaction Date" value={txndate}/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
-                                    <label for="epan">EPAN</label>
+                                    <label htmlFor="epan">EPAN</label>
                                     <input type="text" className="form-control" id="epan" placeholder="Epan" value={epan}/>
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label for="licplate">Licence Plate</label>
+                                    <label htmlFor="licplate">Licence Plate</label>
                                     <input type="text" className="form-control" id="licplate" placeholder="License Plate" value={licplate} />
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
-                                    <label for="userid">User Id</label>
+                                    <label htmlFor="userid">User Id</label>
                                     <input type="text" className="form-control" id="userid" placeholder="User Id" value={userid}/>
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label for="machineid">Machine Id</label>
+                                    <label htmlFor="machineid">Machine Id</label>
                                     <input type="text" className="form-control" id="machineid" placeholder="Machine Id" value={machineid}/>
                                 </div>
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
-                                    <label for="serialno">Serial Number</label>
+                                    <label htmlFor="serialno">Serial Number</label>
                                     <input type="text" className="form-control" id="serialno" placeholder="Serial Number" value={serialno}/>
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label for="uniquetxnno">Unique Transaction No.</label>
+                                    <label htmlFor="uniquetxnno">Unique Transaction No.</label>
                                     <input type="text" className="form-control" id="uniquetxnno" placeholder="Unique Transaction No." value={uniquetxnno} />
                                 </div>
                                 
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
-                                    <label for="entrydatetime">Entry Date Time</label>
+                                    <label htmlFor="entrydatetime">Entry Date Time</label>
                                     <input type="text" className="form-control" id="entrydatetime" placeholder="MM/DD/YYYY" value={entrydatetime} />
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label for="userid">Exit Date Time</label>
+                                    <label htmlFor="userid">Exit Date Time</label>
                                     <input type="text" className="form-control" id="userid" placeholder="MM/DD/YYYY"  value={exitdatetime} />
                                 </div>
                                 

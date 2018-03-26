@@ -12,9 +12,29 @@ class Modal extends Component {
         super(props);
     }
 
+    // handleCloseModal = () => {
+
+    //     console.log("Handle Close Modal");
+
+    //     this.setState({openModal: false, 
+    //         transactionId: "",
+    //         company: "",
+    //         txndate: "",
+    //         epan: "",
+    //         licplate: "",
+    //         userid: "",
+    //         machineid: "",
+    //         serialno: "",
+    //         uniquetxnno: "",
+    //         entrydatetime: "",
+    //         exitdatetime: ""
+    //     });
+
+    // }
+
     render() {
 
-        const { title, children, className, show } = this.props;
+        const { title, children, className, show, handleCloseClick } = this.props;
 
         return(
             <div className={ show ? "ui dimmer modals page transition visible active" : "ui dimmer modals page transition  hidden" }>
@@ -23,7 +43,7 @@ class Modal extends Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">{title}</h5>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={() => this.setState({})}>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCloseClick}>
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
