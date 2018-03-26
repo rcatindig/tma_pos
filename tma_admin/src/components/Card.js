@@ -14,7 +14,7 @@ class Card extends Component {
     renderContent() {
         const { title, subTitle, children } = this.props;
 
-        if(title != "" || subTitle != "")
+        if(title !== "" || subTitle !== "")
         {
             return (
                 <div className="card-body">
