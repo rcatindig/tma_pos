@@ -11,6 +11,8 @@ var Transaction = {
 
         return db.query("SELECT * FROM transactions where id=?", [id], callback);
     },
+
+    // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
     getTransactions: function(ReactTable, callback)
     {
         console.log(ReactTable);
@@ -19,6 +21,7 @@ var Transaction = {
 
 
         let whereClause = "";
+        let orderBy = "";
 
         for(let i = 0; i < filtered.length; i++)
         {
@@ -28,25 +31,41 @@ var Transaction = {
             whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
         }
 
+        for(let i = 0; i < sorted.length; i++)
+        {
+            let sort = sorted[i];
+            var column = sort.id;
+            var desc = sort.desc;
+            var ascDesc = "ASC";
+
+            if(desc)
+            {
+                ascDesc = "DESC";
+            }
+
+            orderBy = " ORDER BY " + column + " " + ascDesc;
+        }
 
         const sql = `
                 SELECT * FROM transactions
                 WHERE 1=1
                 ${whereClause}
+                ${orderBy}
                 LIMIT ${page * pageSize},${pageSize}
             `;
 
+        console.log(sql);
        
 
         return db.query(sql, callback);
 
 
     },
+
+    // USE FOR REACT TABLE
     countTotalTransactions: function(ReactTable, callback)
     {
        return db.query("SELECT COUNT(*) as total  FROM transactions", callback);
-
-        
     },
 
 

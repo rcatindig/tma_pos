@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var Transaction = require('../models/Transaction');
+var TransactionsMW = require('../middlewares/TransactionsMW');
+
+const { getTransactionList, countTransactions } = TransactionsMW;
 
 router.get('/:id?', function (req, res, next) {
 
@@ -75,45 +78,6 @@ router.put('/:id', function (req, res, next) {
 
 
 // Middleware
-function getTransactionList(req, res, next)
-{
-	Transaction.getTransactions(req.body, function (err, rows){
 
-		var results = "";
-		
-		if (err) {
-			res.json(err);
-		} else {
-
-			req.transactions = rows;
-			next();
-			
-		}
-	});
-}
-
-function countTransactions(req, res)
-{
-	Transaction.countTotalTransactions(req.body, function (err, fields){
-
-		var results = "";
-
-		
-		if (err) {
-			res.json(err);
-		} else {
-
-
-
-			var data = {
-				totalRecords: fields[0].total,
-				transactions: req.transactions
-			}
-			
-			res.json(data);
-			
-		}
-	});
-}
 
 module.exports = router;
