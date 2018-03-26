@@ -8,16 +8,9 @@ class Modal extends Component {
         className: "",
     };
 
-    
-
     constructor(props) {
         super(props);
-
-      
-
     }
-
-
 
     render() {
 
