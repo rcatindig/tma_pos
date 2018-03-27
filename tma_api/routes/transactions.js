@@ -7,6 +7,7 @@ const { getTransactionList, countTransactions } = TransactionsMW;
 
 router.get('/:id?', function (req, res, next) {
 
+
   if (req.params.id) {
     Transaction.getTransactionById(req.params.id, function (err, rows) {
 
@@ -65,6 +66,7 @@ router.delete('/:id', function (req, res, next) {
 
 router.put('/:id', function (req, res, next) {
 
+  console.log("HELLO WOrld");
   Transaction.updateTransaction(req.params.id, req.body, function (err, rows) {
 
     if (err) {

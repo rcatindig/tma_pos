@@ -21,8 +21,11 @@ class Transactions extends Component {
         this.state = {
             data: [],
             pages: null,
+            sorted: [],
+            pageSize: "",
+            filtered: [],
             loading: true,
-            openModal: false,
+            showModal: false,
             transactionId: "",
             company: "",
             txndate: "",
@@ -32,14 +35,21 @@ class Transactions extends Component {
             machineid: "",
             serialno: "",
             uniquetxnno: "",
+            receiptno: "",
             entrydatetime: "",
-            exitdatetime: ""
+            exitdatetime: "",
+            duration: "",
+            tariff: "",
+            totalamount: "",
+            acceptedtotal: "",
+            nettotal: "",
+            vat: ""
         }
 
         this.fetchData = this.fetchData.bind(this);
     }
 
-    fetchData(state, instance) {
+    fetchData = (state, instance) => {
 
         this.setState({ loading: true })
 
@@ -48,6 +58,8 @@ class Transactions extends Component {
         const url = API.TRANSACTIONS + 'getTransactions/';
 
         const { pageSize, page, sorted, filtered } = state;
+
+        this.setState({pageSize: pageSize, page: page, sorted: sorted, filtered: filtered});
 
         const data =  {
             pageSize: pageSize,
@@ -81,6 +93,50 @@ class Transactions extends Component {
         })
     }
 
+    updateData = () => {
+
+        var data = this.state;
+        data.txndate = Moment(data.txndate).format("YYYY-MM-DD HH:mm:ss");
+        data.entrydatetime = Moment(data.entrydatetime).format("YYYY-MM-DD HH:mm:ss");
+        data.exitdatetime = Moment(data.exitdatetime).format("YYYY-MM-DD HH:mm:ss");
+        
+
+        var id = data.transactionId;
+
+        const url = API.TRANSACTIONS + id;
+
+        var self = this;
+
+        fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                })
+            }).then((response) => {
+                // const { pageSize, page, sorted, filtered } = state;
+                var dataState = {
+                    pageSize: self.state.pageSize,
+                    page: self.state.page,
+                    sorted: self.state.sorted,
+                    filtered: self.state.filtered
+                };
+                self.fetchData(data, []);
+
+                this.setState({openModal: false});
+                return response.json();
+                
+            }).then((res) => {
+                //self.setState({data: responseData});
+
+                //self.fetchData();
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+
+    }
+
     handleEditButtonClick (e, row) {
         var data = row._original;
         var id = data.id;
@@ -105,9 +161,16 @@ class Transactions extends Component {
                         userid: result.userid,
                         machineid: result.machineid,
                         serialno: result.serialno,
+                        receiptno: result.receiptno,
                         uniquetxnno: result.uniquetxnno,
                         entrydatetime: result.entrydatetime,
-                        exitdatetime: result.exitdatetime
+                        exitdatetime: result.exitdatetime,
+                        duration: result.duration,
+                        tariff: result.tariff,
+                        totalamount: result.totalamount,
+                        acceptedtotal: result.acceptedtotal,
+                        nettotal: result.nettotal,
+                        vat: result.vat
                     });
                 }
             })
@@ -129,8 +192,15 @@ class Transactions extends Component {
                                         machineid: "",
                                         serialno: "",
                                         uniquetxnno: "",
+                                        receiptno: "",
                                         entrydatetime: "",
-                                        exitdatetime: ""
+                                        exitdatetime: "",
+                                        duration: "",
+                                        tariff: "",
+                                        totalamount: "",
+                                        acceptedtotal: "",
+                                        nettotal: "",
+                                        vat: ""
                                     });
 
 
@@ -142,6 +212,9 @@ class Transactions extends Component {
 
         const { data,
                 pages,
+                sorted,
+                pageSize,
+                filtered,
                 loading,
                 openModal,
                 transactionId,
@@ -153,8 +226,15 @@ class Transactions extends Component {
                 machineid,
                 serialno,
                 uniquetxnno,
+                receiptno,
                 entrydatetime,
-                exitdatetime
+                exitdatetime,
+                duration,
+                tariff,
+                totalamount,
+                acceptedtotal,
+                nettotal,
+                vat
              } = this.state;
 
         const columns = [{
@@ -241,8 +321,8 @@ class Transactions extends Component {
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
-                    <div className="modal-body">
-                        <form>
+                    <div className="modal-body transaction-modal">
+                        <form className="form-control">
                             <input type="hidden" value={transactionId}/>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
@@ -305,7 +385,7 @@ class Transactions extends Component {
                                 </div>
                             </div>
                             <div className="form-row">
-                                <div className="form-group col-md-6">
+                                <div className="form-group col-md-4">
                                     <label htmlFor="serialno">Serial Number</label>
                                     <input type="text" 
                                         className="form-control" 
@@ -314,7 +394,7 @@ class Transactions extends Component {
                                         value={serialno}
                                         onChange={(event) => this.setState({serialno: event.target.value })}/>
                                 </div>
-                                <div className="form-group col-md-6">
+                                <div className="form-group col-md-4">
                                     <label htmlFor="uniquetxnno">Unique Transaction No.</label>
                                     <input type="text" 
                                         className="form-control" 
@@ -322,6 +402,16 @@ class Transactions extends Component {
                                         placeholder="Unique Transaction No."
                                         value={uniquetxnno}
                                         onChange={(event) => this.setState({uniquetxnno: event.target.value })} />
+                                </div>
+
+                                <div className="form-group col-md-4">
+                                    <label htmlFor="receiptno">Receipt No.</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="receiptno" 
+                                        placeholder="Unique Transaction No."
+                                        value={receiptno}
+                                        onChange={(event) => this.setState({receiptno: event.target.value })} />
                                 </div>
                                 
                             </div>
@@ -336,20 +426,84 @@ class Transactions extends Component {
                                         onChange={(event) => this.setState({entrydatetime: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-6">
-                                    <label htmlFor="userid">Exit Date Time</label>
+                                    <label htmlFor="exitdatetime">Exit Date Time</label>
                                     <input type="text" 
                                         className="form-control" 
-                                        id="userid" 
+                                        id="exitdatetime" 
                                         placeholder="MM/DD/YYYY" 
                                         value={exitdatetime} 
                                         onChange={(event) => this.setState({exitdatetime: event.target.value })} />
                                 </div>
                                 
                             </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="duration">Duration</label>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="duration"
+                                        placeholder="Duration"
+                                        value={duration} 
+                                        onChange={(event) => this.setState({duration: event.target.value })}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="tariff">Tariff</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="tariff" 
+                                        placeholder="Tariff" 
+                                        value={tariff} 
+                                        onChange={(event) => this.setState({tariff: event.target.value })} />
+                                </div>
+                                
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="totalamount">Total Amount</label>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="totalamount"
+                                        placeholder="Total Amount"
+                                        value={totalamount} 
+                                        onChange={(event) => this.setState({totalamount: event.target.value })}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="acceptedtotal">Accepted Total</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="acceptedtotal" 
+                                        placeholder="Accepted Total" 
+                                        value={acceptedtotal} 
+                                        onChange={(event) => this.setState({acceptedtotal: event.target.value })} />
+                                </div>
+                            </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="nettotal">Net Total</label>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="nettotal"
+                                        placeholder="Net Total"
+                                        value={nettotal} 
+                                        onChange={(event) => this.setState({nettotal: event.target.value })}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="vat">VAT</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="vat" 
+                                        placeholder="VAT" 
+                                        value={vat} 
+                                        onChange={(event) => this.setState({vat: event.target.value })} />
+                                </div>
+                            </div>
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary">Save changes</button>
+                        <button type="button" className="btn btn-primary" onClick={() => this.updateData()}>Save changes</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>

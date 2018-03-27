@@ -4855,7 +4855,7 @@ footer p {
   margin-bottom: 20px;
 }
 .form-control {
-  height: 42px;
+  /* height: 42px; */
   border-radius: 0;
   box-shadow: none;
   border-color: #e7e7e7;
@@ -5206,6 +5206,7 @@ label {
   padding: 10px 15px;
   display: block;
 }
+
 @media (max-width: 648px) {
   .inbox-leftbar {
     width: 100%;

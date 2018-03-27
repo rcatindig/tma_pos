@@ -9,3 +9,9 @@
     margin-right: -3px;
     margin-top: -10px;
 }
+
+.modal-body.transaction-modal {
+    height: 450px;
+    overflow-y: auto;
+  }
+  

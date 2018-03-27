@@ -15,7 +15,7 @@ var Transaction = {
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
     getTransactions: function(ReactTable, callback)
     {
-        console.log(ReactTable);
+        
         const { pageSize, page, sorted, filtered } = ReactTable;
         let totalTransactions  = 0;
 
@@ -70,7 +70,7 @@ var Transaction = {
                 LIMIT ${page * pageSize},${pageSize}
             `;
 
-        console.log(sql);
+        
        
 
         return db.query(sql, callback);
