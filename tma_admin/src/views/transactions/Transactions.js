@@ -292,7 +292,7 @@ class Transactions extends Component {
                     <div className="row">
                         <div className="col-12">
                             <Card title="Transactions" subTitle="List of Transactions">
-                                <div className="table-responsive m-t-40">
+                                <div className="table-responsive m-t-20">
                                     <ReactTable
                                         className="-striped -highlight"
                                         manual
