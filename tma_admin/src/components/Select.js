@@ -22,7 +22,7 @@ class Select extends Component {
                 <option>Please select...</option>
                 {options.map(function(a) {
                     return (
-                        <option value={a.value}>{a.label}</option>
+                        <option key={a.value} value={a.value}>{a.label}</option>
                     );
                 })}
             </select>

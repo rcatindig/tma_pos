@@ -8,7 +8,7 @@ import 'react-table/react-table.css';
 import Moment from 'moment';
 
 // custom components
-import { Card, PageHeader, PageWrapper, Modal } from '../../components';
+import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 
 // constants 
 import { API } from '../../constants';
@@ -35,7 +35,8 @@ class Clients extends Component {
             tel_no: "",
             status: "",
             date_created: "",
-            date_modified: ""
+            date_modified: "",
+            countryOptions: []
         }
 
         this.fetchData = this.fetchData.bind(this);
@@ -128,6 +129,35 @@ class Clients extends Component {
             console.log(err);
         })
 
+        const country_url = API.COUNTRIES;
+
+        const countryOptions = [];
+
+        fetch(country_url)
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    for(var i = 0; i < res.length; i++)
+                    {
+                        var country = res[i];
+                        var optionData = {
+                            value: country.id,
+                            label: country.name
+                        }
+
+                        countryOptions.push(optionData);
+                    }
+
+                    this.setState({countryOptions: countryOptions})
+                    
+                }
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+
 
         this.setState({openModal: true})
     }
@@ -145,10 +175,6 @@ class Clients extends Component {
                                         date_modified: ""
                                     });
 
-
-    handleChangeInput = (event) => {
-        console.log(event);
-    }
 
     render () {
 
@@ -265,12 +291,18 @@ class Clients extends Component {
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="country">Country</label>
-                                    <input type="text" 
+                                    <Select
+                                        id="country"
+                                        className="form-control"
+                                        name="country"
+                                        options={this.state.countryOptions}
+                                    />
+                                    {/* <input type="text" 
                                         className="form-control"
                                         id="country"
                                         placeholder="Country"
                                         value={country_id} 
-                                        onChange={(event) => this.setState({country_id: event.target.value })}/>
+                                        onChange={(event) => this.setState({country_id: event.target.value })}/> */}
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="state">State / Region</label>
