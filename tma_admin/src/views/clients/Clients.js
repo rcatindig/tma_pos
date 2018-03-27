@@ -90,45 +90,7 @@ class Clients extends Component {
 
     updateData = () => {
 
-        var data = this.state;
-        data.txndate = Moment(data.txndate).format("YYYY-MM-DD HH:mm:ss");
-        data.entrydatetime = Moment(data.entrydatetime).format("YYYY-MM-DD HH:mm:ss");
-        data.exitdatetime = Moment(data.exitdatetime).format("YYYY-MM-DD HH:mm:ss");
         
-
-        var id = data.transactionId;
-
-        const url = API.TRANSACTIONS + id;
-
-        var self = this;
-
-        fetch(url, {
-                method: 'PUT',
-                body: JSON.stringify(data),
-                headers: new Headers({
-                    'Content-Type': 'application/json',
-                })
-            }).then((response) => {
-                // const { pageSize, page, sorted, filtered } = state;
-                var dataState = {
-                    pageSize: self.state.pageSize,
-                    page: self.state.page,
-                    sorted: self.state.sorted,
-                    filtered: self.state.filtered
-                };
-                self.fetchData(data, []);
-
-                this.setState({openModal: false});
-                return response.json();
-                
-            }).then((res) => {
-                //self.setState({data: responseData});
-
-                //self.fetchData();
-            })
-        .catch(function(err){
-            console.log(err);
-        })
 
     }
 
@@ -138,7 +100,7 @@ class Clients extends Component {
 
         var self = this;
 
-        const url = API.TRANSACTIONS + id;
+        const url = API.CLIENTS + id;
 
         fetch(url)
             .then(results => { 
@@ -148,24 +110,17 @@ class Clients extends Component {
                 {
                     var result = res[0];
                     self.setState({
-                        // transactionId: result.id,
-                        // company: result.company,
-                        // txndate: result.txndate,
-                        // epan: result.epan,
-                        // licplate: result.licplate,
-                        // userid: result.userid,
-                        // machineid: result.machineid,
-                        // serialno: result.serialno,
-                        // receiptno: result.receiptno,
-                        // uniquetxnno: result.uniquetxnno,
-                        // entrydatetime: result.entrydatetime,
-                        // exitdatetime: result.exitdatetime,
-                        // duration: result.duration,
-                        // tariff: result.tariff,
-                        // totalamount: result.totalamount,
-                        // acceptedtotal: result.acceptedtotal,
-                        // nettotal: result.nettotal,
-                        // vat: result.vat
+                        openModal: true,
+                        clientId: result.id,
+                        name: result.name,
+                        address: result.address,
+                        country_id: result.country_id,
+                        state_id: result.state_id,
+                        email: result.email,
+                        tel_no: result.tel_no,
+                        status: result.status,
+                        date_created: result.date_created,
+                        date_modified: result.date_modified
                     });
                 }
             })
@@ -276,7 +231,86 @@ class Clients extends Component {
                     </div>
                 </div>
 
-
+                <Modal
+                    className="modal-component"
+                    title="Edit Transaction"
+                    show={openModal}
+                    handleCloseClick={this.closeModal}
+                    >
+                    <div className="modal-body">
+                        <form className="form-control">
+                            <input type="hidden" value={clientId}/>
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <label htmlFor="name">Name</label>
+                                    <input type="text"
+                                        className="form-control" 
+                                        id="name" 
+                                        placeholder="Name" 
+                                        value={name} 
+                                        onChange={(event) => this.setState({name: event.target.value })}/>
+                                </div>                            
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <label htmlFor="address">Address</label>
+                                    <input type="text"
+                                        className="form-control" 
+                                        id="address" 
+                                        placeholder="Name" 
+                                        value={address} 
+                                        onChange={(event) => this.setState({address: event.target.value })}/>
+                                </div>                            
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="country">Country</label>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="country"
+                                        placeholder="Country"
+                                        value={country_id} 
+                                        onChange={(event) => this.setState({country_id: event.target.value })}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="state">State / Region</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="state" 
+                                        placeholder="State" 
+                                        value={state_id} 
+                                        onChange={(event) => this.setState({state_id: event.target.value })} />
+                                </div>
+                                
+                            </div>
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="email">Email</label>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="email"
+                                        placeholder="Email"
+                                        value={email} 
+                                        onChange={(event) => this.setState({email: event.target.value })}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="tel_no">Telephone No.</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="tel_no" 
+                                        placeholder="Telephone No." 
+                                        value={tel_no} 
+                                        onChange={(event) => this.setState({tel_no: event.target.value })} />
+                                </div>
+                                
+                            </div>
+                        </form>
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-primary" onClick={() => this.updateData()}>Save changes</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
+                    </div>
+                </Modal>
                 
             </PageWrapper>
         );
