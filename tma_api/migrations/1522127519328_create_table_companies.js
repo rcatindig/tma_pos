@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "CREATE TABLE `companies`( `id` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(150) NULL, `address` VARCHAR(200) NULL, `country_id` CHAR(2) NULL, `state_id` INT(10) NULL, `email` VARCHAR(99) NULL, `tel_no` VARCHAR(99) NULL, `status` TINYINT NULL DEFAULT 0, `date_created` DATETIME NOT NULL, `date_modified` DATETIME NOT NULL, PRIMARY KEY (`id`), INDEX `company_country_idx` (`country_id` ASC), INDEX `company_state_idx` (`state_id` ASC), CONSTRAINT `company_country` FOREIGN KEY (`country_id`) REFERENCES `param_countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `company_state` FOREIGN KEY (`state_id`) REFERENCES `param_states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION) ENGINE = InnoDB DEFAULT CHARSET=utf8;",
+    "down": "DROP TABLE `companies`"
+}
