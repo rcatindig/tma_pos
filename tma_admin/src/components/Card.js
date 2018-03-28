@@ -4,11 +4,46 @@ class Card extends Component {
     static defaultProps = {
         otherClass: "",
         title: "",
-        subTitle: ""
+        subTitle: "",
+        buttons: [],
     };
-  
-    constructor(props) {
-      super(props);
+
+    
+
+    renderHeaderWrapper = () => {
+
+        const { title, subTitle, buttons } = this.props;
+
+        if(buttons.length > 0)
+        {
+            return (
+                    <div className="row">
+                        <div className="col-md-7">
+                            <h4 className="card-title">{ title }</h4>
+                            <h6 className="card-subtitle">{ subTitle }</h6>
+                        </div>
+                        <div className="col-md-5">
+                        {buttons.map(function(a) {
+                            return (
+                                <button key={a.id} className={a.class} onClick={a.onClick}>{a.title}</button>
+                            );
+                        })}
+                        </div>
+                    </div>
+                    
+            );
+        } else {
+
+            return (
+                <div>     
+                    <h4 className="card-title">{ title }</h4>
+                    <h6 className="card-subtitle">{ subTitle }</h6>
+                </div>
+            );
+            
+        }
+        
+        
     }
 
     renderContent() {
@@ -16,10 +51,15 @@ class Card extends Component {
 
         if(title !== "" || subTitle !== "")
         {
+            //this.renderWrapper();
             return (
                 <div className="card-body">
-                    <h4 className="card-title">{ title }</h4>
-                    <h6 className="card-subtitle">{ subTitle }</h6>
+
+                        { this.renderHeaderWrapper() }
+                    
+                        {/* <h4 className="card-title">{ title }</h4>
+                        <h6 className="card-subtitle">{ subTitle }</h6> */}
+                    
                     {children}
                 </div>
             );
@@ -32,7 +72,7 @@ class Card extends Component {
     
     render () {
         
-        const { otherClass, children } = this.props;
+        const { otherClass } = this.props;
 
         return(
             <div className={"card " + otherClass}>

@@ -6,10 +6,6 @@ class PageHeader extends Component {
     static defaultProps = {
         title: ""
     };
-  
-    constructor(props) {
-      super(props);
-    }
 
     render () {
 

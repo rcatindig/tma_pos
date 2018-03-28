@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link, Switch, Redirect, HashRouter } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, Redirect, HashRouter } from 'react-router-dom';
 import { Header, SideBar } from '../components'; 
 import { Dashboard, Transactions, Clients } from '../views';
 

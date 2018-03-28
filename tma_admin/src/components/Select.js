@@ -8,15 +8,12 @@ class Select extends Component {
         options: [],
         name: "",
         value: "",
+        placeholder: "Please select...",
     };
-  
-    constructor(props) {
-        super(props);
-    }
 
     
     render() {
-        const { id, className, options, name, value, onChange } = this.props;
+        const { id, className, options, name, value, onChange, placeholder } = this.props;
         return (
             <select 
                 className={className}
@@ -25,7 +22,7 @@ class Select extends Component {
                 value={value} 
                 onChange={onChange}>
 
-                    <option>Please select...</option>
+                    <option>{placeholder}</option>
                     {options.map(function(a) {
                         return (
                             <option key={a.value} value={a.value}>{a.label}</option>

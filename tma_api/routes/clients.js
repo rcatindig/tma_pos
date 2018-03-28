@@ -34,6 +34,7 @@ router.get('/:id?', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
 
+
   Client.addClient(req.body, function (err, count) {
     if (err) {
         res.json(err);

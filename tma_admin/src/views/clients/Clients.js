@@ -13,6 +13,10 @@ import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 // constants 
 import { API } from '../../constants';
 
+const client_url = API.CLIENTS;
+const country_url = API.COUNTRIES;
+const states_url = API.STATES;
+
 
 class Clients extends Component {
 
@@ -50,7 +54,7 @@ class Clients extends Component {
 
         let self = this;
 
-        const url = API.CLIENTS + 'getClientList/';
+        const url = client_url + 'getClientList/';
 
         const { pageSize, page, sorted, filtered } = state;
 
@@ -124,7 +128,36 @@ class Clients extends Component {
     }
 
     addClient = (data) => {
-        
+        data.date_created = Moment().format("YYYY-MM-DD HH:mm:ss");
+        data.date_modified = Moment().format("YYYY-MM-DD HH:mm:ss");
+
+        var self = this;
+
+        fetch(client_url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                })
+            }).then((response) => {
+
+                var dataState = {
+                    pageSize: self.state.pageSize,
+                    page: self.state.page,
+                    sorted: self.state.sorted,
+                    filtered: self.state.filtered
+                };
+                self.fetchData(dataState, []);
+
+                this.setState({openModal: false});
+                return response.json();
+                
+            }).then((res) => {
+                //
+            })
+        .catch(function(err){
+            console.log(err);
+        })
     }
 
     updateClient = (data) => {
@@ -132,11 +165,9 @@ class Clients extends Component {
 
         var id = data.id;
 
-        const url = API.CLIENTS + id;
-
         var self = this;
 
-        fetch(url, {
+        fetch(client_url + id, {
                 method: 'PUT',
                 body: JSON.stringify(data),
                 headers: new Headers({
@@ -170,9 +201,7 @@ class Clients extends Component {
 
         var self = this;
 
-        const url = API.CLIENTS + id;
-
-        fetch(url)
+        fetch(client_url + id)
             .then(results => { 
                 return results.json();
             }).then(res => {
@@ -199,9 +228,80 @@ class Clients extends Component {
             })
         .catch(function(err){
             console.log(err);
+        });
+
+
+         fetch(country_url)
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    for(var i = 0; i < res.length; i++)
+                    {
+                        var country = res[i];
+                        var optionData = {
+                            value: country.id,
+                            label: country.name
+                        }
+
+                        countryOptions.push(optionData);
+                    }
+
+                    this.setState({countryOptions: countryOptions})
+                    
+                }
+            })
+        .catch(function(err){
+            console.log(err);
         })
 
-        const country_url = API.COUNTRIES;
+
+        const countryOptions = [];
+
+        fetch(country_url)
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    for(var i = 0; i < res.length; i++)
+                    {
+                        var country = res[i];
+                        var optionData = {
+                            value: country.id,
+                            label: country.name
+                        }
+
+                        countryOptions.push(optionData);
+                    }
+
+                    this.setState({countryOptions: countryOptions})
+                    
+                }
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+
+        
+    }
+
+    openModal = () => {
+
+        this.setState({openModal: true, 
+            clientId: "",
+            name: "",
+            address: "",
+            country_id: "",
+            state_id: "",
+            email: "",
+            tel_no: "",
+            status: 0,
+            date_created: "",
+            date_modified: "",
+            statesOptions: [],
+        });
 
         const countryOptions = [];
 
@@ -232,6 +332,7 @@ class Clients extends Component {
 
 
         this.setState({openModal: true})
+
     }
 
     closeModal = () => this.setState({openModal: false, 
@@ -259,11 +360,11 @@ class Clients extends Component {
     }
 
     getStateOptions = (countryId) => {
-        const states_url = API.STATES + "getStatesByCountry/" + countryId;
+        const url = states_url + "getStatesByCountry/" + countryId;
 
         const statesOptions = [];
 
-        fetch(states_url)
+        fetch(url)
             .then(results => { 
                 this.setState({statesOptions: []});
                 return results.json();
@@ -297,9 +398,6 @@ class Clients extends Component {
 
         const { data,
                 pages,
-                sorted,
-                pageSize,
-                filtered,
                 loading,
                 openModal,
                 clientId,
@@ -310,8 +408,6 @@ class Clients extends Component {
                 email,
                 tel_no,
                 status,
-                date_created,
-                date_modified,
              } = this.state;
 
         const columns = [{
@@ -334,7 +430,7 @@ class Clients extends Component {
                 id: 'c.status',
                 Header: 'Status',
                 accessor: c => {
-                    return c.status == 0 ? "Active" : "Inactive";
+                    return c.status === 0 ? "Active" : "Inactive";
                 }
             }, {
                 Header: 'Action',
@@ -343,7 +439,6 @@ class Clients extends Component {
             }
         ];
 
-        var self = this;
      
         return (
             <PageWrapper>
@@ -351,7 +446,15 @@ class Clients extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12">
-                            <Card title="Clients" subTitle="List of Clients">
+                            <Card 
+                                title="Clients"
+                                subTitle="List of Clients"
+                                buttons={[{id: "add-button", 
+                                    class: "btn btn-success waves-effect waves-light pull-right", 
+                                    title: "Add",
+                                    onClick: this.openModal
+                                }]}
+                                >
                                 <div className="table-responsive m-t-20">
                                     <ReactTable
                                         className="-striped -highlight"
@@ -400,7 +503,7 @@ class Clients extends Component {
                                     <input type="text"
                                         className="form-control" 
                                         id="address" 
-                                        placeholder="Name" 
+                                        placeholder="Address" 
                                         value={address} 
                                         onChange={(event) => this.setState({address: event.target.value })}/>
                                 </div>                            
@@ -415,6 +518,7 @@ class Clients extends Component {
                                         options={this.state.countryOptions}
                                         value={country_id}
                                         onChange={this.onChangeCountry}
+                                        placeholder="Select Country..."
                                     />
                                     
                                 </div>
@@ -427,6 +531,7 @@ class Clients extends Component {
                                         name="state"
                                         options={this.state.statesOptions}
                                         value={state_id}
+                                        placeholder="Select State/Region..."
                                         onChange={(event) => this.setState({state_id: event.target.value })}
                                     />
                                     
@@ -459,7 +564,8 @@ class Clients extends Component {
                                 <div className="form-group col-md-6">
                                     <label htmlFor="status">Status</label>
                                     <Select
-                                        id="country"
+                                        id="status"
+                                        placeholder="Select Status..."
                                         className="form-control"
                                         name="status"
                                         options={[{value: 0, label: "Active"}, {value: 1, label: "Inactive"}]}

@@ -20,18 +20,17 @@ var Client = {
 
         let parameters = [
             Client.name,
+            Client.address,
             Client.country_id,
             Client.state_id,
             Client.email,
             Client.tel_no,
             Client.status,
-            Client.status,
             Client.date_created,
             Client.date_modified
         ];
 
-
-        return db.query(sql, parameters);
+        return db.query(sql, parameters, callback);
     },
     deleteClient: function (id, callback) {
         return db.query("DELETE FROM clients WHERE id=?", [id], callback);

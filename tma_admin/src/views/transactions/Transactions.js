@@ -212,9 +212,6 @@ class Transactions extends Component {
 
         const { data,
                 pages,
-                sorted,
-                pageSize,
-                filtered,
                 loading,
                 openModal,
                 transactionId,
@@ -282,8 +279,6 @@ class Transactions extends Component {
                 Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
             }
         ];
-
-        var self = this;
      
         return (
             <PageWrapper>
