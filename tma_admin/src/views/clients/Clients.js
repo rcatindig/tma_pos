@@ -38,6 +38,7 @@ class Clients extends Component {
             date_modified: "",
             countryOptions: [],
             statesOptions: [],
+            isChecked: true,
         }
 
         this.fetchData = this.fetchData.bind(this);
@@ -289,6 +290,8 @@ class Clients extends Component {
         })
     }
 
+    _handleCheckboxChange = () => this.setState( { isChecked: !this.state.isChecked } );
+
 
     render () {
 
@@ -413,12 +416,7 @@ class Clients extends Component {
                                         value={country_id}
                                         onChange={this.onChangeCountry}
                                     />
-                                    {/* <input type="text" 
-                                        className="form-control"
-                                        id="country"
-                                        placeholder="Country"
-                                        value={country_id} 
-                                        onChange={(event) => this.setState({country_id: event.target.value })}/> */}
+                                    
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="state">State / Region</label>
@@ -431,12 +429,7 @@ class Clients extends Component {
                                         value={state_id}
                                         onChange={(event) => this.setState({state_id: event.target.value })}
                                     />
-                                    {/* <input type="text" 
-                                        className="form-control" 
-                                        id="state" 
-                                        placeholder="State" 
-                                        value={state_id} 
-                                        onChange={(event) => this.setState({state_id: event.target.value })} /> */}
+                                    
                                 </div>
                                 
                             </div>
@@ -460,6 +453,22 @@ class Clients extends Component {
                                         onChange={(event) => this.setState({tel_no: event.target.value })} />
                                 </div>
                                 
+                            </div>
+                            <div className="form-row">
+
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="status">Status</label>
+                                    <Select
+                                        id="country"
+                                        className="form-control"
+                                        name="status"
+                                        options={[{value: 0, label: "Active"}, {value: 1, label: "Inactive"}]}
+                                        value={status}
+                                        onChange={(event) => this.setState({status: event.target.value })}
+                                    />
+                                    
+                                </div>
+
                             </div>
                         </form>
                     </div>
