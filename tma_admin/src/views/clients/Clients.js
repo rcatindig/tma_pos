@@ -36,7 +36,8 @@ class Clients extends Component {
             status: "",
             date_created: "",
             date_modified: "",
-            countryOptions: []
+            countryOptions: [],
+            statesOptions: [],
         }
 
         this.fetchData = this.fetchData.bind(this);
@@ -89,11 +90,78 @@ class Clients extends Component {
         })
     }
 
-    updateData = () => {
+    saveData = () => {
 
-        
+        const { 
+            name,
+            address,
+            country_id,
+            state_id,
+            email,
+            tel_no,
+            status,
+            clientId
+         } = this.state;
+
+         var data = {
+             name: name,
+             address: address,
+             country_id: country_id,
+             state_id: state_id,
+             email: email,
+             tel_no: tel_no,
+             status: status,
+             id: clientId
+         }
+
+
+        if(clientId !== "")
+            this.updateClient(data);
+        else
+            this.addClient(data);
 
     }
+
+    addClient = (data) => {
+        
+    }
+
+    updateClient = (data) => {
+        data.date_modified = Moment().format("YYYY-MM-DD HH:mm:ss");
+
+        var id = data.id;
+
+        const url = API.CLIENTS + id;
+
+        var self = this;
+
+        fetch(url, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                })
+            }).then((response) => {
+
+                var dataState = {
+                    pageSize: self.state.pageSize,
+                    page: self.state.page,
+                    sorted: self.state.sorted,
+                    filtered: self.state.filtered
+                };
+                self.fetchData(dataState, []);
+
+                this.setState({openModal: false});
+                return response.json();
+                
+            }).then((res) => {
+                //
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+    }
+    
 
     handleEditButtonClick (e, row) {
         var data = row._original;
@@ -121,8 +189,11 @@ class Clients extends Component {
                         tel_no: result.tel_no,
                         status: result.status,
                         date_created: result.date_created,
-                        date_modified: result.date_modified
+                        date_modified: result.date_modified,
+                        statesOptions: []
                     });
+
+                    this.getStateOptions(result.country_id);
                 }
             })
         .catch(function(err){
@@ -172,8 +243,51 @@ class Clients extends Component {
                                         tel_no: "",
                                         status: "",
                                         date_created: "",
-                                        date_modified: ""
+                                        date_modified: "",
+                                        statesOptions: [],
                                     });
+
+    onChangeCountry = (event) => {
+        const countryId = event.target.value;
+        this.setState({country_id: countryId});
+
+        this.setState()
+        // refresh the state options based on its country.
+
+        this.getStateOptions(countryId);
+    }
+
+    getStateOptions = (countryId) => {
+        const states_url = API.STATES + "getStatesByCountry/" + countryId;
+
+        const statesOptions = [];
+
+        fetch(states_url)
+            .then(results => { 
+                this.setState({statesOptions: []});
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    for(var i = 0; i < res.length; i++)
+                    {
+                        var state = res[i];
+                        var optionData = {
+                            value: state.id,
+                            label: state.name
+                        }
+
+                        statesOptions.push(optionData);
+                    }
+
+                    this.setState({statesOptions: statesOptions});
+                    
+                }
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+    }
 
 
     render () {
@@ -259,7 +373,7 @@ class Clients extends Component {
 
                 <Modal
                     className="modal-component"
-                    title="Edit Transaction"
+                    title="Edit Client"
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
@@ -296,6 +410,8 @@ class Clients extends Component {
                                         className="form-control"
                                         name="country"
                                         options={this.state.countryOptions}
+                                        value={country_id}
+                                        onChange={this.onChangeCountry}
                                     />
                                     {/* <input type="text" 
                                         className="form-control"
@@ -306,12 +422,21 @@ class Clients extends Component {
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="state">State / Region</label>
-                                    <input type="text" 
+
+                                    <Select
+                                        id="state"
+                                        className="form-control"
+                                        name="state"
+                                        options={this.state.statesOptions}
+                                        value={state_id}
+                                        onChange={(event) => this.setState({state_id: event.target.value })}
+                                    />
+                                    {/* <input type="text" 
                                         className="form-control" 
                                         id="state" 
                                         placeholder="State" 
                                         value={state_id} 
-                                        onChange={(event) => this.setState({state_id: event.target.value })} />
+                                        onChange={(event) => this.setState({state_id: event.target.value })} /> */}
                                 </div>
                                 
                             </div>
@@ -339,7 +464,7 @@ class Clients extends Component {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.updateData()}>Save changes</button>
+                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>Save changes</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>

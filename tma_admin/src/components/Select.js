@@ -16,15 +16,22 @@ class Select extends Component {
 
     
     render() {
-        const { id, className, options, name, value } = this.props;
+        const { id, className, options, name, value, onChange } = this.props;
         return (
-            <select className={className} id={id} name={name} value={value}>
-                <option>Please select...</option>
-                {options.map(function(a) {
-                    return (
-                        <option key={a.value} value={a.value}>{a.label}</option>
-                    );
-                })}
+            <select 
+                className={className}
+                id={id} 
+                name={name} 
+                value={value} 
+                onChange={onChange}>
+
+                    <option>Please select...</option>
+                    {options.map(function(a) {
+                        return (
+                            <option key={a.value} value={a.value}>{a.label}</option>
+                        );
+                    })}
+
             </select>
         );
     }

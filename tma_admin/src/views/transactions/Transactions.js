@@ -121,7 +121,7 @@ class Transactions extends Component {
                     sorted: self.state.sorted,
                     filtered: self.state.filtered
                 };
-                self.fetchData(data, []);
+                self.fetchData(dataState, []);
 
                 this.setState({openModal: false});
                 return response.json();

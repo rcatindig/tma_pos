@@ -6,5 +6,6 @@ export const API = {
     USERS: API_SERVER + 'users/',
     CLIENTS: API_SERVER + 'clients/',
     COUNTRIES: API_SERVER + 'countries/',
+    STATES: API_SERVER + 'states/',
 
 }
