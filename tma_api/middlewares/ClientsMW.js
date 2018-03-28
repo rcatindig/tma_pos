@@ -4,6 +4,7 @@ var Client = require('../models/Client');
 var ClientsMW = {
     getClientList: function(req, res, next)
     {
+        console.log("PARAMETERS", req.body);
         Client.getClientList(req.body, function (err, rows){
 
             var results = "";

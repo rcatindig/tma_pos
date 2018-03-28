@@ -40,30 +40,29 @@ var Client = {
 
         let sql = `
             UPDATE clients SET
-                name = ?, address = ?, country_id = ?, state_id = ?, email = ?, tel_no = ?, status = ?, date_created = ?, date_modified = ?
+                name = ?, address = ?, country_id = ?, state_id = ?, email = ?, tel_no = ?, status = ?, date_modified = ?
             WHERE id = ?
         `;
 
         let parameters = [
             Client.name,
+            Client.address,
             Client.country_id,
             Client.state_id,
             Client.email,
             Client.tel_no,
             Client.status,
-            Client.status,
-            Client.date_created,
             Client.date_modified,
             Client.id
         ];
 
-
+        console.log(sql, parameters);
         return db.query(sql, parameters, callback);
     },
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
     getClientList: function(ReactTable, callback)
     {
-        
+        console.log("MODEL", ReactTable);
         const { pageSize, page, sorted, filtered } = ReactTable;
         let totalTransactions  = 0;
 
