@@ -56,13 +56,11 @@ var Client = {
             Client.id
         ];
 
-        console.log(sql, parameters);
         return db.query(sql, parameters, callback);
     },
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
     getClientList: function(ReactTable, callback)
     {
-        console.log("MODEL", ReactTable);
         const { pageSize, page, sorted, filtered } = ReactTable;
         let totalTransactions  = 0;
 
@@ -125,7 +123,6 @@ var Client = {
                 LIMIT ${page * pageSize},${pageSize}
             `;
 
-        console.log(sql);
 
         return db.query(sql, callback);
 
