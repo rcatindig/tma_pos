@@ -6,7 +6,8 @@ class Select extends Component {
         className: "",
         id:"",
         options: [],
-        name: ""
+        name: "",
+        value: "",
     };
   
     constructor(props) {
@@ -15,10 +16,9 @@ class Select extends Component {
 
     
     render() {
-        const { id, className, options, name } = this.props;
-        console.log(options);
+        const { id, className, options, name, value } = this.props;
         return (
-            <select className={className} id={id} name={name}>
+            <select className={className} id={id} name={name} value={value}>
                 <option>Please select...</option>
                 {options.map(function(a) {
                     return (
