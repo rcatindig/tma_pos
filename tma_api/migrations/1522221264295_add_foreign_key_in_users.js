@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "ALTER TABLE `users` ADD CONSTRAINT `user_client` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, ADD CONSTRAINT `user_country` FOREIGN KEY (`country_id`) REFERENCES `param_countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, ADD CONSTRAINT `user_state` FOREIGN KEY (`state_id`) REFERENCES `param_states` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION; ",
+    "down": "ALTER TABLE `users` DROP FOREIGN KEY `user_state`, DROP FOREIGN KEY `user_country`, DROP FOREIGN KEY `user_client`; ALTER TABLE `users` DROP COLUMN `date_modified`, DROP COLUMN `date_created`, DROP COLUMN `state_id`, DROP COLUMN `country_id`, DROP COLUMN `address`, DROP COLUMN `client_id`, DROP INDEX `user_state_idx` , DROP INDEX `user_country_idx` , DROP INDEX `user_client_idx` ;"
+}

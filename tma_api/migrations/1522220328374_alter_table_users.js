@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "ALTER TABLE `users` CHARACTER SET = utf8 , ADD COLUMN `client_id` INT NULL AFTER `password`, ADD COLUMN `address` VARCHAR(200) NULL AFTER `client_id`, ADD COLUMN `country_id` CHAR(3) NULL AFTER `address`, ADD COLUMN `state_id` INT NULL AFTER `country_id`, ADD COLUMN `date_created` DATETIME NULL AFTER `isdeleted`, ADD COLUMN `date_modified` DATETIME NULL AFTER `date_created`, ADD INDEX `user_client_idx`(`client_id` ASC), ADD INDEX `user_country_idx` (`country_id` ASC), ADD INDEX `user_state_idx` (`state_id` ASC); ",
+    "down": "ALTER TABLE `users` DROP COLUMN `date_modified`, DROP COLUMN `date_created`, DROP COLUMN `state_id`, DROP COLUMN `country_id`, DROP COLUMN `address`, DROP COLUMN `client_id`, DROP INDEX `user_state_idx` , DROP INDEX `user_country_idx` , DROP INDEX `user_client_idx` ;"
+}
