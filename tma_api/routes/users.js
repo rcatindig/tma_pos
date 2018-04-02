@@ -4,7 +4,8 @@ var express 	= require('express'),
 	jwt			= require('jsonwebtoken')
 	_			= require('lodash'),
 	config		= require('../config'),
-	bcrypt		= require('bcrypt');
+	bcrypt		= require('bcrypt'),
+	exjwt     	= require('express-jwt');
 
 
 const { SALT_ROUNDS } = require('../constants');
@@ -18,6 +19,12 @@ var secretKey = "don't share this key";
 function createToken(user) {
 	return jwt.sign(_.omit(user, 'password'), config.secretKey, {expiresIn: 60*60*5});
 }
+
+var jwtCheck = exjwt({
+    secret: config.secretKey
+});
+
+router.use('/', jwtCheck);
 
 router.get('/:id?', function (req, res, next) {
 

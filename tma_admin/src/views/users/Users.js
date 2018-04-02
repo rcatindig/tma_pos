@@ -7,6 +7,8 @@ import 'react-table/react-table.css';
 // moment
 import Moment from 'moment';
 
+import AuthService from '../../utils/AuthService';
+
 // custom components
 import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 
@@ -53,7 +55,12 @@ class Users extends Component {
             isChecked: true,
         }
 
+        
+        this.Auth = new AuthService();
+        this.Token = this.Auth.getToken();
+
         this.fetchData = this.fetchData.bind(this);
+
     }
 
     fetchData = (state, instance) => {
@@ -85,6 +92,7 @@ class Users extends Component {
                 headers: new Headers({
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token
                 })
             }).then((response) => { 
                 return response.json();
@@ -161,6 +169,7 @@ class Users extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token
                 })
             }).then((response) => {
 
@@ -195,6 +204,7 @@ class Users extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token
                 })
             }).then((response) => {
 
@@ -227,7 +237,12 @@ class Users extends Component {
         
         const countryOptions = [];
 
-        fetch(users_url + id)
+        fetch(users_url + id, {
+                method: 'GET',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + this.Token
+                })
+            })
             .then(results => { 
                 return results.json();
             }).then(res => {
