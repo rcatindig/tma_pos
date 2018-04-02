@@ -11,7 +11,11 @@ import Moment from 'moment';
 import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 
 // constants 
-import { API } from '../../constants';
+import { API, SALT_ROUNDS } from '../../constants';
+
+// bcryptjs
+import bcrypt from 'bcryptjs';
+const salt = bcrypt.genSaltSync(SALT_ROUNDS);
 
 const client_url = API.CLIENTS;
 const country_url = API.COUNTRIES;
@@ -99,6 +103,10 @@ class Users extends Component {
         })
     }
 
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
     saveData = () => {
 
         const { 
@@ -116,6 +124,8 @@ class Users extends Component {
             status,
             confirmPassword,
          } = this.state;
+         
+         var passwordHash = bcrypt.hashSync(password, salt);
 
          var data = {
             first_name: first_name,
@@ -127,7 +137,7 @@ class Users extends Component {
             country_id: country_id,
             state_id: state_id,
             username: username,
-            password: password,                
+            password: passwordHash,                
             status: status,
             id: userId
          }
@@ -146,7 +156,7 @@ class Users extends Component {
 
         var self = this;
 
-        fetch(users_url, {
+        fetch(users_url + "create", {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: new Headers({
@@ -214,6 +224,9 @@ class Users extends Component {
 
         var self = this;
 
+        
+        const countryOptions = [];
+
         fetch(users_url + id)
             .then(results => { 
                 return results.json();
@@ -227,7 +240,7 @@ class Users extends Component {
                         first_name: result.first_name,
                         middle_name: result.middle_name,
                         surname: result.surname,
-                        extension: result.extension,
+                        extension: result.extension == null ? "" : result.extension,
                         address: result.address,
                         email: result.email,
                         country_id: result.country_id,
@@ -273,32 +286,8 @@ class Users extends Component {
         })
 
 
-        const countryOptions = [];
 
-        fetch(country_url)
-            .then(results => { 
-                return results.json();
-            }).then(res => {
-                if(res.length > 0)
-                {
-                    for(var i = 0; i < res.length; i++)
-                    {
-                        var country = res[i];
-                        var optionData = {
-                            value: country.id,
-                            label: country.name
-                        }
-
-                        countryOptions.push(optionData);
-                    }
-
-                    this.setState({countryOptions: countryOptions})
-                    
-                }
-            })
-        .catch(function(err){
-            console.log(err);
-        })
+        
 
         
     }
@@ -552,13 +541,13 @@ class Users extends Component {
                             </div>
                             <div className="form-row">
                                 <div className="form-group col-md-8">
-                                    <label htmlFor="middle_name">Surname</label>
+                                    <label htmlFor="surname">Surname</label>
                                     <input type="text"
                                         className="form-control" 
-                                        id="middle_name" 
-                                        placeholder="Middle Name" 
-                                        value={middle_name} 
-                                        onChange={(event) => this.setState({middle_name: event.target.value })}/>
+                                        id="surname" 
+                                        placeholder="Surname" 
+                                        value={surname} 
+                                        onChange={(event) => this.setState({surname: event.target.value })}/>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label htmlFor="middle_name">Extension</label>

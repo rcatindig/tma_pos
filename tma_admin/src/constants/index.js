@@ -1,4 +1,4 @@
-const API_SERVER = "http://localhost:3001/";
+export const API_SERVER = "http://localhost:3001/";
 
 export const API = {
 
@@ -9,3 +9,6 @@ export const API = {
     STATES: API_SERVER + 'states/',
 
 }
+
+
+export const SALT_ROUNDS = 10;

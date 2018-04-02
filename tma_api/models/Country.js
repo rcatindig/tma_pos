@@ -4,12 +4,12 @@ var Country = {
 
     getAllCountries: function (callback) {
 
-        return db.query("Select * from param_countries", callback);
+        return db.query("Select * from param_countries ORDER BY name ASC", callback);
 
     },
     getCountryById: function (id, callback) {
 
-        return db.query("select * from param_countries where Id=?", [id], callback);
+        return db.query("select * from param_countries where id=?", [id], callback);
     },
     addCountry: function (Country, callback) {
         return db.query("Insert into param_countries (username, password, active, isdeleted) values(?,?,?)", [Country.username, Country.password, Country.active, Country.isdeleted], callback);

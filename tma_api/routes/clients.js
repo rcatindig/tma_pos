@@ -1,11 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var Client = require('../models/Client');
+var express     = require('express'), 
+    router      = express.Router(),
+    Client      = require('../models/Client')
+    jwt     = require('express-jwt'),
+    config  = require('../config');
+
 
 // MIDDLEWARE
 var ClientsMW = require('../middlewares/ClientsMW');
 
 const { getClientList, countClients } = ClientsMW;
+
+var jwtCheck = jwt({
+    secret: config.secretKey
+});
+router.use('/', jwtCheck);
 
 router.get('/:id?', function (req, res, next) {
 

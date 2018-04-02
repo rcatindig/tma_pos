@@ -3,7 +3,12 @@ import {BrowserRouter as Router, Route, Switch, Redirect, HashRouter } from 'rea
 import { Header, SideBar } from '../components'; 
 import { Dashboard, Transactions, Clients, Users } from '../views';
 
+import AuthService from '../utils/AuthService';
+import withAuth from '../utils/withAuth';
+const Auth = new AuthService();
+
 class Main extends Component {
+    
     render () {
         return (
             <HashRouter>
@@ -30,4 +35,4 @@ class Main extends Component {
     }
 }
 
-export default Main;
+export default withAuth(Main);

@@ -14,8 +14,22 @@ var User = {
     addUser: function (User, callback) {
         const sql = `
             INSERT INTO users 
-                (first_name, middle_name, surname, extension, username, password, client_id, address, country_id, state_id, status, isdeleted, date_created, date_modified) 
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                (   first_name,
+                    middle_name,
+                    surname,
+                    extension,
+                    username,
+                    password,
+                    email,
+                    client_id,
+                    address,
+                    country_id,
+                    state_id,
+                    status,
+                    isdeleted,
+                    date_created, 
+                    date_modified) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `;
 
         const parameters = [
@@ -25,16 +39,20 @@ var User = {
             User.extension,
             User.username,
             User.password,
-            User.client_id,
+            User.email,
+            null,
             User.address,
             User.country_id,
             User.state_id,
             User.status,
-            User.isdeleted,
+            0,
             User.date_created,
             User.date_modified
         ];
-        return db.query("", parameters, callback);
+
+        console.log(sql, parameters);
+
+        db.query(sql, parameters, callback);
     },
     deleteUser: function (id, callback) {
         return db.query("DELETE FROM users where id=?", [id], callback);
@@ -59,86 +77,84 @@ var User = {
                         WHERE id = ?
             `;
 
-            const parameters = [
-                User.first_name,
-                User.middle_name,
-                User.surname,
-                User.extension,
-                User.username,
-                User.password,
-                User.client_id,
-                User.address,
-                User.country_id,
-                User.state_id,
-                User.status,
-                User.isdeleted,
-                User.date_modified,
-                User.id
-            ];
+        const parameters = [
+            User.first_name,
+            User.middle_name,
+            User.surname,
+            User.extension,
+            User.username,
+            User.password,
+            User.client_id,
+            User.address,
+            User.country_id,
+            User.state_id,
+            User.status,
+            User.isdeleted,
+            User.date_modified,
+            User.id
+        ];
 
-            console.log(sql);
+        console.log(sql);
 
 
         return db.query(sql, parameters, callback);
     },
     // USE FOR REACT TABLE
-    countTotalUsers: function(ReactTable, callback)
-    {
-       return db.query("SELECT COUNT(*) as total  FROM users", callback);
+    countTotalUsers: function (ReactTable, callback) {
+        return db.query("SELECT COUNT(*) as total  FROM users", callback);
     },
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
-    getUserList: function(ReactTable, callback)
-    {
-        
-        const { pageSize, page, sorted, filtered } = ReactTable;
-        let totalTransactions  = 0;
+    getUserList: function (ReactTable, callback) {
+
+        const {
+            pageSize,
+            page,
+            sorted,
+            filtered
+        } = ReactTable;
+        let totalTransactions = 0;
 
 
         let whereClause = "";
         let orderBy = "";
 
-        for(let i = 0; i < filtered.length; i++)
-        {
+        for (let i = 0; i < filtered.length; i++) {
             let filter = filtered[i];
             var column = filter.id;
             var value = filter.value;
 
-            if(column == "txndate" || column == "entrydatetime" || column == "exitdatetime")
+            if (column == "txndate" || column == "entrydatetime" || column == "exitdatetime")
                 column = "DATE_FORMAT(" + column + ", '%M %d, %Y %r ')";
 
-            if(column == "c.status")
+            if (column == "c.status")
                 column = "IF(" + column + " > 0, 'Inactive', 'Active' )";
-                
+
 
             whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
         }
 
-        if(sorted.length > 0)
-        {
+        if (sorted.length > 0) {
 
             orderBy = " ORDER BY ";
-            for(let i = 0; i < sorted.length; i++)
-            {
+            for (let i = 0; i < sorted.length; i++) {
                 let sort = sorted[i];
                 var column = sort.id;
                 var desc = sort.desc;
                 var ascDesc = "ASC";
 
-                if(desc)
-                {
+                if (desc) {
                     ascDesc = "DESC";
                 }
 
-                if(i > 0)
-                {
+                if (i > 0) {
                     orderBy = orderBy + ", ";
                 }
 
                 orderBy = orderBy + column + " " + ascDesc;
-                
+
             }
         }
-        
+
 
         const sql = `
                 SELECT u.*, pc.name as country, ps.name as state FROM users u
@@ -154,12 +170,35 @@ var User = {
                 LIMIT ${page * pageSize},${pageSize}
             `;
 
-        
-       
-
         return db.query(sql, callback);
 
 
+    },
+
+    getUserByUsername: function (User, done) {
+        //const sql = `SELECT * FROM users WHERE username = ?`;
+
+        db.query('SELECT * FROM users WHERE username = ? LIMIT 1', [User.username], function (err, rows, fields) {
+            if (err) throw err;
+            done(rows[0]);
+        });
+
+        // return db.query(sql, [username], callback);
+    },
+    insertUserTesting: function (User, callback) {
+        const sql = `
+            INSERT INTO users 
+                ( username, password, email) 
+            VALUES (?,?,?)
+        `;
+
+        const parameters = [
+            User.username,
+            User.password,
+            User.email,
+        ];
+
+        db.query(sql, parameters, callback)
     },
 };
 module.exports = User;
