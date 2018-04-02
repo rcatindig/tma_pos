@@ -4,22 +4,162 @@ var User = {
 
     getAllUsers: function (callback) {
 
-        return db.query("Select * from users", callback);
+        return db.query("SELECT * FROM users", callback);
 
     },
     getUserById: function (id, callback) {
 
-        return db.query("select * from users where Id=?", [id], callback);
+        return db.query("SELECT * FROM users where Id=?", [id], callback);
     },
     addUser: function (User, callback) {
-        return db.query("Insert into users (username, password, active, isdeleted) values(?,?,?)", [User.username, User.password, User.active, User.isdeleted], callback);
+        const sql = `
+            INSERT INTO users 
+                (first_name, middle_name, surname, extension, username, password, client_id, address, country_id, state_id, status, isdeleted, date_created, date_modified) 
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        `;
+
+        const parameters = [
+            User.first_name,
+            User.middle_name,
+            User.surname,
+            User.extension,
+            User.username,
+            User.password,
+            User.client_id,
+            User.address,
+            User.country_id,
+            User.state_id,
+            User.status,
+            User.isdeleted,
+            User.date_created,
+            User.date_modified
+        ];
+        return db.query("", parameters, callback);
     },
     deleteUser: function (id, callback) {
-        return db.query("delete from users where id=?", [id], callback);
+        return db.query("DELETE FROM users where id=?", [id], callback);
     },
     updateUser: function (id, User, callback) {
-        return db.query("update users set username=?,password=?, active=?, isdeleted=? where id=?", [User.username, User.password, User.active, User.isdeleted, User.id], callback);
-    }
 
+        const sql = `UPDATE users 
+                        SET
+                            first_name = ?,
+                            middle_name = ?,
+                            surname = ?, 
+                            extension = ?, 
+                            username = ?, 
+                            password = ?, 
+                            client_id = ?,
+                            address = ?, 
+                            country_id = ?, 
+                            state_id = ?, 
+                            status = ?, 
+                            isdeleted = ?, 
+                            date_modified = ?
+                        WHERE id = ?
+            `;
+
+            const parameters = [
+                User.first_name,
+                User.middle_name,
+                User.surname,
+                User.extension,
+                User.username,
+                User.password,
+                User.client_id,
+                User.address,
+                User.country_id,
+                User.state_id,
+                User.status,
+                User.isdeleted,
+                User.date_modified,
+                User.id
+            ];
+
+            console.log(sql);
+
+
+        return db.query(sql, parameters, callback);
+    },
+    // USE FOR REACT TABLE
+    countTotalUsers: function(ReactTable, callback)
+    {
+       return db.query("SELECT COUNT(*) as total  FROM users", callback);
+    },
+    // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
+    getUserList: function(ReactTable, callback)
+    {
+        
+        const { pageSize, page, sorted, filtered } = ReactTable;
+        let totalTransactions  = 0;
+
+
+        let whereClause = "";
+        let orderBy = "";
+
+        for(let i = 0; i < filtered.length; i++)
+        {
+            let filter = filtered[i];
+            var column = filter.id;
+            var value = filter.value;
+
+            if(column == "txndate" || column == "entrydatetime" || column == "exitdatetime")
+                column = "DATE_FORMAT(" + column + ", '%M %d, %Y %r ')";
+
+            if(column == "c.status")
+                column = "IF(" + column + " > 0, 'Inactive', 'Active' )";
+                
+
+            whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
+        }
+
+        if(sorted.length > 0)
+        {
+
+            orderBy = " ORDER BY ";
+            for(let i = 0; i < sorted.length; i++)
+            {
+                let sort = sorted[i];
+                var column = sort.id;
+                var desc = sort.desc;
+                var ascDesc = "ASC";
+
+                if(desc)
+                {
+                    ascDesc = "DESC";
+                }
+
+                if(i > 0)
+                {
+                    orderBy = orderBy + ", ";
+                }
+
+                orderBy = orderBy + column + " " + ascDesc;
+                
+            }
+        }
+        
+
+        const sql = `
+                SELECT u.*, pc.name as country, ps.name as state FROM users u
+                LEFT JOIN clients c
+                ON u.client_id = c.id
+                LEFT JOIN param_countries pc
+                ON u.country_id = pc.id
+                LEFT JOIN param_states ps
+                ON u.state_id = ps.id
+                WHERE 1=1
+                ${whereClause}
+                ${orderBy}
+                LIMIT ${page * pageSize},${pageSize}
+            `;
+
+        
+       
+
+        return db.query(sql, callback);
+
+
+    },
 };
 module.exports = User;

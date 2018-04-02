@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Client = require('../models/Client');
 
+// MIDDLEWARE
 var ClientsMW = require('../middlewares/ClientsMW');
 
 const { getClientList, countClients } = ClientsMW;
