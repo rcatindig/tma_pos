@@ -7,6 +7,9 @@ import 'react-table/react-table.css';
 // moment
 import Moment from 'moment';
 
+
+import AuthService from '../../utils/AuthService';
+
 // custom components
 import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 
@@ -16,6 +19,7 @@ import { API } from '../../constants';
 const client_url = API.CLIENTS;
 const country_url = API.COUNTRIES;
 const states_url = API.STATES;
+
 
 
 class Clients extends Component {
@@ -45,6 +49,9 @@ class Clients extends Component {
             isChecked: true,
         }
 
+        
+        this.Auth = new AuthService();
+        this.Token = this.Auth.getToken;
         this.fetchData = this.fetchData.bind(this);
     }
 
@@ -77,6 +84,7 @@ class Clients extends Component {
                 headers: new Headers({
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token()
                 })
             }).then((response) => { 
                 return response.json();
@@ -138,6 +146,7 @@ class Clients extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token()
                 })
             }).then((response) => {
 
@@ -172,6 +181,7 @@ class Clients extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token()
                 })
             }).then((response) => {
 
@@ -201,7 +211,12 @@ class Clients extends Component {
 
         var self = this;
 
-        fetch(client_url + id)
+        fetch(client_url + id,{
+                method: 'GET',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + this.Token()
+                })
+            })
             .then(results => { 
                 return results.json();
             }).then(res => {
