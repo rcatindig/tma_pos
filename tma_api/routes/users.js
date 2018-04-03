@@ -117,24 +117,7 @@ router.post('/create', function (req, res, next){
 	})
 
 });
-router.post('/login', function(req, res, next){
-	User.getUserByUsername(req.body, function(user){
-		//console.log(rows);
-		//if (err) res.json(err);
-		//if (rows.length < 1) res.status(400).send("Username is invalid");
 
-		//var user = rows;
-		if(!user)
-			res.status(400).send("Username cannot be found.");
-		else {
-			res.status(201).send({
-				//user: user,
-				id_token: createToken(user)
-			})
-		}
-		
-	})
-})
 router.delete('/:id', function (req, res, next) {
 
 	User.deleteUser(req.params.id, function (err, count) {

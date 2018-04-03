@@ -40,7 +40,7 @@ var User = {
             User.username,
             User.password,
             User.email,
-            null,
+            User.client_id,
             User.address,
             User.country_id,
             User.state_id,
@@ -157,7 +157,7 @@ var User = {
 
 
         const sql = `
-                SELECT u.*, pc.name as country, ps.name as state FROM users u
+                SELECT u.*, pc.name as country, ps.name as state, c.name as company FROM users u
                 LEFT JOIN clients c
                 ON u.client_id = c.id
                 LEFT JOIN param_countries pc
