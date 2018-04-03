@@ -17,13 +17,7 @@ router.post('/', function(req, res, next){
 
     console.log("HELLO");
     User.getUserByUsername(req.body, function(user){
-        //console.log(rows);
-        //if (err) res.json(err);
-        //if (rows.length < 1) res.status(400).send("Username is invalid");
-
         
-
-        //var user = rows;
         if(!user)
             res.status(400).send("Username cannot be found.");
         else {
