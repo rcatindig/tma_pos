@@ -20,10 +20,22 @@ router.post('/', function(req, res, next){
         if(!user)
             res.status(400).send("Username cannot be found.");
         else {
-            res.status(201).send({
-                user: user,
-                id_token: createToken(user)
-            })
+
+            var hashPassword = user.password;
+
+            var compare = bcrypt.compareSync(req.body.password, hashPassword);
+
+            if(!compare) {
+                res.status(400);
+                res.send("Password is incorrect."); 
+                console.log("NOT COMPARE");
+            } else {
+                res.status(201).send({
+                    id_token: createToken(user)
+                })
+            }
+            
+            
         }
         
     })
