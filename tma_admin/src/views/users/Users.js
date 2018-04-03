@@ -62,6 +62,8 @@ class Users extends Component {
             showErrorMessage: false,
             errorMessage: "",
             client_id: "",
+            modalClientTitle: "Add",
+            modalClientSaveBtn: "Save",
             clientOptions: []
         }
 
@@ -299,7 +301,9 @@ class Users extends Component {
                         //confirmPassword: result.password,
                         statesOptions: [],
                         client_id: result.client_id,
+                        modalClientTitle: "Edit",
                         changePassword: false,
+                        modalClientSaveBtn: "Save Changes",
                     });
 
                     this.getStateOptions(result.country_id);
@@ -330,7 +334,9 @@ class Users extends Component {
             confirmPassword: "",
             statesOptions: [],
             client_id: "",
-            changePassword: false
+            changePassword: false,
+            modalClientTitle: "Add",
+            modalClientSaveBtn: "Save",
         });
 
         this.renderOptions();
@@ -492,7 +498,9 @@ class Users extends Component {
                 showErrorMessage,
                 errorMessage,
                 client_id,
-                clientOptions
+                clientOptions,
+                modalClientTitle,
+                modalClientSaveBtn,
              } = this.state;
 
         const columns = [{
@@ -580,7 +588,7 @@ class Users extends Component {
 
                 <Modal
                     className="modal-component"
-                    title="Edit Client"
+                    title={`${modalClientTitle} Client`}
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
@@ -727,11 +735,6 @@ class Users extends Component {
                                         </label>
                                         
                                     </div>
-                                    {/* <Switch
-                                        ref="ref_cp"
-                                        checked={changePassword}
-                                        onChange={() => this.setState({ changePassword: !changePassword , showPasswordField: changePassword  ? "hide" : "" })}
-                                    /> */}
                                 </div>
                                 
                                 <div className={`form-row ${showPasswordField}`}>
@@ -776,7 +779,7 @@ class Users extends Component {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>Save changes</button>
+                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalClientSaveBtn}</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>
