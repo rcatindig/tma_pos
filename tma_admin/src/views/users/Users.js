@@ -13,10 +13,11 @@ import Moment from 'moment';
 import AuthService from '../../utils/AuthService';
 
 // custom components
-import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
+import { Card, PageHeader, PageWrapper, Modal, Select, Switch } from '../../components';
 
 // constants 
 import { API, SALT_ROUNDS } from '../../constants';
+
 
 // bcryptjs
 import bcrypt from 'bcryptjs';
@@ -56,10 +57,12 @@ class Users extends Component {
             countryOptions: [],
             statesOptions: [],
             isChecked: true,
-            changePassword: "",
+            changePassword: false,
             showPasswordField: "hide",
             showErrorMessage: false,
             errorMessage: "",
+            client_id: "",
+            clientOptions: []
         }
 
         
@@ -134,6 +137,7 @@ class Users extends Component {
             email,
             country_id,
             state_id,
+            client_id,
             username,
             password,                
             status,
@@ -151,12 +155,13 @@ class Users extends Component {
             country_id: country_id,
             state_id: state_id,
             username: username,
+            client_id: client_id,
             //password: passwordHash,                
             status: status,
             id: userId
          }
 
-         if(changePassword === "checked")
+         if(changePassword)
          {
              if(password !== confirmPassword)
              {
@@ -258,8 +263,12 @@ class Users extends Component {
 
         var self = this;
 
+
+
         
-        const countryOptions = [];
+        //const countryOptions = [];
+
+        this.renderOptions();
 
         fetch(users_url + id, {
                 method: 'GET',
@@ -288,8 +297,9 @@ class Users extends Component {
                         //password: result.password,                
                         status: result.status,
                         //confirmPassword: result.password,
-                        changePassword: "",
-                        statesOptions: []
+                        statesOptions: [],
+                        client_id: result.client_id,
+                        changePassword: false,
                     });
 
                     this.getStateOptions(result.country_id);
@@ -300,36 +310,6 @@ class Users extends Component {
         });
 
 
-         fetch(country_url)
-            .then(results => { 
-                return results.json();
-            }).then(res => {
-                if(res.length > 0)
-                {
-                    for(var i = 0; i < res.length; i++)
-                    {
-                        var country = res[i];
-                        var optionData = {
-                            value: country.id,
-                            label: country.name
-                        }
-
-                        countryOptions.push(optionData);
-                    }
-
-                    this.setState({countryOptions: countryOptions})
-                    
-                }
-            })
-        .catch(function(err){
-            console.log(err);
-        })
-
-
-
-        
-
-        
     }
 
     openModal = () => {
@@ -349,8 +329,16 @@ class Users extends Component {
             status: "",
             confirmPassword: "",
             statesOptions: [],
+            client_id: "",
+            changePassword: false
         });
 
+        this.renderOptions();
+        this.setState({openModal: true})
+
+    }
+
+    renderOptions = () => {
         const countryOptions = [];
 
         fetch(country_url)
@@ -376,31 +364,62 @@ class Users extends Component {
             })
         .catch(function(err){
             console.log(err);
+        });
+
+        var clientOptions = [];
+        fetch(client_url, {
+                    method: 'GET',
+                    headers: new Headers({
+                        'Authorization': 'Bearer ' + this.Token
+                    })
+                })
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    for(var i = 0; i < res.length; i++)
+                    {
+                        var client = res[i];
+                        var optionData = {
+                            value: client.id,
+                            label: client.name
+                        }
+
+                        clientOptions.push(optionData);
+                    }
+
+                    this.setState({clientOptions: clientOptions});
+                }
+            })
+        .catch(function(err){
+            console.log(err);
         })
-
-
-        this.setState({openModal: true})
-
     }
 
-    closeModal = () => this.setState({openModal: false, 
-                                        userId: "",
-                                        first_name: "",
-                                        middle_name: "",
-                                        surname: "",
-                                        extension: "",
-                                        address: "",
-                                        email: "",
-                                        country_id: "",
-                                        state_id: "",
-                                        username: "",
-                                        password: "",                
-                                        status: "",
-                                        confirmPassword: "",
-                                        changePassword: "",
-                                        showPasswordField: "hide",
-                                        statesOptions: [],
-                                    });
+    closeModal = () => {
+        //let ref = 'ref_' + i;
+        this.refs["ref_cp"].checked = false;
+        this.setState({openModal: false, 
+            userId: "",
+            first_name: "",
+            middle_name: "",
+            surname: "",
+            extension: "",
+            address: "",
+            email: "",
+            country_id: "",
+            state_id: "",
+            username: "",
+            password: "",                
+            status: "",
+            confirmPassword: "",
+            changePassword: true,
+            showPasswordField: "hide",
+            statesOptions: [],
+        });
+    }
+        
 
     onChangeCountry = (event) => {
         const countryId = event.target.value;
@@ -446,6 +465,9 @@ class Users extends Component {
     _handleCheckboxChange = () => this.setState( { isChecked: !this.state.isChecked } );
 
 
+    
+
+
     render () {
 
         const { data,
@@ -468,7 +490,9 @@ class Users extends Component {
                 changePassword,
                 showPasswordField,
                 showErrorMessage,
-                errorMessage
+                errorMessage,
+                client_id,
+                clientOptions
              } = this.state;
 
         const columns = [{
@@ -488,7 +512,7 @@ class Users extends Component {
                 Header: 'Extension',
                 accessor: 'extension'
             },  {
-                id: 'pc.name',
+                id: 'c.name',
                 Header: 'Company',
                 accessor: 'company'
             }, {
@@ -605,6 +629,7 @@ class Users extends Component {
                                         onChange={(event) => this.setState({extension: event.target.value })}/>
                                 </div> 
                             </div>
+                            
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="address">Address</label>
@@ -645,6 +670,21 @@ class Users extends Component {
                                 </div>
                                 
                             </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <label htmlFor="first_name">Company</label>
+                                    <Select
+                                        id="company"
+                                        className="form-control"
+                                        name="company"
+                                        options={clientOptions}
+                                        value={client_id}
+                                        placeholder="Select Company..."
+                                        onChange={(event) => this.setState({client_id: event.target.value })}
+                                    />
+                                </div>                           
+                            </div>
                             
                             <fieldset>
                                 <legend>User Credentials</legend>
@@ -672,18 +712,28 @@ class Users extends Component {
                                     </div>
                                 </div>
 
-                                <div className="form-row change-password">
-                                    <label class="switch">
-                                        <input type="checkbox" 
-                                            defaultChecked={changePassword} 
-                                            onChange={() => this.setState({ changePassword: changePassword == "checked" ? "" : "checked", showPasswordField: changePassword == "checked" ? "hide" : "" })} />
-                                        <span class="slider round"></span>
-                                    </label>
-                                    <label className="switch-label-right">
-                                        Edit Password
-                                    </label>
-                                    
+                                <div className="form-row">
+
+                                    <div className="switch-container">                                    
+                                        <label className="switch">
+                                            <input type="checkbox" 
+                                                defaultChecked={changePassword} 
+                                                ref="ref_cp"
+                                                onChange={() => this.setState({ changePassword: !changePassword , showPasswordField: changePassword  ? "hide" : "" })} />
+                                            <span className="slider round"></span>
+                                        </label>
+                                        <label className="switch-label-right">
+                                            Edit Password
+                                        </label>
+                                        
+                                    </div>
+                                    {/* <Switch
+                                        ref="ref_cp"
+                                        checked={changePassword}
+                                        onChange={() => this.setState({ changePassword: !changePassword , showPasswordField: changePassword  ? "hide" : "" })}
+                                    /> */}
                                 </div>
+                                
                                 <div className={`form-row ${showPasswordField}`}>
                                     <div className="form-group col-md-6">
                                         <label htmlFor="password">Password</label>

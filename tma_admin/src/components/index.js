@@ -5,3 +5,4 @@ export * from './PageHeader';
 export * from './PageWrapper';
 export * from './Modal';
 export * from './Select';
+export * from './Switch';
