@@ -15,14 +15,13 @@ function createToken(user) {
 
 router.post('/', function(req, res, next){
 
-    console.log("HELLO");
     User.getUserByUsername(req.body, function(user){
         
         if(!user)
             res.status(400).send("Username cannot be found.");
         else {
             res.status(201).send({
-                //user: user,
+                user: user,
                 id_token: createToken(user)
             })
         }

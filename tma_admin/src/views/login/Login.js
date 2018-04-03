@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AuthService from '../../utils/AuthService';
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 
 class Login extends Component {
@@ -11,6 +12,8 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
+            showAlert: false,
+            alertMessage: "Your username or password is invalid."
         }
 
         this.Auth = new AuthService();
@@ -27,14 +30,31 @@ class Login extends Component {
         event.preventDefault();
 
         const { username, password } = this.state;
+        //alert(password);
 
-        this.Auth.login(username, password)
+        if(username == "" && password == "") {
+            this.setState({showAlert: true, alertMessage: "Username and Password cannot be empty."});
+            return;
+        }
+        else if(username == "" && password != "") {
+            this.setState({showAlert: true, alertMessage: "Username cannot be empty."});
+            return;
+        } else if (username != "" && password == "") {
+            this.setState({showAlert: true, alertMessage: "Password cannot be empty."});
+            return;
+        } else {
+            this.Auth.login(username, password)
             .then(res => {
+                
                 this.props.history.replace('/');
             })
             .catch(err => {
-                alert(err);
+                this.setState({showAlert: true, alertMessage: "Your username or password is invalid."});
+                console.log(err);
             })
+        }
+            
+        
     }
     render() {
 
@@ -83,6 +103,21 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
+
+                <SweetAlert 
+                    error
+                    //showCancel
+                    confirmBtnText="Close"
+                    confirmBtnBsStyle="danger"
+                    cancelBtnBsStyle="default"
+                    title="Login Failed!"
+                    onConfirm={() => this.setState({showAlert: false})}
+                    // onCancel={this.cancelDelete}
+                    show={this.state.showAlert}
+                >
+                    {this.state.alertMessage}
+                </SweetAlert>
+
             </div>  
             
         );
