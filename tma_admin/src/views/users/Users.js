@@ -4,6 +4,9 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 
+// SweetAlert
+import SweetAlert from 'react-bootstrap-sweetalert';
+
 // moment
 import Moment from 'moment';
 
@@ -53,6 +56,10 @@ class Users extends Component {
             countryOptions: [],
             statesOptions: [],
             isChecked: true,
+            changePassword: "",
+            showPasswordField: "hide",
+            showErrorMessage: false,
+            errorMessage: "",
         }
 
         
@@ -131,9 +138,8 @@ class Users extends Component {
             password,                
             status,
             confirmPassword,
+            changePassword,
          } = this.state;
-         
-         var passwordHash = bcrypt.hashSync(password, salt);
 
          var data = {
             first_name: first_name,
@@ -145,10 +151,27 @@ class Users extends Component {
             country_id: country_id,
             state_id: state_id,
             username: username,
-            password: passwordHash,                
+            //password: passwordHash,                
             status: status,
             id: userId
          }
+
+         if(changePassword === "checked")
+         {
+             if(password !== confirmPassword)
+             {
+                this.setState({showErrorMessage: true, errorMessage: "Password must be confirmed!"})
+
+                return;
+             }
+
+             var passwordHash = bcrypt.hashSync(password, salt);
+             data.password = passwordHash;
+         }
+         
+         
+
+         
 
 
         if(userId !== "")
@@ -216,7 +239,8 @@ class Users extends Component {
                 };
                 self.fetchData(dataState, []);
 
-                this.setState({openModal: false});
+                this.closeModal();
+                //this.setState({openModal: false});
                 return response.json();
                 
             }).then((res) => {
@@ -261,9 +285,10 @@ class Users extends Component {
                         country_id: result.country_id,
                         state_id: result.state_id,
                         username: result.username,
-                        password: result.password,                
+                        //password: result.password,                
                         status: result.status,
-                        confirmPassword: result.password,
+                        //confirmPassword: result.password,
+                        changePassword: "",
                         statesOptions: []
                     });
 
@@ -372,6 +397,8 @@ class Users extends Component {
                                         password: "",                
                                         status: "",
                                         confirmPassword: "",
+                                        changePassword: "",
+                                        showPasswordField: "hide",
                                         statesOptions: [],
                                     });
 
@@ -438,6 +465,10 @@ class Users extends Component {
                 password,                
                 status,
                 confirmPassword,
+                changePassword,
+                showPasswordField,
+                showErrorMessage,
+                errorMessage
              } = this.state;
 
         const columns = [{
@@ -614,17 +645,7 @@ class Users extends Component {
                                 </div>
                                 
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="email">Email</label>
-                                    <input type="text" 
-                                        className="form-control"
-                                        id="email"
-                                        placeholder="Email"
-                                        value={email} 
-                                        onChange={(event) => this.setState({email: event.target.value })}/>
-                                </div>
-                            </div>
+                            
                             <fieldset>
                                 <legend>User Credentials</legend>
                                 <div className="form-row">
@@ -640,6 +661,30 @@ class Users extends Component {
                                     
                                 </div>
                                 <div className="form-row">
+                                    <div className="form-group col-md-12">
+                                        <label htmlFor="email">Email</label>
+                                        <input type="text" 
+                                            className="form-control"
+                                            id="email"
+                                            placeholder="Email"
+                                            value={email} 
+                                            onChange={(event) => this.setState({email: event.target.value })}/>
+                                    </div>
+                                </div>
+
+                                <div className="form-row change-password">
+                                    <label class="switch">
+                                        <input type="checkbox" 
+                                            defaultChecked={changePassword} 
+                                            onChange={() => this.setState({ changePassword: changePassword == "checked" ? "" : "checked", showPasswordField: changePassword == "checked" ? "hide" : "" })} />
+                                        <span class="slider round"></span>
+                                    </label>
+                                    <label className="switch-label-right">
+                                        Edit Password
+                                    </label>
+                                    
+                                </div>
+                                <div className={`form-row ${showPasswordField}`}>
                                     <div className="form-group col-md-6">
                                         <label htmlFor="password">Password</label>
                                         <input type="password" 
@@ -649,7 +694,7 @@ class Users extends Component {
                                             value={password} 
                                             onChange={(event) => this.setState({password: event.target.value })}/>
                                     </div>
-                                    <div className="form-group col-md-6">
+                                    <div className="form-group col-md-6 ">
                                         <label htmlFor="confirmpassword">Confirm Password</label>
                                         <input type="password" 
                                             className="form-control"
@@ -685,6 +730,20 @@ class Users extends Component {
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>
+
+                <SweetAlert 
+                    error
+                    //showCancel
+                    confirmBtnText="Close"
+                    confirmBtnBsStyle="danger"
+                    cancelBtnBsStyle="default"
+                    title="Failed!"
+                    onConfirm={() => this.setState({showErrorMessage: false})}
+                    // onCancel={this.cancelDelete}
+                    show={showErrorMessage}
+                >
+                    {errorMessage}
+                </SweetAlert>
                 
             </PageWrapper>
         );
