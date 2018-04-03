@@ -544,6 +544,8 @@ class Users extends Component {
             }, {
                 Header: 'Action',
                 id: 'edit-button',
+                filterable: false,
+                sortable: false,
                 Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
             }
         ];
