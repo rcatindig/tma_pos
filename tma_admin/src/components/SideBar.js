@@ -17,6 +17,7 @@ class SideBar extends Component {
                             {/* <li><Link to="/redirect/machines"><i className="fa fa-server"></i>Machines</Link></li> */}
                             <li> <a className="has-arrow  " onClick={() => console.log('collapse') } aria-expanded="false"><i className="fa fa-wpforms"></i><span className="hide-menu">Reports</span></a>
                                 <ul aria-expanded="false" className="collapse">
+                                    <li><Link to="/redirect/backendreport">Backend Report</Link></li>
                                     <li><a href="uc-calender.html">Transaction Report</a></li>
                                     <li><a href="uc-datamap.html">Entry Report</a></li>
                                     <li><a href="uc-nestedable.html">Exit Report</a></li>

@@ -3,3 +3,6 @@ export * from './transactions/Transactions';
 export * from './clients/Clients';
 export * from './users/Users';
 export * from './login/Login';
+
+// report
+export * from './reports/BackendReport';

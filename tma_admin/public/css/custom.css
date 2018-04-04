@@ -91,3 +91,19 @@ input:checked+.slider:before {
     flex-wrap: wrap;
     padding-left: 9px;
 }
+
+.date-container {
+    width: 100%;
+}
+
+.date-container > div {
+    width: 100%;
+}
+
+.date-container > div > .react-datepicker-wrapper {
+    width: 100%;
+}
+
+.date-container > div > .react-datepicker-wrapper > .react-datepicker__input-container {
+    width: 100%;
+}
