@@ -14,7 +14,7 @@ var Client = {
     addClient: function (Client, callback) {
         let sql = `
             INSERT INTO clients 
-                (code, name, address, country_id, state_id, email, tel_no, status, date_created, date_modified)
+                (code, name, address, country_id, state_id, email, tel_no, tin, permit_no, status, date_created, date_modified)
             VALUES (?,?,?,?,?,?,?,?,?,?)
         `;
 
@@ -26,6 +26,8 @@ var Client = {
             Client.state_id,
             Client.email,
             Client.tel_no,
+            Client.status,
+            Client.permit_no,
             Client.status,
             Client.date_created,
             Client.date_modified
@@ -40,7 +42,7 @@ var Client = {
 
         let sql = `
             UPDATE clients SET
-                code = ?, name = ?, address = ?, country_id = ?, state_id = ?, email = ?, tel_no = ?, status = ?, date_modified = ?
+                code = ?, name = ?, address = ?, country_id = ?, state_id = ?, email = ?, tel_no = ?, status = ?, tin = ?, permit_no = ?, date_modified = ?
             WHERE id = ?
         `;
 
@@ -53,6 +55,8 @@ var Client = {
             Client.email,
             Client.tel_no,
             Client.status,
+            Client.tin,
+            Client.permit_no,
             Client.date_modified,
             Client.id
         ];

@@ -43,6 +43,8 @@ class Clients extends Component {
             email: "",
             tel_no: "",
             status: "",
+            permit_no: "",
+            tin: "",
             date_created: "",
             date_modified: "",
             countryOptions: [],
@@ -116,6 +118,8 @@ class Clients extends Component {
             status,
             clientId,
             code,
+            tin,
+            permit_no,
          } = this.state;
 
          var data = {
@@ -127,7 +131,9 @@ class Clients extends Component {
              tel_no: tel_no,
              status: status,
              id: clientId,
-             code: code
+             code: code,
+             tin: tin,
+             permit_no: permit_no
          }
 
 
@@ -239,6 +245,8 @@ class Clients extends Component {
                         tel_no: result.tel_no,
                         status: result.status,
                         code: result.code,
+                        permit_no: result.permit_no === null ? "": result.permit_no,
+                        tin: result.tin === null ? "" : result.tin,
                         date_created: result.date_created,
                         date_modified: result.date_modified,
                         statesOptions: []
@@ -343,6 +351,8 @@ class Clients extends Component {
                                         status: "",
                                         date_created: "",
                                         date_modified: "",
+                                        permit_no: "",
+                                        tin: "",
                                         statesOptions: [],
                                     });
 
@@ -406,6 +416,8 @@ class Clients extends Component {
                 email,
                 tel_no,
                 status,
+                permit_no,
+                tin,
              } = this.state;
 
         const columns = [{
@@ -483,8 +495,8 @@ class Clients extends Component {
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
-                    <div className="modal-body">
-                        <form className="form-control">
+                    <div className="modal-body transaction-modal">
+                        <form className="form-control transaction-form">
                             <input type="hidden" value={clientId}/>
                             <div className="form-row">
                                 <div className="form-group col-md-12">
@@ -570,6 +582,29 @@ class Clients extends Component {
                                 </div>
                                 
                             </div>
+
+                            <div className="form-row">
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="tin">TIN</label>
+                                    <input type="text" 
+                                        className="form-control"
+                                        id="tin"
+                                        placeholder="TIN"
+                                        value={tin} 
+                                        onChange={(event) => this.setState({tin: event.target.value })}/>
+                                </div>
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="permit_no">Permit No.</label>
+                                    <input type="text" 
+                                        className="form-control" 
+                                        id="permit_no" 
+                                        placeholder="Permit No." 
+                                        value={permit_no} 
+                                        onChange={(event) => this.setState({permit_no: event.target.value })} />
+                                </div>
+                                
+                            </div>
+
                             <div className="form-row">
 
                                 <div className="form-group col-md-6">
