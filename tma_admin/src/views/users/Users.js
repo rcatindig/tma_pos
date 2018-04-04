@@ -62,8 +62,8 @@ class Users extends Component {
             showErrorMessage: false,
             errorMessage: "",
             client_id: "",
-            modalClientTitle: "Add",
-            modalClientSaveBtn: "Save",
+            modalUserTitle: "Add",
+            modalUserSaveBtn: "Save",
             clientOptions: []
         }
 
@@ -301,9 +301,9 @@ class Users extends Component {
                         //confirmPassword: result.password,
                         statesOptions: [],
                         client_id: result.client_id,
-                        modalClientTitle: "Edit",
+                        modalUserTitle: "Edit",
                         changePassword: false,
-                        modalClientSaveBtn: "Save Changes",
+                        modalUserSaveBtn: "Save Changes",
                     });
 
                     this.getStateOptions(result.country_id);
@@ -335,8 +335,8 @@ class Users extends Component {
             statesOptions: [],
             client_id: "",
             changePassword: false,
-            modalClientTitle: "Add",
-            modalClientSaveBtn: "Save",
+            modalUserTitle: "Add",
+            modalUserSaveBtn: "Save",
         });
 
         this.renderOptions();
@@ -499,8 +499,8 @@ class Users extends Component {
                 errorMessage,
                 client_id,
                 clientOptions,
-                modalClientTitle,
-                modalClientSaveBtn,
+                modalUserTitle,
+                modalUserSaveBtn,
              } = this.state;
 
         const columns = [{
@@ -590,7 +590,7 @@ class Users extends Component {
 
                 <Modal
                     className="modal-component"
-                    title={`${modalClientTitle} Client`}
+                    title={`${modalUserTitle} User`}
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
@@ -781,7 +781,7 @@ class Users extends Component {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalClientSaveBtn}</button>
+                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalUserSaveBtn}</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>

@@ -35,6 +35,7 @@ class Clients extends Component {
             loading: true,
             showModal: false,
             clientId: "",
+            code: "",
             name: "",
             address: "",
             country_id: "",
@@ -113,7 +114,8 @@ class Clients extends Component {
             email,
             tel_no,
             status,
-            clientId
+            clientId,
+            code,
          } = this.state;
 
          var data = {
@@ -124,7 +126,8 @@ class Clients extends Component {
              email: email,
              tel_no: tel_no,
              status: status,
-             id: clientId
+             id: clientId,
+             code: code
          }
 
 
@@ -158,7 +161,8 @@ class Clients extends Component {
                 };
                 self.fetchData(dataState, []);
 
-                this.setState({openModal: false});
+                this.closeModal();
+                //this.setState({openModal: false});
                 return response.json();
                 
             }).then((res) => {
@@ -193,7 +197,8 @@ class Clients extends Component {
                 };
                 self.fetchData(dataState, []);
 
-                this.setState({openModal: false});
+                this.closeModal();
+                //this.setState({openModal: false});
                 return response.json();
                 
             }).then((res) => {
@@ -233,6 +238,7 @@ class Clients extends Component {
                         email: result.email,
                         tel_no: result.tel_no,
                         status: result.status,
+                        code: result.code,
                         date_created: result.date_created,
                         date_modified: result.date_modified,
                         statesOptions: []
@@ -244,32 +250,6 @@ class Clients extends Component {
         .catch(function(err){
             console.log(err);
         });
-
-
-         fetch(country_url)
-            .then(results => { 
-                return results.json();
-            }).then(res => {
-                if(res.length > 0)
-                {
-                    for(var i = 0; i < res.length; i++)
-                    {
-                        var country = res[i];
-                        var optionData = {
-                            value: country.id,
-                            label: country.name
-                        }
-
-                        countryOptions.push(optionData);
-                    }
-
-                    this.setState({countryOptions: countryOptions})
-                    
-                }
-            })
-        .catch(function(err){
-            console.log(err);
-        })
 
 
         const countryOptions = [];
@@ -306,6 +286,7 @@ class Clients extends Component {
 
         this.setState({openModal: true, 
             clientId: "",
+            code: "",
             name: "",
             address: "",
             country_id: "",
@@ -352,6 +333,7 @@ class Clients extends Component {
 
     closeModal = () => this.setState({openModal: false, 
                                         clientId: "",
+                                        code: "",
                                         name: "",
                                         address: "",
                                         country_id: "",
@@ -416,6 +398,7 @@ class Clients extends Component {
                 loading,
                 openModal,
                 clientId,
+                code,
                 name,
                 address,
                 country_id,
@@ -503,6 +486,17 @@ class Clients extends Component {
                     <div className="modal-body">
                         <form className="form-control">
                             <input type="hidden" value={clientId}/>
+                            <div className="form-row">
+                                <div className="form-group col-md-12">
+                                    <label htmlFor="name">Code</label>
+                                    <input type="code"
+                                        className="form-control" 
+                                        id="code" 
+                                        placeholder="CODE" 
+                                        value={code} 
+                                        onChange={(event) => this.setState({code: event.target.value })}/>
+                                </div>                            
+                            </div>
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="name">Name</label>

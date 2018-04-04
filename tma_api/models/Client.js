@@ -14,11 +14,12 @@ var Client = {
     addClient: function (Client, callback) {
         let sql = `
             INSERT INTO clients 
-                (name, address, country_id, state_id, email, tel_no, status, date_created, date_modified)
-            VALUES (?,?,?,?,?,?,?,?,?)
+                (code, name, address, country_id, state_id, email, tel_no, status, date_created, date_modified)
+            VALUES (?,?,?,?,?,?,?,?,?,?)
         `;
 
         let parameters = [
+            Client.code,
             Client.name,
             Client.address,
             Client.country_id,
@@ -39,11 +40,12 @@ var Client = {
 
         let sql = `
             UPDATE clients SET
-                name = ?, address = ?, country_id = ?, state_id = ?, email = ?, tel_no = ?, status = ?, date_modified = ?
+                code = ?, name = ?, address = ?, country_id = ?, state_id = ?, email = ?, tel_no = ?, status = ?, date_modified = ?
             WHERE id = ?
         `;
 
         let parameters = [
+            Client.code,
             Client.name,
             Client.address,
             Client.country_id,
