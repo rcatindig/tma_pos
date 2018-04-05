@@ -12,10 +12,12 @@
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "express-jwt": "^5.3.1",
+    "html-pdf": "^2.2.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
     "jsonwebtoken": "^8.2.0",
     "lodash": "^4.17.5",
+    "moment": "^2.22.0",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "mysql-migrations": "^1.0.4"
