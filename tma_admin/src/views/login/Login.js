@@ -32,14 +32,14 @@ class Login extends Component {
         const { username, password } = this.state;
         //alert(password);
 
-        if(username == "" && password == "") {
+        if(username === "" && password === "") {
             this.setState({showAlert: true, alertMessage: "Username and Password cannot be empty."});
             return;
         }
-        else if(username == "" && password != "") {
+        else if(username === "" && password !== "") {
             this.setState({showAlert: true, alertMessage: "Username cannot be empty."});
             return;
-        } else if (username != "" && password == "") {
+        } else if (username !== "" && password === "") {
             this.setState({showAlert: true, alertMessage: "Password cannot be empty."});
             return;
         } else {
