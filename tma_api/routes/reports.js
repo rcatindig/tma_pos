@@ -9,7 +9,7 @@ router.post('/generateBackendReport/', getClientDetails,
                                         getMachineDetails, 
                                         getBackendReport, 
                                         generateBackendReport, function(req, res, next){
-                                            res.status(201).send(req.fileName);
+                                            res.status(201).send({"fileName": req.fileName});
                                         });
 
 module.exports = router;

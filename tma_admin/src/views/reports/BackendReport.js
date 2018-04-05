@@ -17,6 +17,7 @@ import { API } from '../../constants';
 
 const client_url = API.CLIENTS;
 const machine_url = API.MACHINES;
+const reports_url = API.REPORTS;
 
 class BackendReport extends Component {
 
@@ -28,7 +29,8 @@ class BackendReport extends Component {
             clientOptions: [],
             fromDate: Moment(),
             toDate: Moment(),
-            machineOptions: []
+            machineOptions: [],
+            fileName: "",
         }
 
         
@@ -79,7 +81,6 @@ class BackendReport extends Component {
 
     getMachineOptions = (id) => {
 
-        console.log(id);
         var machineOptions = [];
         fetch(machine_url + "getMachinesByClientId/" + id, {
                 method: 'GET',
@@ -109,6 +110,35 @@ class BackendReport extends Component {
         .catch(function(err){
             console.log(err);
         });
+    }
+
+    generateReport = () => {
+        const { client_id, machine_id, fromDate, toDate } = this.state;
+
+        var data = {
+            client_id: client_id,
+            machine_id: machine_id,
+            fromDate: fromDate,
+            toDate: toDate,
+        }
+
+        fetch(reports_url + "generateBackendReport/", {
+                    method: 'POST',
+                    body: JSON.stringify(data),
+                    headers: new Headers({
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + this.Token
+                    })
+                })
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                this.setState({fileName: res.fileName});
+            })
+        .catch(function(err){
+            console.log(err);
+        })
     }
 
     render () {
@@ -168,6 +198,7 @@ class BackendReport extends Component {
                                         
                                     </div>
                                 </div>
+
                                 
 
                                 <div className="form-group row">
@@ -183,8 +214,28 @@ class BackendReport extends Component {
                                     </div>
                                 </div>
 
+                                
                                 <div className="row justify-content-center">
-                                    <button type="submit" className="btn btn-success"> <i className="fa fa-cogs"></i> Generate Report</button>
+                                    <button type="submit" className="btn btn-success" onClick={this.generateReport}> <i className="fa fa-cogs"></i> Generate Report</button>
+                                </div>
+
+                                <div className="row justify-content-center">
+                                    <div className="loading">
+                                        <div className="loading-spinner">
+                                            <div className="wrap">
+                                                <i className="fa fa-cog"></i>
+                                                <i className="fa fa-cog"></i>
+                                            </div>
+                                        </div>
+
+                                        <div className="loading-spinner">
+                                            <div className="wrap">
+                                                <span className="glyphicon glyphicon-cog"></span>
+                                                <span className="glyphicon glyphicon-cog"></span>
+                                            </div>
+                                        </div>
+                                        <div className="loading-text">Preparing...</div>
+                                    </div>
                                 </div>
                                 
                                 

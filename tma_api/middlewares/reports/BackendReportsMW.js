@@ -11,6 +11,7 @@ var BackendReportsMW = {
     getClientDetails: function(req, res, next)
     {
         var param = req.body;
+        console.log(param);
         var clientId = param.client_id;
         Client.getClientById(clientId, function (err, rows){
             if(err) res.json(err);
@@ -259,20 +260,22 @@ var BackendReportsMW = {
                                 "bottom": "0.5in",
                                 "left": "0.5in"},     
                         };
-            //var html  = "<div>Hello</div>";
-            var date = new Date();
-            var day = date.getDate();
-            var month = date.getMonth();
-            var year = date.getFullYear();
-            var hour = date.getHours();
-            var seconds = date.getSeconds();
-
-            var fileName = "BackendReport" + year + "" + month + "" + day + "" + hour + "" + seconds + ".pdf";
+            
             
             
         } else {
             html += `<div style="text-align: center;">NO DATA AVAILABLE</div>`;
         }
+
+        //var html  = "<div>Hello</div>";
+        var date = new Date();
+        var day = date.getDate();
+        var month = date.getMonth();
+        var year = date.getFullYear();
+        var hour = date.getHours();
+        var seconds = date.getSeconds();
+
+        var fileName = "BackendReport" + year + "" + month + "" + day + "" + hour + "" + seconds + ".pdf";
 
         pdf.create(html, options).toFile('./uploads/reports/backendreport/'+  year + '/' + month + '/' + fileName, function(err, res) {
             if (err) res.json(err);

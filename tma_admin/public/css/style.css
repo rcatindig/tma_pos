@@ -5253,7 +5253,7 @@ label {
   background-color: #e6a1f2;
 }
 .progress {
-  height: 6px;
+  height: 18px;
 }
 .progress-bar.active,
 .progress.active .progress-bar {
