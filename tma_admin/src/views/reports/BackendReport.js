@@ -16,6 +16,7 @@ import { Card, PageHeader, PageWrapper, Select, DateSelect } from '../../compone
 import { API } from '../../constants';
 
 const client_url = API.CLIENTS;
+const machine_url = API.MACHINES;
 
 class BackendReport extends Component {
 
@@ -23,9 +24,11 @@ class BackendReport extends Component {
         super(props);
         this.state = {
             client_id: "",
+            machine_id: "",
             clientOptions: [],
             fromDate: Moment(),
             toDate: Moment(),
+            machineOptions: []
         }
 
         
@@ -65,9 +68,52 @@ class BackendReport extends Component {
         })
     }
 
+    onChangeClient = (event) => {
+        let clientId = event.target.value;
+        this.setState({client_id: clientId});
+
+        this.getMachineOptions(clientId);
+
+        
+    }
+
+    getMachineOptions = (id) => {
+
+        console.log(id);
+        var machineOptions = [];
+        fetch(machine_url + "getMachinesByClientId/" + id, {
+                method: 'GET',
+                headers: new Headers({
+                    'Authorization': 'Bearer ' + this.Token
+                })
+            })
+            .then(results => { 
+                return results.json();
+            }).then(res => {
+                if(res.length > 0)
+                {
+                    for(var i = 0; i < res.length; i++)
+                    {
+                        var machine = res[i];
+                        var optionData = {
+                            value: machine.machine_id,
+                            label: machine.machine_id
+                        }
+
+                        machineOptions.push(optionData);
+                    }
+
+                    this.setState({machineOptions: machineOptions});
+                }
+            })
+        .catch(function(err){
+            console.log(err);
+        });
+    }
+
     render () {
         
-        const { client_id, clientOptions, fromDate, toDate } = this.state;
+        const { client_id, machine_id, clientOptions, fromDate, toDate, machineOptions } = this.state;
 
         return (
             <PageWrapper>
@@ -90,7 +136,22 @@ class BackendReport extends Component {
                                                 options={clientOptions}
                                                 value={client_id}
                                                 placeholder="Select Client..."
-                                                onChange={(event) => this.setState({client_id: event.target.value})}
+                                                onChange={this.onChangeClient}
+                                            />
+                                    </div>
+                                </div>
+
+                                <div className="form-group row">
+                                    <label htmlFor="machine" className="offset-1 col-2 col-form-label">Machine</label>
+                                    <div className="col-8">
+                                        <Select
+                                                id="machine"
+                                                className="form-control"
+                                                name="machine"
+                                                options={machineOptions}
+                                                value={machine_id}
+                                                placeholder="Select Machine..."
+                                                onChange={(event) => this.setState({machine_id: event.target.value})}
                                             />
                                     </div>
                                 </div>
@@ -123,7 +184,7 @@ class BackendReport extends Component {
                                 </div>
 
                                 <div className="row justify-content-center">
-                                    <button type="submit" class="btn btn-success"> <i class="fa fa-cogs"></i> Generate Report</button>
+                                    <button type="submit" className="btn btn-success"> <i className="fa fa-cogs"></i> Generate Report</button>
                                 </div>
                                 
                                 
@@ -133,8 +194,6 @@ class BackendReport extends Component {
                     </div>
                 </div>
 
-                
-                
             </PageWrapper>
         );
         

@@ -7,6 +7,7 @@ export const API = {
     CLIENTS: API_SERVER + 'clients/',
     COUNTRIES: API_SERVER + 'countries/',
     STATES: API_SERVER + 'states/',
+    MACHINES: API_SERVER + 'machines/',
 
 }
 

@@ -15,6 +15,7 @@ var countriesRouter = require('./routes/countries');
 var statesRouter = require('./routes/states');
 var loginRouter = require('./routes/login');
 var reportsRouter = require('./routes/reports');
+var machinesRouter = require('./routes/machines');
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use('/countries', countriesRouter);
 app.use('/states', statesRouter);
 app.use('/login', loginRouter);
 app.use('/reports', reportsRouter);
+app.use('/machines', machinesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
