@@ -60,7 +60,7 @@ class Login extends Component {
 
         const { username, password } = this.state;
         return (
-            <div id="main-wrapper">
+            <div id="login-wrapper">
                 <div className="unix-login">
                     <div className="container-fluid">
                         <div className="row justify-content-center">

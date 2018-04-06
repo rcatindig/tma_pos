@@ -8,11 +8,18 @@ import withAuth from '../utils/withAuth';
 const Auth = new AuthService();
 
 class Main extends Component {
+
+    componentDidMount() {
+        var addScript = document.createElement('script');
+        addScript.setAttribute('src', 'js/custom.min.js');
+        document.body.appendChild(addScript);
+    }
     
     render () {
         return (
             <HashRouter>
-                <div id="main-wrapper">           
+                
+                <div id="main">           
                         <Header />
                         <SideBar />
                         
