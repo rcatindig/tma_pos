@@ -252,14 +252,7 @@ var BackendReportsMW = {
 
             html += `</body>`;
 
-            var options = { format: 'Legal', 
-                            orientation: 'landscape',
-                            border: {
-                                "top": "0.5in",            // default is 0, units: mm, cm, in, px
-                                "right": "0.5in",
-                                "bottom": "0.5in",
-                                "left": "0.5in"},     
-                        };
+            
             
             
             
@@ -276,10 +269,27 @@ var BackendReportsMW = {
         var seconds = date.getSeconds();
 
         var fileName = "BackendReport" + year + "" + month + "" + day + "" + hour + "" + seconds + ".pdf";
+        var options = { format: 'Legal', 
+                        orientation: 'landscape',
+                        border: {
+                            "top": "0.5in",            // default is 0, units: mm, cm, in, px
+                            "right": "0.5in",
+                            "bottom": "0.5in",
+                            "left": "0.5in"},
+                        directory: "./tmp"
+                    };
+
+        var protocol = req.protocol;
+        var host = req.get("host");;
 
         pdf.create(html, options).toFile('./uploads/reports/backendreport/'+  year + '/' + month + '/' + fileName, function(err, res) {
             if (err) res.json(err);
-            req.fileName = res.filename;
+            
+            if(res.filename !== "")
+            {
+                req.fileName = res.filename;
+            }
+           
             next();
         });
     },

@@ -96,60 +96,105 @@ input:checked+.slider:before {
     width: 100%;
 }
 
-.date-container > div {
+.date-container>div {
     width: 100%;
 }
 
-.date-container > div > .react-datepicker-wrapper {
+.date-container>div>.react-datepicker-wrapper {
     width: 100%;
 }
 
-.date-container > div > .react-datepicker-wrapper > .react-datepicker__input-container {
+.date-container>div>.react-datepicker-wrapper>.react-datepicker__input-container {
     width: 100%;
 }
-
 
 @keyframes spinner {
     from {
-      transform: rotate(0deg);
+        transform: rotate(0deg);
     }
     to {
-      transform: rotate(360deg);
+        transform: rotate(360deg);
     }
-  }
-  .loading-spinner {
+}
+
+.loading-spinner {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  .loading-spinner .wrap {
+}
+
+.loading-spinner .wrap {
     display: inline-block;
-  }
-  .loading-spinner .wrap .fa, .loading-spinner .wrap .glyphicon {
+}
+
+.loading-spinner .wrap .fa,
+.loading-spinner .wrap .glyphicon {
     animation-name: spinner;
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
     font-size: 6em;
     position: relative;
-  }
-  .loading-spinner .wrap .fa:first-of-type, .loading-spinner .wrap .glyphicon:first-of-type {
+}
+
+.loading-spinner .wrap .fa:first-of-type,
+.loading-spinner .wrap .glyphicon:first-of-type {
     left: 10px;
     bottom: 5px;
     color: #2980B9;
-  }
-  .loading-spinner .wrap .fa:last-of-type, .loading-spinner .wrap .glyphicon:last-of-type {
+}
+
+.loading-spinner .wrap .fa:last-of-type,
+.loading-spinner .wrap .glyphicon:last-of-type {
     font-size: 3em;
     top: 10px;
     right: 5px;
     color: #E74C3C;
     animation-direction: reverse;
-  }
-  .loading-spinner .wrap .glyphicon:last-of-type {
-    right: 8px;
-  }
-  
+}
 
-  .loading-text {
-      text-align: center;
-  }
+.loading-spinner .wrap .glyphicon:last-of-type {
+    right: 8px;
+}
+
+.loading-text {
+    text-align: center;
+    margin-top: 12px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+
+span.download-icon > i {
+    font-size: 45px;
+}
+
+.download-container {
+    display: flex;
+    align-items: center;
+}
+
+.download-container {
+    display: flex;
+    align-items: center;
+    background-color: #0cdcc0;
+    color: #ffffff;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    box-shadow: 0px 0px 12px 0px #a29f9f;
+}
+
+span.download-info {
+    font-size: 23px;
+    line-height: 1;
+}
+
+.report-msg {
+    margin-bottom: 35px;
+    margin-top: 20px;
+}
+
+.download-container:hover {
+    transform: scale(1.1);
+}

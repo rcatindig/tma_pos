@@ -10,7 +10,9 @@ import Moment from 'moment';
 import AuthService from '../../utils/AuthService';
 
 // custom components
-import { Card, PageHeader, PageWrapper, Select, DateSelect } from '../../components';
+import { Card, PageHeader, PageWrapper, Select, DateSelect, Loading } from '../../components';
+
+import SweetAlert from 'react-bootstrap-sweetalert';
 
 // constants 
 import { API } from '../../constants';
@@ -30,7 +32,11 @@ class BackendReport extends Component {
             fromDate: Moment(),
             toDate: Moment(),
             machineOptions: [],
-            fileName: "",
+            showLoading: false,
+            showDownload: false,
+            showGenerate: false,
+            fileName: "#",
+            downloadName: "",
         }
 
         
@@ -113,6 +119,8 @@ class BackendReport extends Component {
     }
 
     generateReport = () => {
+
+        this.setState({showLoading: true, showGenerate: true, showDownload: false,});
         const { client_id, machine_id, fromDate, toDate } = this.state;
 
         var data = {
@@ -127,23 +135,49 @@ class BackendReport extends Component {
                     body: JSON.stringify(data),
                     headers: new Headers({
                         'Content-Type': 'application/json',
-                        'Accept': 'application/json',
+                        'Accept': 'application/octet-stream',
                         'Authorization': 'Bearer ' + this.Token
                     })
                 })
             .then(results => { 
-                return results.json();
+                
+                return results.blob();
             }).then(res => {
-                this.setState({fileName: res.fileName});
+                console.log("RES", res);
+                this.getBase64(res);
+                
             })
         .catch(function(err){
             console.log(err);
         })
     }
 
+    getBase64 = (file) => {
+        var self = this;
+        var dateStr = Moment().format('DDMMYYYYhms');
+        var reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                self.setState({fileName: reader.result, showLoading: false, showDownload: true, downloadName: "BR"+dateStr});
+            };
+            reader.onerror = function (error) {
+                console.log('Error: ', error);
+            };
+    }
+
     render () {
         
-        const { client_id, machine_id, clientOptions, fromDate, toDate, machineOptions } = this.state;
+        const { client_id, 
+                machine_id, 
+                clientOptions, 
+                fromDate, 
+                toDate, 
+                machineOptions, 
+                showLoading, 
+                showDownload, 
+                showGenerate, 
+                fileName, 
+                downloadName } = this.state;
 
         return (
             <PageWrapper>
@@ -219,24 +253,40 @@ class BackendReport extends Component {
                                     <button type="submit" className="btn btn-success" onClick={this.generateReport}> <i className="fa fa-cogs"></i> Generate Report</button>
                                 </div>
 
-                                <div className="row justify-content-center">
-                                    <div className="loading">
-                                        <div className="loading-spinner">
-                                            <div className="wrap">
-                                                <i className="fa fa-cog"></i>
-                                                <i className="fa fa-cog"></i>
-                                            </div>
+
+                                <SweetAlert 
+                                    
+                                    //showCancel
+                                    //cancelBtnBsStyle="Close"
+                                    title="Generate Report"
+                                    onConfirm={() => this.setState({showGenerate: false})}
+                                    confirmBtnBsStyle="danger"
+                                    // onCancel={this.cancelDelete}
+                                    show={showGenerate}
+                                    confirmBtnText="Close"
+                                >
+                                    <div className="row justify-content-center">
+                                        <Loading title="Preparing..." show={showLoading}/>
+
+                                        <div className="row justify-content-center" style={{display: (showDownload) ? "inherit": "none"}}>
+                                            <div className="report-msg">Report has been generated.<br />Click the download button below to see the results.</div>
+
+                                            <a href={fileName} className="col-6" download={downloadName}>
+                                                <div className="download-container row">
+                                                        <span className="download-icon col-md-3"><i className="fa fa-download"></i></span>
+                                                        <span className="download-info col-md-9">DOWNLOAD<br />REPORT</span>
+                                                </div>
+                                            </a>
                                         </div>
 
-                                        <div className="loading-spinner">
-                                            <div className="wrap">
-                                                <span className="glyphicon glyphicon-cog"></span>
-                                                <span className="glyphicon glyphicon-cog"></span>
-                                            </div>
-                                        </div>
-                                        <div className="loading-text">Preparing...</div>
+                                        
                                     </div>
-                                </div>
+                                </SweetAlert>
+
+            
+
+                                
+                                
                                 
                                 
                             </Card>
