@@ -15,13 +15,38 @@ var Role = {
         return db.query("select * from roles where id=?", [id], callback);
     },
     addRole: function (Role, callback) {
-        return db.query("Insert into roles (username, password, active, isdeleted) values(?,?,?)", [Role.username, Role.password, Role.active, Role.isdeleted], callback);
+        const sql = `
+                INSERT INTO roles (client_id, name, date_created) values(?,?,?)
+            `;
+        
+        const parameters = [
+                Role.client_id,
+                Role.name,
+                Role.date
+            ];
+            
+        return db.query(sql, parameters, callback);
     },
     deleteRole: function (id, callback) {
         return db.query("delete from roles where id=?", [id], callback);
     },
     updateRole: function (id, Role, callback) {
-        return db.query("update roles set username=?,password=?, active=?, isdeleted=? where id=?", [Role.username, Role.password, Role.active, Role.isdeleted, Role.id], callback);
+        const sql = `
+                UPDATE 
+                    roles 
+                SET client_id = ?, name = ?, date_modified = ? 
+                WHERE id=?
+            `;
+
+        const parameters = [
+                Role.client_id,
+                Role.name,
+                Role.date,
+                Role.id
+            ];
+
+        console.log(sql, parameters);
+        return db.query(sql, parameters, callback);
     },
     // USE FOR REACT TABLE
     countTotalRoles: function (ReactTable, callback) {

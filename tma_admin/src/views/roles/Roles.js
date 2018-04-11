@@ -36,6 +36,8 @@ class Roles extends Component {
             clientId: "",
             name: "",
             clientOptions: [],
+            modalRoleTitle: "Add Role",
+            modalRoleBtnSave: "Save"
         }
         this.Auth = new AuthService();
         this.Token = this.Auth.getToken();
@@ -88,17 +90,65 @@ class Roles extends Component {
         })
     }
 
-    updateData = () => {
+    saveData = (event) => {
 
-        var data = this.state;
-        data.txndate = Moment(data.txndate).format("YYYY-MM-DD HH:mm:ss");
-        data.entrydatetime = Moment(data.entrydatetime).format("YYYY-MM-DD HH:mm:ss");
-        data.exitdatetime = Moment(data.exitdatetime).format("YYYY-MM-DD HH:mm:ss");
+        const { roleId, clientId, name } = this.state;
+
+        var data = {
+            id: roleId,
+            client_id: clientId,
+            name: name,
+            date: Moment().format("YYYY-MM-DD HH:mm:ss")
+        }
+
+        if(roleId !== "")
+            this.updateData(data);
+        else
+            this.addData(data);
+    }
+
+    addData = (data) => {
         
+        const url = role_url;
 
-        var id = data.transactionId;
+        var self = this;
 
-        const url = API.TRANSACTIONS + id;
+        fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token
+                })
+            }).then((response) => {
+                // const { pageSize, page, sorted, filtered } = state;
+                var dataState = {
+                    pageSize: self.state.pageSize,
+                    page: self.state.page,
+                    sorted: self.state.sorted,
+                    filtered: self.state.filtered
+                };
+                self.fetchData(dataState, []);
+
+                this.setState({openModal: false});
+                return response.json();
+                
+            }).then((res) => {
+                //self.setState({data: responseData});
+
+                //self.fetchData();
+            })
+        .catch(function(err){
+            console.log(err);
+        })
+
+    }
+
+    updateData = (data) => {
+
+        var id = data.id;
+
+        const url = role_url + id;
 
         var self = this;
 
@@ -107,6 +157,7 @@ class Roles extends Component {
                 body: JSON.stringify(data),
                 headers: new Headers({
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + this.Token
                 })
             }).then((response) => {
                 // const { pageSize, page, sorted, filtered } = state;
@@ -156,6 +207,8 @@ class Roles extends Component {
                         roleId: result.id,
                         clientId: result.client_id,
                         name: result.name,
+                        modalRoleTitle: "Edit Role",
+                        modalRoleBtnSave: "Save Changes"
                     });
 
                     this.setState({openModal: true})
@@ -210,6 +263,21 @@ class Roles extends Component {
     handleChangeInput = (event) => {
         console.log(event);
     }
+    
+    addModal = () => {
+
+        this.setState({openModal: true, 
+            roleId: "",
+            name: "",
+            clientId: "",
+            modalRoleTitle: "Add Role",
+            modalRoleBtnSave: "Save"            
+        });
+
+        this.renderOptions();
+        
+
+    }
 
     render () {
 
@@ -220,7 +288,9 @@ class Roles extends Component {
                 name,
                 roleId,
                 clientId,
-                clientOptions
+                clientOptions,
+                modalRoleTitle,
+                modalRoleBtnSave,
              } = this.state;
 
         const columns = [{
@@ -253,7 +323,15 @@ class Roles extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12">
-                            <Card title="Roles" subTitle="List of Roles">
+                            <Card 
+                                title="Roles" 
+                                subTitle="List of Roles"
+                                buttons={[{id: "add-button", 
+                                    class: "btn btn-success waves-effect waves-light pull-right", 
+                                    title: "Add",
+                                    onClick: this.addModal
+                                }]}
+                                >
                                 <div className="table-responsive m-t-20">
                                     <ReactTable
                                         className="-striped -highlight"
@@ -279,7 +357,7 @@ class Roles extends Component {
 
                 <Modal
                     className="modal-component"
-                    title="Edit Transaction"
+                    title={modalRoleTitle}
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
@@ -315,7 +393,7 @@ class Roles extends Component {
                     </div>
                     
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.updateData()}>Save changes</button>
+                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalRoleBtnSave}</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>
