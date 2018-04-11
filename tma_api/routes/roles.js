@@ -1,10 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var Role = require('../models/Role');
+var express = require('express'),
+    router = express.Router(),
+    Role = require('../models/Role'),
+    jwt     = require('express-jwt');
 
 // MIDDLEWARE
 var RolesMW = require('../middlewares/RolesMW');
 const { getRoleList, countRoles } = RolesMW;
+
+var jwtCheck = jwt({
+    secret: config.secretKey
+});
+router.use('/', jwtCheck);
 
 router.get('/:id?', function (req, res, next) {
 
