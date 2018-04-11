@@ -12,7 +12,7 @@ var RolesMW = {
                 res.json(err);
             } else {
 
-                req.transactions = rows;
+                req.roles = rows;
                 next();
                 
             }
@@ -34,7 +34,7 @@ var RolesMW = {
 
                 var data = {
                     totalRecords: fields[0].total,
-                    transactions: req.transactions
+                    roles: req.roles
                 }
                 
                 res.json(data);

@@ -26,6 +26,7 @@ class SideBar extends Component {
                             <li className="nav-label">Setup</li>
                             <li><Link to="/redirect/clients"><i className="fa fa-industry"></i>Clients</Link></li>
                             <li><Link to="/redirect/users"><i className="fa fa-user-circle"></i>Users</Link></li>
+                            <li><Link to="/redirect/roles"><i className="fa fa-user-secret"></i>Roles</Link></li>
                             
                         </ul>
                     </nav>

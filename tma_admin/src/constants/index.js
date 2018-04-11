@@ -8,7 +8,8 @@ export const API = {
     COUNTRIES: API_SERVER + 'countries/',
     STATES: API_SERVER + 'states/',
     MACHINES: API_SERVER + 'machines/',
-    REPORTS: API_SERVER + 'reports/',    
+    REPORTS: API_SERVER + 'reports/',   
+    ROLES: API_SERVER + 'roles/', 
 
 }
 

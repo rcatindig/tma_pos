@@ -75,7 +75,7 @@ var Role = {
 
 
         const sql = `
-                SELECT * 
+                SELECT r.* , c.name as client
                 FROM roles r
                 LEFT JOIN clients c
                 ON r.client_id = c.id

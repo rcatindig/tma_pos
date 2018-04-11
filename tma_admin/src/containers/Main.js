@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Switch, Redirect, HashRouter } from 'react-router-dom';
 import { Header, SideBar } from '../components'; 
-import { Dashboard, Transactions, Clients, Users, BackendReport } from '../views';
+import { Dashboard, Transactions, Clients, Users, BackendReport, Roles } from '../views';
 
 import AuthService from '../utils/AuthService';
 import withAuth from '../utils/withAuth';
@@ -28,6 +28,7 @@ class Main extends Component {
                                 <Redirect from="/redirect/transactions" to="/transactions" />
                                 <Redirect from="/redirect/clients" to="/clients" />
                                 <Redirect from="/redirect/users" to="/users" />
+                                <Redirect from="/redirect/roles" to="/roles" />
                                 <Redirect from="/redirect" to="/" />
                             </Switch>
                        
@@ -35,6 +36,7 @@ class Main extends Component {
                         <Route path="/transactions" name="Transactions" component={Transactions}/>
                         <Route path="/clients" name="Clients" component={Clients}/>
                         <Route path="/users" name="Users" component={Users}/>
+                        <Route path="/roles" name="Roles" component={Roles} />
                         <Route path="/backendreport" name="BackendReport" component={BackendReport}/>
                 </div>
             </HashRouter>
