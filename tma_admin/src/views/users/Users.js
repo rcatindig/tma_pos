@@ -470,10 +470,6 @@ class Users extends Component {
 
     _handleCheckboxChange = () => this.setState( { isChecked: !this.state.isChecked } );
 
-
-    
-
-
     render () {
 
         const { data,
