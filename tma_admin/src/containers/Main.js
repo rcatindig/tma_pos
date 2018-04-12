@@ -23,14 +23,14 @@ class Main extends Component {
                         <Header />
                         <SideBar />
                         
-                            <Switch>
-                                <Redirect from="/redirect/backendreport" to="/backendreport"/>
-                                <Redirect from="/redirect/transactions" to="/transactions" />
-                                <Redirect from="/redirect/clients" to="/clients" />
-                                <Redirect from="/redirect/users" to="/users" />
-                                <Redirect from="/redirect/roles" to="/roles" />
-                                <Redirect from="/redirect" to="/" />
-                            </Switch>
+                        <Switch>
+                            <Redirect from="/redirect/backendreport" to="/backendreport"/>
+                            <Redirect from="/redirect/transactions" to="/transactions" />
+                            <Redirect from="/redirect/clients" to="/clients" />
+                            <Redirect from="/redirect/users" to="/users" />
+                            <Redirect from="/redirect/roles" to="/roles" />
+                            <Redirect from="/redirect" to="/" />
+                        </Switch>
                        
                         <Route path="/" exact={true} name="Dashboard" component={Dashboard}/>
                         <Route path="/transactions" name="Transactions" component={Transactions}/>
