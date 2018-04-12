@@ -480,7 +480,6 @@ class Users extends Component {
                 pages,
                 loading,
                 openModal,
-                userId,
                 first_name,
                 middle_name,
                 surname,
@@ -596,7 +595,6 @@ class Users extends Component {
                     >
                     <div className="modal-body transaction-modal">
                         <form className="form-control">
-                            <input type="hidden" value={userId}/>
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="first_name">First Name</label>
