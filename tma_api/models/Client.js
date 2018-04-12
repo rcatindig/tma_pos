@@ -15,7 +15,7 @@ var Client = {
         let sql = `
             INSERT INTO clients 
                 (code, name, address, country_id, state_id, email, tel_no, tin, permit_no, status, date_created, date_modified)
-            VALUES (?,?,?,?,?,?,?,?,?,?)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
         `;
 
         let parameters = [
