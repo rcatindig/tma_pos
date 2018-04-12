@@ -198,3 +198,8 @@ span.download-info {
 .download-container:hover {
     transform: scale(1.1);
 }
+
+.role-access-modal {
+    height: 250px;
+    overflow-y: auto;
+}

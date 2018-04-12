@@ -6,18 +6,40 @@ class Modal extends Component {
     static defaultProps = {
         title: "Modal Title",
         className: "",
+        size: "medium"
     };
 
 
 
     render() {
 
-        const { title, children, className, show, handleCloseClick } = this.props;
+        const { title, children, className, show, handleCloseClick, size } = this.props;
+
+        var modalSize = "modal-md";
+        switch(size)
+        {
+            case "small": 
+                modalSize = "modal-sm";
+                break;
+            case "medium": 
+                modalSize = "modal-md";
+                break;
+            case "large":
+                modalSize = "modal-lg";
+                break;
+            default:
+                modalSize = "modal-md";
+                break;
+
+        }
+            
+
+        
 
         return(
             <div className={ show ? "ui dimmer modals page transition visible active" : "ui dimmer modals page transition  hidden" }>
                 <div className={"modal " + className} tabIndex="-1" role="dialog" style={{display: show ? 'block': 'none' }}>
-                    <div className="modal-dialog" role="document">
+                    <div className={"modal-dialog " + modalSize} role="document">
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title">{title}</h5>
