@@ -29,6 +29,16 @@ var RolePermission = {
 
         return db.query(sql, [id], callback);
     },
+    getPermissionByRoleAndModule: function (data, callback) {
+        const sql = `SELECT * FROM role_permissions WHERE role_id = ? AND module_id = ? LIMIT 1`;
+
+        const parameters = [
+                data.role_id,
+                data.module_id
+        ];
+
+        return db.query(sql, parameters, callback);
+    },
     saveRolePermissions: function (RolePermission, callback) {
 
         let roleId = RolePermission.role_id;

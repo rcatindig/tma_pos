@@ -63,6 +63,10 @@ var User = {
     },
     updateUser: function (id, User, callback) {
 
+        var pw = User.password;
+
+        
+
         const sql = `UPDATE users 
                         SET
                             first_name = ?,
@@ -70,7 +74,7 @@ var User = {
                             surname = ?, 
                             extension = ?, 
                             username = ?, 
-                            password = ?, 
+                            ${pw == null ? "": "password = ?,"} 
                             client_id = ?,
                             address = ?, 
                             country_id = ?, 
@@ -83,7 +87,7 @@ var User = {
                         WHERE id = ?
             `;
 
-        const parameters = [
+        var parameters = [
             User.first_name,
             User.middle_name,
             User.surname,
@@ -99,8 +103,33 @@ var User = {
             User.is_client,
             User.is_client ? User.role_id : null,
             User.date_modified,
-            User.id
+            id
         ];
+
+        if(pw == null)
+        {
+           parameters = [
+                User.first_name,
+                User.middle_name,
+                User.surname,
+                User.extension,
+                User.username,
+                User.client_id,
+                User.address,
+                User.country_id,
+                User.state_id,
+                User.status,
+                User.isdeleted,
+                User.is_client,
+                User.is_client ? User.role_id : null,
+                User.date_modified,
+                id
+            ];
+        }
+
+        console.log(sql, parameters);
+
+        
 
 
         return db.query(sql, parameters, callback);
@@ -187,6 +216,7 @@ var User = {
         //const sql = `SELECT * FROM users WHERE username = ?`;
 
         db.query('SELECT * FROM users WHERE username = ? LIMIT 1', [User.username], function (err, rows, fields) {
+            
             if (err) throw err;
             done(rows[0]);
         });

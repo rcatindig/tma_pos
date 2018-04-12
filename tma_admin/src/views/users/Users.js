@@ -153,6 +153,7 @@ class Users extends Component {
             changePassword,
             role_id,
             typeUser,
+            hidePasswordField
          } = this.state;
 
          var data = {
@@ -173,7 +174,7 @@ class Users extends Component {
             id: userId
          }
 
-         if(changePassword)
+         if(!hidePasswordField)
          {
              if(password !== confirmPassword)
              {

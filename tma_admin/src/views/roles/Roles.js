@@ -313,7 +313,7 @@ class Roles extends Component {
                 method: 'GET',
                 headers: new Headers({
                     'Accept': 'application/json',
-                    // 'Authorization': 'Bearer ' + this.Token
+                    'Authorization': 'Bearer ' + this.Token
                 })
             }).then((response) => {
                 
@@ -328,9 +328,6 @@ class Roles extends Component {
                     clientsAccess = ACCESS_TYPE.NOACCESS,
                     usersAccess = ACCESS_TYPE.NOACCESS,
                     rolesAccess = ACCESS_TYPE.NOACCESS;
-
-
-                console.log(res);
                     
                 
                 if(res.length > 0)
