@@ -387,7 +387,6 @@ class Roles extends Component {
     saveAccessControl = (event) => {
 
         const url = role_permission_url + "savePermission/";
-        console.log("STATE", this.state);
         
         const { roleId, 
                 dashboardAccess, 
@@ -396,6 +395,7 @@ class Roles extends Component {
                 clientsAccess, 
                 usersAccess,
                 rolesAccess } = this.state;
+
 
         const data = {
                         role_id: roleId,
@@ -432,16 +432,11 @@ class Roles extends Component {
                 // 'Authorization': 'Bearer ' + this.Token
             })
         }).then((response) => { 
+                console.log(response);
+                this.closeAccessControl();
                 return response.json();
             }).then((res) => {
-                //self.setState({data: responseData});
-
-                // const pages = Math.ceil(res.totalRecords / pageSize) ;
-                // self.setState({
-                //     data: res.roles,
-                //     pages: pages,
-                //     loading: false
-                // });
+                
             })
         .catch(function(err){
             console.log(err);
