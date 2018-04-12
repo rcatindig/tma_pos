@@ -407,7 +407,6 @@ class Clients extends Component {
                 pages,
                 loading,
                 openModal,
-                clientId,
                 code,
                 name,
                 address,
@@ -497,7 +496,6 @@ class Clients extends Component {
                     >
                     <div className="modal-body transaction-modal">
                         <form className="form-control transaction-form">
-                            <input type="hidden" value={clientId}/>
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="name">Code</label>
