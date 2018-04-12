@@ -1,14 +1,17 @@
 var express = require('express'),
-    router = express.Router(),
-    Role = require('../models/Role'),
-    jwt     = require('express-jwt');
+  router = express.Router(),
+  Role = require('../models/Role'),
+  jwt = require('express-jwt');
 
 // MIDDLEWARE
 var RolesMW = require('../middlewares/RolesMW');
-const { getRoleList, countRoles } = RolesMW;
+const {
+  getRoleList,
+  countRoles
+} = RolesMW;
 
 var jwtCheck = jwt({
-    secret: config.secretKey
+  secret: config.secretKey
 });
 router.use('/', jwtCheck);
 
@@ -38,20 +41,20 @@ router.get('/:id?', function (req, res, next) {
   }
 });
 
-router.get('/getRolesByCountry/:id?', function (req, res, next) {
+router.get('/getRolesByClientId/:id?', function (req, res, next) {
 
-    if (req.params.id) {
-  
-      Role.getRolesByCountryId(req.params.id, function (err, rows) {
-  
-        if (err) {
-          res.json(err);
-        } else {
-          res.json(rows);
-        }
-      });
-    } 
-  });
+  if (req.params.id) {
+
+    Role.getRolesByClientId(req.params.id, function (err, rows) {
+
+      if (err) {
+        res.json(err);
+      } else {
+        res.json(rows);
+      }
+    });
+  }
+});
 
 router.post('/', function (req, res, next) {
 

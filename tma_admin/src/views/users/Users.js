@@ -16,7 +16,7 @@ import AuthService from '../../utils/AuthService';
 import { Card, PageHeader, PageWrapper, Modal, Select, Switch } from '../../components';
 
 // constants 
-import { API, SALT_ROUNDS, STATUS } from '../../constants';
+import { API, SALT_ROUNDS, STATUS, USER_TYPE } from '../../constants';
 
 
 // bcryptjs
@@ -27,6 +27,7 @@ const client_url = API.CLIENTS;
 const country_url = API.COUNTRIES;
 const states_url = API.STATES;
 const users_url = API.USERS;
+const roles_url = API.ROLES;
 
 
 class Users extends Component {
@@ -58,13 +59,18 @@ class Users extends Component {
             statesOptions: [],
             isChecked: true,
             changePassword: false,
-            showPasswordField: "hide",
+            hidePasswordField: true,
             showErrorMessage: false,
             errorMessage: "",
             client_id: "",
             modalUserTitle: "Add",
             modalUserSaveBtn: "Save",
-            clientOptions: []
+            clientOptions: [],
+            showTypeModal: false,
+            typeUser: "",
+            hasRoles: false,
+            rolesOptions: [],
+            role_id: "",
         }
 
         
@@ -145,6 +151,8 @@ class Users extends Component {
             status,
             confirmPassword,
             changePassword,
+            role_id,
+            typeUser,
          } = this.state;
 
          var data = {
@@ -160,6 +168,8 @@ class Users extends Component {
             client_id: client_id,
             //password: passwordHash,                
             status: status,
+            is_client: typeUser,
+            role_id: role_id,
             id: userId
          }
 
@@ -184,11 +194,11 @@ class Users extends Component {
         if(userId !== "")
             this.updateUser(data);
         else
-            this.addUser(data);
+            this.insertUser(data);
 
     }
 
-    addUser = (data) => {
+    insertUser = (data) => {
         data.date_created = Moment().format("YYYY-MM-DD HH:mm:ss");
         data.date_modified = Moment().format("YYYY-MM-DD HH:mm:ss");
 
@@ -301,11 +311,15 @@ class Users extends Component {
                         //confirmPassword: result.password,
                         statesOptions: [],
                         client_id: result.client_id,
+                        typeUser: result.is_client,
+                        role_id: result.role_id == null ? "" : result.role_id,
                         modalUserTitle: "Edit",
                         changePassword: false,
                         modalUserSaveBtn: "Save Changes",
                     });
 
+                    if(result.client_id !== "")
+                        this.getRoleByClientId(result.client_id);
                     this.getStateOptions(result.country_id);
                 }
             })
@@ -318,30 +332,34 @@ class Users extends Component {
 
     openModal = () => {
 
+        this.setState({showTypeModal: true});
+
+    }
+
+    showCreateModal = () => {
         this.setState({openModal: true, 
-                        userId: "",
-                        first_name: "",
-                        middle_name: "",
-                        surname: "",
-                        extension: "",
-                        address: "",
-                        email: "",
-                        country_id: "",
-                        state_id: "",
-                        username: "",
-                        password: "",                
-                        status: "",
-                        confirmPassword: "",
-                        statesOptions: [],
-                        client_id: "",
-                        changePassword: false,
-                        modalUserTitle: "Add",
-                        modalUserSaveBtn: "Save",
-                    });
+            userId: "",
+            first_name: "",
+            middle_name: "",
+            surname: "",
+            extension: "",
+            address: "",
+            email: "",
+            country_id: "",
+            state_id: "",
+            username: "",
+            password: "",                
+            status: "",
+            confirmPassword: "",
+            statesOptions: [],
+            client_id: "",
+            changePassword: false,
+            modalUserTitle: "Add",
+            modalUserSaveBtn: "Save",
+        });
 
         this.renderOptions();
         this.setState({openModal: true})
-
     }
 
     renderOptions = () => {
@@ -420,8 +438,8 @@ class Users extends Component {
             password: "",                
             status: "",
             confirmPassword: "",
-            changePassword: true,
-            showPasswordField: "hide",
+            changePassword: false,
+            hidePasswordField: true,
             statesOptions: [],
         });
     }
@@ -470,6 +488,66 @@ class Users extends Component {
 
     _handleCheckboxChange = () => this.setState( { isChecked: !this.state.isChecked } );
 
+    onClickAdmin = () => {
+        this.setState({showTypeModal: false, typeUser: USER_TYPE.ADMIN});
+
+        this.showCreateModal();
+    }
+
+    onClickClient = () => {
+        this.setState({showTypeModal: false, typeUser: USER_TYPE.CLIENT, hasRoles : true});
+
+        this.showCreateModal();
+    }
+
+    onChangeCompany = (event) => {
+        const clientId = event.target.value;
+        this.setState({client_id: clientId, roleOptions: []});
+
+        if(clientId !== "")
+           this.getRoleByClientId(clientId);
+        
+    }
+
+    getRoleByClientId = (clientId) => {
+        const url = roles_url + "getRolesByClientId/" + clientId;
+
+        const rolesOptions = [];
+
+        fetch(url, {
+                    method: 'GET',
+                    headers: new Headers({
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + this.Token
+                    })
+                }).then(results => { 
+                        this.setState({rolesOptions: []});
+                        return results.json();
+                    }).then(res => {
+                        if(res.length > 0)
+                        {
+                            for(var i = 0; i < res.length; i++)
+                            {
+                                var role = res[i];
+                                var optionData = {
+                                    value: role.id,
+                                    label: role.name
+                                }
+
+                                rolesOptions.push(optionData);
+                            }
+
+                            this.setState({rolesOptions: rolesOptions});
+                            
+                        }
+                    })
+                .catch(function(err){
+                    console.log(err);
+                })
+
+    }
+
     render () {
 
         const { data,
@@ -489,13 +567,16 @@ class Users extends Component {
                 status,
                 confirmPassword,
                 changePassword,
-                showPasswordField,
+                hidePasswordField,
                 showErrorMessage,
                 errorMessage,
                 client_id,
                 clientOptions,
                 modalUserTitle,
                 modalUserSaveBtn,
+                showTypeModal,
+                role_id,
+                rolesOptions
              } = this.state;
 
         const columns = [{
@@ -512,17 +593,27 @@ class Users extends Component {
                 accessor: 'surname'
             }, {
                 id: 'u.extension',
-                Header: 'Extension',
-                accessor: 'extension'
-            },  {
+                Header: 'Ext',
+                accessor: 'extension',
+                width: 50,
+            }, {
+                id: 'u.is_client',
+                Header: 'Type',
+                accessor: u => {
+                    return u.is_client === USER_TYPE.CLIENT ? "Client" : "Admin";
+                },
+                width: 80,
+            }, {
                 id: 'c.name',
                 Header: 'Company',
                 accessor: 'company'
-            }, {
-                id: 'u.address',
-                Header: 'Address',
-                accessor: 'address'
-            },  {
+            }, 
+            // {
+            //     id: 'u.address',
+            //     Header: 'Address',
+            //     accessor: 'address'
+            // },  
+            {
                 id: 'pc.name',
                 Header: 'Country',
                 accessor: 'country'
@@ -531,16 +622,18 @@ class Users extends Component {
                 Header: 'State',
                 accessor: 'state'
             }, {
-                id: 'c.status',
+                id: 'u.status',
                 Header: 'Status',
-                accessor: c => {
-                    return c.status === STATUS.ACTIVE ? "Active" : "Inactive";
+                width: 70,
+                accessor: u => {
+                    return u.status === STATUS.ACTIVE ? "Active" : "Inactive";
                 }
             }, {
                 Header: 'Action',
                 id: 'edit-button',
                 filterable: false,
                 sortable: false,
+                width: 70,
                 Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
             }
         ];
@@ -582,6 +675,22 @@ class Users extends Component {
                         </div> 
                     </div>
                 </div>
+
+                <SweetAlert 
+                    warning
+                    showCancel
+                    confirmBtnText="Client"
+                    cancelBtnText="Admin"
+                    confirmBtnBsStyle="danger"
+                    cancelBtnBsStyle="primary"
+                    title="What type of user that you want to create?"
+                    onConfirm={this.onClickClient}
+                    onCancel={this.onClickAdmin}
+                    closeOnClickOutside={false}
+                    show={showTypeModal}
+                >
+                    
+                </SweetAlert>
 
                 <Modal
                     className="modal-component"
@@ -685,7 +794,7 @@ class Users extends Component {
                                         options={clientOptions}
                                         value={client_id}
                                         placeholder="Select Company..."
-                                        onChange={(event) => this.setState({client_id: event.target.value })}
+                                        onChange={this.onChangeCompany}
                                     />
                                 </div>                           
                             </div>
@@ -716,14 +825,14 @@ class Users extends Component {
                                     </div>
                                 </div>
 
-                                <div className="form-row">
+                                <div className="form-row justify-content-center">
 
                                     <div className="switch-container">                                    
                                         <label className="switch">
                                             <input type="checkbox" 
                                                 defaultChecked={changePassword} 
                                                 ref="ref_cp"
-                                                onChange={() => this.setState({ changePassword: !changePassword , showPasswordField: changePassword  ? "hide" : "" })} />
+                                                onChange={() => this.setState({ changePassword: !changePassword , hidePasswordField: changePassword  ? true: false })} />
                                             <span className="slider round"></span>
                                         </label>
                                         <label className="switch-label-right">
@@ -733,7 +842,7 @@ class Users extends Component {
                                     </div>
                                 </div>
                                 
-                                <div className={`form-row ${showPasswordField}`}>
+                                <div className="form-row" hidden={hidePasswordField}>
                                     <div className="form-group col-md-6">
                                         <label htmlFor="password">Password</label>
                                         <input type="password" 
@@ -769,6 +878,19 @@ class Users extends Component {
                                         onChange={(event) => this.setState({status: event.target.value })}
                                     />
                                     
+                                </div>
+
+                                <div className="form-group col-md-6">
+                                    <label htmlFor="role">Role</label>
+                                    <Select
+                                        id="role"
+                                        className="form-control"
+                                        name="role"
+                                        options={rolesOptions}
+                                        value={role_id}
+                                        placeholder="Select Role..."
+                                        onChange={(event) => this.setState({role_id: event.target.value })}
+                                    />
                                 </div>
 
                             </div>

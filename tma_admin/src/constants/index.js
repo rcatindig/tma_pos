@@ -37,3 +37,10 @@ export const STATUS = {
     ACTIVE:     0,
     INACTIVE:   1
 }
+
+// user types
+
+export const USER_TYPE = {
+    ADMIN: 0,
+    CLIENT: 1,
+}

@@ -7,8 +7,8 @@ var Role = {
         return db.query("Select * from roles", callback);
 
     },
-    getRolesByCountryId: function (id, callback) {
-        return db.query("SELECT * FROM roles WHERE country_id = ?", [id], callback )
+    getRolesByClientId: function (id, callback) {
+        return db.query("SELECT * FROM roles WHERE client_id = ?", [id], callback )
     },
     getRoleById: function (id, callback) {
 

@@ -192,9 +192,9 @@ class Roles extends Component {
 
         var self = this;
 
-        //const url = API.TRANSACTIONS + id;
+        const url = role_url + id;
 
-        fetch(role_url, {
+        fetch(url, {
                 method: 'GET',
                 headers: new Headers({
                     'Authorization': 'Bearer ' + this.Token
@@ -211,10 +211,11 @@ class Roles extends Component {
                         clientId: result.client_id,
                         name: result.name,
                         modalRoleTitle: "Edit Role",
-                        modalRoleBtnSave: "Save Changes"
+                        modalRoleBtnSave: "Save Changes",
+                        openModal: true,
                     });
 
-                    this.setState({openModal: true})
+                    //this.setState({openModal: true})
                 }
             })
         .catch(function(err){

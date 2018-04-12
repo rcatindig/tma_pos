@@ -27,9 +27,11 @@ var User = {
                     state_id,
                     status,
                     isdeleted,
+                    is_client,
+                    role_id,
                     date_created, 
                     date_modified) 
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         `;
 
         const parameters = [
@@ -46,6 +48,8 @@ var User = {
             User.state_id,
             User.status,
             0,
+            User.is_client,
+            User.is_client ? User.role_id : null,
             User.date_created,
             User.date_modified
         ];
@@ -73,6 +77,8 @@ var User = {
                             state_id = ?, 
                             status = ?, 
                             isdeleted = ?, 
+                            is_client = ?,
+                            role_id = ?,
                             date_modified = ?
                         WHERE id = ?
             `;
@@ -90,11 +96,11 @@ var User = {
             User.state_id,
             User.status,
             User.isdeleted,
+            User.is_client,
+            User.is_client ? User.role_id : null,
             User.date_modified,
             User.id
         ];
-
-        console.log(sql);
 
 
         return db.query(sql, parameters, callback);
@@ -126,8 +132,11 @@ var User = {
             if (column == "txndate" || column == "entrydatetime" || column == "exitdatetime")
                 column = "DATE_FORMAT(" + column + ", '%M %d, %Y %r ')";
 
-            if (column == "c.status")
+            if (column == "u.status")
                 column = "IF(" + column + " > 0, 'Inactive', 'Active' )";
+
+            if (column == "u.is_client")
+                column = "IF(" + column + " < 1, 'Admin', 'Client' )"
 
 
             whereClause = whereClause + " AND " + column + " LIKE '%" + value + "%' ";
@@ -154,7 +163,6 @@ var User = {
 
             }
         }
-
 
         const sql = `
                 SELECT u.*, pc.name as country, ps.name as state, c.name as company FROM users u
