@@ -16,7 +16,7 @@ import AuthService from '../../utils/AuthService';
 import { Card, PageHeader, PageWrapper, Modal, Select, Switch } from '../../components';
 
 // constants 
-import { API, SALT_ROUNDS } from '../../constants';
+import { API, SALT_ROUNDS, STATUS } from '../../constants';
 
 
 // bcryptjs
@@ -534,7 +534,7 @@ class Users extends Component {
                 id: 'c.status',
                 Header: 'Status',
                 accessor: c => {
-                    return c.status === 0 ? "Active" : "Inactive";
+                    return c.status === STATUS.ACTIVE ? "Active" : "Inactive";
                 }
             }, {
                 Header: 'Action',
@@ -764,7 +764,7 @@ class Users extends Component {
                                         placeholder="Select Status..."
                                         className="form-control"
                                         name="status"
-                                        options={[{value: 0, label: "Active"}, {value: 1, label: "Inactive"}]}
+                                        options={[{value: STATUS.ACTIVE, label: "Active"}, {value: STATUS.INACTIVE, label: "Inactive"}]}
                                         value={status}
                                         onChange={(event) => this.setState({status: event.target.value })}
                                     />
