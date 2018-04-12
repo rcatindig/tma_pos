@@ -214,7 +214,6 @@ class Transactions extends Component {
                 pages,
                 loading,
                 openModal,
-                transactionId,
                 company,
                 txndate,
                 epan,
@@ -320,7 +319,6 @@ class Transactions extends Component {
                     >
                     <div className="modal-body transaction-modal">
                         <form className="form-control">
-                            <input type="hidden" value={transactionId}/>
                             <div className="form-row">
                                 <div className="form-group col-md-6">
                                     <label htmlFor="company">Company</label>
