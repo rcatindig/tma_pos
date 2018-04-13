@@ -3,6 +3,12 @@ import { Card, PageHeader, PageWrapper } from '../../components';
 
 
 class Dashboard extends Component {
+    componentDidCatch() {
+        var addScript = document.createElement('script');
+        addScript.setAttribute('src', 'js/custom.min.js');
+        document.body.appendChild(addScript);
+    }
+
     render() {
         return (
 

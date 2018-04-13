@@ -90,9 +90,9 @@ class SideBar extends Component {
                         <ul id="sidebarnav">
                             <li className="nav-devider"></li>
                             <li className="nav-label">Home</li>
-                            <li hidden={dbHide}><Link to="/redirect"><i className="fa fa-tachometer"></i>Dashboard</Link></li>
+                            <li hidden={dbHide}><Link to="/redirect"><i className="fa fa-tachometer"></i><span className="hide-menu">Dashboard</span></Link></li>
                             <li className="nav-label">Main</li>
-                            <li hidden={txnHide}><Link to="/redirect/transactions"><i className="fa fa-car"></i>Transactions</Link></li>
+                            <li hidden={txnHide}><Link to="/redirect/transactions"><i className="fa fa-car"></i><span className="hide-menu">Transactions</span></Link></li>
                             {/* <li><Link to="/redirect/machines"><i className="fa fa-server"></i>Machines</Link></li> */}
                             <li><a className="has-arrow  " onClick={() => console.log('collapse') } aria-expanded="false"><i className="fa fa-wpforms"></i><span className="hide-menu">Reports</span></a>
                                 <ul aria-expanded="false" className="collapse">
@@ -103,9 +103,9 @@ class SideBar extends Component {
                                 </ul>
                             </li>
                             <li className="nav-label">Setup</li>
-                            <li hidden={cltHide}><Link to="/redirect/clients"><i className="fa fa-industry"></i>Clients</Link></li>
-                            <li hidden={usrHide}><Link to="/redirect/users"><i className="fa fa-user-circle"></i>Users</Link></li>
-                            <li hidden={rolHide}><Link to="/redirect/roles"><i className="fa fa-user-secret"></i>Roles</Link></li>
+                            <li hidden={cltHide}><Link to="/redirect/clients"><i className="fa fa-industry"></i><span className="hide-menu">Clients</span></Link></li>
+                            <li hidden={usrHide}><Link to="/redirect/users"><i className="fa fa-user-circle"></i><span className="hide-menu">Users</span></Link></li>
+                            <li hidden={rolHide}><Link to="/redirect/roles"><i className="fa fa-user-secret"></i><span className="hide-menu">Roles</span></Link></li>
                             
                         </ul>
                     </nav>

@@ -8,7 +8,6 @@ import { Login }  from './views';
 
 class App extends Component {
 
-  
   render() {
     return (
 
@@ -23,9 +22,7 @@ class App extends Component {
 				<Route path="/" name="Dashboard" component={Main}/>
 			</Switch>
 		</HashRouter>
-      
-        
-      
+       
     );
   }
 }
