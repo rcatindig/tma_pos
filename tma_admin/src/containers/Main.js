@@ -52,8 +52,11 @@ class Main extends Component {
             if (dbAccess === ACCESS_TYPE.NOACCESS || dbAccess === ""  ) 
                 dbHide = true;
                 
-            if (cltAccess === ACCESS_TYPE.NOACCESS || cltAccess === ""  ) 
-                cltHide = true;
+            // if (cltAccess === ACCESS_TYPE.NOACCESS || cltAccess === ""  ) 
+            //     cltHide = true;
+            
+            // if the user type is client the client date entry and list is also hide
+            cltHide = true;
 
             if (rolAccess === ACCESS_TYPE.NOACCESS || rolAccess === ""  ) 
                 rolHide = true;

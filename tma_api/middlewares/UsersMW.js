@@ -4,7 +4,11 @@ var User = require('../models/User');
 var UsersMW = {
     getUserList: function(req, res, next)
     {
-        User.getUserList(req.body, function (err, rows){
+        var clientId = null;
+        if(req.params.id)
+            clientId = req.params.id;
+
+        User.getUserList(clientId, req.body, function (err, rows){
 
             var results = "";
             
@@ -21,7 +25,11 @@ var UsersMW = {
 
     countUsers: function(req, res)
     {
-        User.countTotalUsers(req.body, function (err, fields){
+        var clientId = null;
+        if(req.params.id)
+            clientId = req.params.id;
+
+        User.countTotalUsers(clientId, req.body, function (err, fields){
 
             var results = "";
 

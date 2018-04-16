@@ -142,6 +142,6 @@ router.put('/:id', function (req, res, next) {
 	});
 });
 
-router.post('/getUserList/', getUserList, countUsers);
+router.post('/getUserList/:id?', getUserList, countUsers);
 
 module.exports = router;

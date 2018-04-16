@@ -17,7 +17,7 @@ class SideBar extends Component {
             cltHide: false,
             rolHide: false,
             txnHide: false,
-            usrHide: false
+            usrHide: false,
         }
     }
 
@@ -48,8 +48,11 @@ class SideBar extends Component {
             if (dbAccess === ACCESS_TYPE.NOACCESS || dbAccess === ""  ) 
                 dbHide = true;
                 
-            if (cltAccess === ACCESS_TYPE.NOACCESS || cltAccess === ""  ) 
-                cltHide = true;
+            // if (cltAccess === ACCESS_TYPE.NOACCESS || cltAccess === ""  ) 
+            //     cltHide = true;
+
+            // CLIENTS is already hide if the user type is CLIENT
+            cltHide = true;
 
             if (rolAccess === ACCESS_TYPE.NOACCESS || rolAccess === ""  ) 
                 rolHide = true;

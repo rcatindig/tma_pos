@@ -135,11 +135,17 @@ var User = {
         return db.query(sql, parameters, callback);
     },
     // USE FOR REACT TABLE
-    countTotalUsers: function (ReactTable, callback) {
-        return db.query("SELECT COUNT(*) as total  FROM users", callback);
+    countTotalUsers: function (clientId, ReactTable, callback) {
+        
+        let where = "";
+
+        if(clientId !== null)
+            where = " WHERE client_id = '" + clientId + "'";
+
+        return db.query("SELECT COUNT(*) as total  FROM users" + where, callback);
     },
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
-    getUserList: function (ReactTable, callback) {
+    getUserList: function (clientId, ReactTable, callback) {
 
         const {
             pageSize,
@@ -152,6 +158,11 @@ var User = {
 
         let whereClause = "";
         let orderBy = "";
+
+        console.log(clientId);
+
+        if (clientId !== null)
+            whereClause =  whereClause + " AND u.client_id = '" + clientId + "'";
 
         for (let i = 0; i < filtered.length; i++) {
             let filter = filtered[i];

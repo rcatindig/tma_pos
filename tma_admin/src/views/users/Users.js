@@ -77,14 +77,15 @@ class Users extends Component {
             role_id: "",  
             readOnly: false,
             accessType: ACCESS_TYPE.NOACCESS,
+            isSetup: true,
         }
 
         
         this.Auth = new AuthService();
         this.Token = this.Auth.getToken();
+        this.profile = this.Auth.getProfile();
 
         this.fetchData = this.fetchData.bind(this);
-
     }
 
     fetchData = async(state, instance) => {
@@ -94,6 +95,10 @@ class Users extends Component {
         var readOnly = false;
 
         var accessType = ACCESS_TYPE.NOACCESS;
+
+        var url = users_url + 'getUserList/';
+
+        
 
         if(userType === USER_TYPE.CLIENT)
         {
@@ -106,13 +111,23 @@ class Users extends Component {
                 readOnly = true;
 
             accessType = txnAccess;
+
+           
+
+            this.setState({isSetup: false });
+            
+            var clientId = this.profile.client_id;
+
+            url += "" + clientId; 
+
         }
 
-        this.setState({ loading: true })
+        this.setState({ loading: true,
+            readOnly: readOnly,
+            accessType: accessType,
+            });
 
         let self = this;
-
-        const url = users_url + 'getUserList/';
 
         const { pageSize, page, sorted, filtered } = state;
 
@@ -146,9 +161,7 @@ class Users extends Component {
                 self.setState({
                     data: res.transactions,
                     pages: pages,
-                    loading: false,
-                    readOnly: readOnly,
-                    accessType: accessType
+                    loading: false
                 });
             })
         .catch(function(err){
@@ -297,14 +310,13 @@ class Users extends Component {
     }
     
 
-    handleEditButtonClick (e, row) {
+    handleEditButtonClick = (e, row) => {
         var data = row._original;
         var id = data.id;
 
         var self = this;
 
-
-
+       
         
         //const countryOptions = [];
 
@@ -319,6 +331,7 @@ class Users extends Component {
             .then(results => { 
                 return results.json();
             }).then(res => {
+
                 if(res.length > 0)
                 {
                     var result = res[0];
@@ -338,7 +351,7 @@ class Users extends Component {
                         status: result.status,
                         //confirmPassword: result.password,
                         statesOptions: [],
-                        client_id: result.client_id,
+                        client_id:  result.client_id,
                         typeUser: result.is_client,
                         role_id: result.role_id == null ? "" : result.role_id,
                         modalUserTitle: "Edit",
@@ -364,7 +377,11 @@ class Users extends Component {
 
     }
 
-    showCreateModal = () => {
+    showCreateModal = async() => {
+
+        const userType =  await CheckUserType();
+    
+    
         this.setState({openModal: true, 
             userId: "",
             first_name: "",
@@ -380,7 +397,7 @@ class Users extends Component {
             status: "",
             confirmPassword: "",
             statesOptions: [],
-            client_id: "",
+            client_id: userType === USER_TYPE.CLIENT ? this.profile.client_id : "",
             changePassword: false,
             modalUserTitle: "Add",
             modalUserSaveBtn: "Save",
@@ -618,7 +635,8 @@ class Users extends Component {
                 role_id,
                 rolesOptions,
                 readOnly,
-                accessType
+                accessType,
+                isSetup,
              } = this.state;
 
         const columns = [{
@@ -648,7 +666,8 @@ class Users extends Component {
             }, {
                 id: 'c.name',
                 Header: 'Company',
-                accessor: 'company'
+                accessor: 'company',
+                show: isSetup
             }, 
             // {
             //     id: 'u.address',
@@ -834,7 +853,7 @@ class Users extends Component {
                                 
                             </div>
 
-                            <div className="form-row">
+                            <div className="form-row" hidden={!isSetup ? true : false}>
                                 <div className="form-group col-md-12">
                                     <label htmlFor="first_name">Company</label>
                                     <Select
