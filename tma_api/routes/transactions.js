@@ -35,7 +35,7 @@ router.get('/:id?', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
 
-  console.log(req.body);
+
 
   Transaction.addTransaction(req.body, function (err, count) {
     if (err) {
@@ -43,12 +43,12 @@ router.post('/', function (req, res, next) {
       console.log(err);
     } else {
       res.json(req.body); //or return count for 1 &amp;amp;amp; 0
-      console.log(req.body);
+      
     }
   });
 });
 
-router.post('/getTransactions/', getTransactionList, countTransactions);
+router.post('/getTransactions/:id?', getTransactionList, countTransactions);
 
 router.delete('/:id', function (req, res, next) {
 
@@ -66,7 +66,6 @@ router.delete('/:id', function (req, res, next) {
 
 router.put('/:id', function (req, res, next) {
 
-  console.log("HELLO WOrld");
   Transaction.updateTransaction(req.params.id, req.body, function (err, rows) {
 
     if (err) {

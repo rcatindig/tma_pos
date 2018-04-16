@@ -13,7 +13,7 @@ var Transaction = {
     },
 
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
-    getTransactions: function(ReactTable, callback)
+    getTransactions: function(clientId, ReactTable, callback)
     {
         
         const { pageSize, page, sorted, filtered } = ReactTable;
@@ -22,6 +22,9 @@ var Transaction = {
 
         let whereClause = "";
         let orderBy = "";
+
+        if(clientId !== null)
+            whereClause = whereClause + "AND c.id = '" + clientId + "'"; 
 
         for(let i = 0; i < filtered.length; i++)
         {
@@ -63,7 +66,9 @@ var Transaction = {
         
 
         const sql = `
-                SELECT * FROM transactions
+                SELECT t.*, c.name client FROM transactions t
+                LEFT JOIN clients c
+                ON t.client_code = c.code
                 WHERE 1=1
                 ${whereClause}
                 ${orderBy}
@@ -79,9 +84,20 @@ var Transaction = {
     },
 
     // USE FOR REACT TABLE
-    countTotalTransactions: function(ReactTable, callback)
+    countTotalTransactions: function(clientId, ReactTable, callback)
     {
-       return db.query("SELECT COUNT(*) as total  FROM transactions", callback);
+        
+        const sql = `
+                SELECT COUNT(*) as total FROM transactions t
+                LEFT JOIN clients c
+                ON t.client_code = c.code
+            `;
+        let where = "";
+
+        if(clientId !== null)
+            where = " WHERE c.id = '" + clientId + "' "
+
+        return db.query(sql + where, callback);
     },
 
 

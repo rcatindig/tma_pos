@@ -4,7 +4,12 @@ var Transaction = require('../models/Transaction');
 var TransactionsMW = {
     getTransactionList: function(req, res, next)
     {
-        Transaction.getTransactions(req.body, function (err, rows){
+        let clientId = null;
+
+        if(req.params.id)
+            clientId = req.params.id;
+
+        Transaction.getTransactions(clientId, req.body, function (err, rows){
 
             var results = "";
             
@@ -21,7 +26,12 @@ var TransactionsMW = {
 
     countTransactions: function(req, res)
     {
-        Transaction.countTotalTransactions(req.body, function (err, fields){
+        let clientId = null;
+
+        if(req.params.id)
+            clientId = req.params.id;
+
+        Transaction.countTotalTransactions(clientId, req.body, function (err, fields){
 
             var results = "";
 

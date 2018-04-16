@@ -17,6 +17,8 @@ import { MODULE, ACCESS_TYPE, USER_TYPE } from '../../constants';
 // constants 
 import { API } from '../../constants';
 
+import AuthService from '../../utils/AuthService';
+
 
 
 class Transactions extends Component {
@@ -52,38 +54,19 @@ class Transactions extends Component {
             vat: "",
             readOnly: false,
             accessType: ACCESS_TYPE.NOACCESS,
+            client_id: "",
         }
+        
+
+        this.Auth = new AuthService();
+        this.Token = this.Auth.getToken();
+        this.profile = this.Auth.getProfile();
 
         this.fetchData = this.fetchData.bind(this);
     }
 
 
-    componentDidMount = async () => {
-
-        const userType = await CheckUserType();
-
-        if(this.userType === USER_TYPE.CLIENT)
-        {
-            // GET ROLE PERMISSION OF THE USER
-            //var readOnly = false;
-
-
-            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
-
-            // if (txnAccess === ACCESS_TYPE.READONLY  ) 
-            //     readOnly = true;
-            
-                
-
-            this.setState({
-                //readOnly: readOnly,
-                accessType: txnAccess,
-            });
-        }
-    }
-
-    fetchData = async(state, instance) => {
-
+    componentWillMount = async () => {
 
         const userType =  await CheckUserType();
 
@@ -102,14 +85,33 @@ class Transactions extends Component {
                 readOnly = true;
 
             accessType = txnAccess;
+
+            this.setState({client_id: this.profile.client_id});
         }
+
+        this.setState({
+            readOnly: readOnly,
+            accessType: accessType,
+            userType: userType });
+    }
+
+    fetchData = async (state, instance) => {
+
+        const userType =  await CheckUserType();
+
+        console.log(userType);
 
 
         this.setState({ loading: true })
 
         let self = this;
 
-        const url = API.TRANSACTIONS + 'getTransactions/';
+        var url = API.TRANSACTIONS + 'getTransactions/';
+
+        if(userType === USER_TYPE.CLIENT)
+            url += this.profile.client_id;
+
+        console.log(url);
 
         const { pageSize, page, sorted, filtered } = state;
 
@@ -140,8 +142,6 @@ class Transactions extends Component {
                     data: res.transactions,
                     pages: pages,
                     loading: false,
-                    readOnly: readOnly,
-                    accessType: accessType
                 });
 
             })
@@ -298,30 +298,26 @@ class Transactions extends Component {
              } = this.state;
 
         const columns = [{
+                id: 'c.name',
+                Header: 'Client',
+                accessor: 'client'
+            },{
+                id: 't.company',
                 Header: 'Company',
-                accessor: 'company'
+                accessor: 'company',
+                width: 70
             }, {
-                id: 'txndate',
+                id: 't.txndate',
                 Header: 'Transaction Date',
                 accessor: t => {
                     return Moment(t.txndate)
                             .local().format("MMMM DD, YYYY hh:mm a")
                 }
             }, {
-                Header: 'Epan',
-                accessor: 'epan'
-            }, {
+                id: 't.licplate',
                 Header: 'Licence Plate',
-                accessor: 'licplate'
-            }, {
-                Header: 'User Id',
-                accessor: 'userid'
-            }, {
-                Header: 'Machine Id',
-                accessor: 'machineid'
-            }, {
-                Header: 'Serial Number',
-                accessor: 'serialno'
+                accessor: 'licplate',
+                width: 80
             }, {
                 id: 'entrydatetime',
                 Header: 'Entry Date/Time',
@@ -341,6 +337,7 @@ class Transactions extends Component {
                 id: 'edit-button',
                 filterable: false,
                 sortable: false,
+                width: 80,
                 Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>{(readOnly) ? "View" : "Edit"}</button></div>)
             }
         ];
