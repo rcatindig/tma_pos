@@ -46,16 +46,19 @@ class Roles extends Component {
             openAccessModal: false,            
             readOnly: false,
             accessType: ACCESS_TYPE.NOACCESS,
+            isSetUp: true,
+            userType: USER_TYPE.ADMIN
         }
         this.Auth = new AuthService();
         this.Token = this.Auth.getToken();
 
         this.fetchData = this.fetchData.bind(this);
         this.saveAccessControl = this.saveAccessControl.bind(this);
+
+        this.profile = this.Auth.getProfile();
     }
 
-
-    fetchData = async(state, instance) => {
+    componentWillMount = async () => {
 
         const userType =  await CheckUserType();
 
@@ -76,13 +79,23 @@ class Roles extends Component {
             accessType = txnAccess;
         }
 
-        this.setState({ loading: true,
+        this.setState({
             readOnly: readOnly,
-            accessType: accessType });
+            accessType: accessType,
+            userType: userType });
+    }
+
+
+    fetchData = (state, instance) => {
+
+       
 
         let self = this;
 
         const url = role_url + 'getRoleList/';
+
+
+        this.setState({ loading: true });
 
         const { pageSize, page, sorted, filtered } = state;
 
@@ -303,10 +316,13 @@ class Roles extends Component {
     
     addModal = () => {
 
+        const { userType } = this.state;
+        
+
         this.setState({openModal: true, 
             roleId: "",
             name: "",
-            clientId: "",
+            clientId: userType === USER_TYPE.CLIENT ? this.profile.client_id : "",
             modalRoleTitle: "Add Role",
             modalRoleBtnSave: "Save"            
         });
@@ -493,13 +509,15 @@ class Roles extends Component {
                 clientsAccess,
                 usersAccess,
                 rolesAccess,
-                readOnly
+                readOnly,
+                userType
              } = this.state;
 
         const columns = [{
                 id: 'c.name',
                 Header: 'Company',
-                accessor: 'client'
+                accessor: 'client',
+                show: userType === USER_TYPE.CLIENT ? false : true,
             }, {
                 id: 'r.name',
                 Header: 'Title',
@@ -589,7 +607,7 @@ class Roles extends Component {
                     >
                     <div className="modal-body ">
                         <form className="form-control">
-                            <div className="form-row">
+                            <div className="form-row" hidden={userType === USER_TYPE.CLIENT ? true : false}>
                                 <div className="form-group col-md-12">
                                     <label htmlFor="first_name">Company</label>
                                     <Select
