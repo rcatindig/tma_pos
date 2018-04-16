@@ -9,9 +9,7 @@ const role_permission_url = API.ROLE_PERMISSIONS;
 const CheckUserType = async() => { 
 
     const Auth = new AuthService();
-    const Token = Auth.getToken();
     const profile = Auth.getProfile();
-
     const is_client = profile.is_client;
 
     return is_client;
@@ -41,7 +39,7 @@ const GetPermission = async(mod) => {
             headers: new Headers({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + this.Token
+                'Authorization': 'Bearer ' + Token
             })
         }).then((response) => {
             

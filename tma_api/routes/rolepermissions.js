@@ -9,6 +9,8 @@ var jwtCheck = jwt({
 	secret: config.secretKey
 });
 
+router.use('/', jwtCheck);
+
 router.get('/:id?', function (req, res, next) {
 
 	if (req.params.id) {

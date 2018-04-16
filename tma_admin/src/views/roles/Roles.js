@@ -12,8 +12,12 @@ import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 
 import AuthService from '../../utils/AuthService';
 
+// use for permission
+import { GetPermission, CheckUserType } from '../../helpers';
+
 // constants 
-import { API, ACCESS_TYPE, MODULE } from '../../constants';
+import { API, ACCESS_TYPE, MODULE, USER_TYPE } from '../../constants';
+// import { read } from 'fs';
 
 const role_url = API.ROLES;
 const client_url = API.CLIENTS;
@@ -39,7 +43,9 @@ class Roles extends Component {
             clientOptions: [],
             modalRoleTitle: "Add Role",
             modalRoleBtnSave: "Save",
-            openAccessModal: false,
+            openAccessModal: false,            
+            readOnly: false,
+            accessType: ACCESS_TYPE.NOACCESS,
         }
         this.Auth = new AuthService();
         this.Token = this.Auth.getToken();
@@ -48,9 +54,31 @@ class Roles extends Component {
         this.saveAccessControl = this.saveAccessControl.bind(this);
     }
 
-    fetchData = (state, instance) => {
 
-        this.setState({ loading: true })
+    fetchData = async(state, instance) => {
+
+        const userType =  await CheckUserType();
+
+        var readOnly = false;
+
+        var accessType = ACCESS_TYPE.NOACCESS;
+
+        if(userType === USER_TYPE.CLIENT)
+        {
+            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
+            if(txnAccess === ACCESS_TYPE.NOACCESS)
+                return;
+
+
+            if(txnAccess === ACCESS_TYPE.READONLY)
+                readOnly = true;
+
+            accessType = txnAccess;
+        }
+
+        this.setState({ loading: true,
+            readOnly: readOnly,
+            accessType: accessType });
 
         let self = this;
 
@@ -85,7 +113,7 @@ class Roles extends Component {
                 self.setState({
                     data: res.roles,
                     pages: pages,
-                    loading: false
+                    loading: false,
                 });
             })
         .catch(function(err){
@@ -148,6 +176,11 @@ class Roles extends Component {
     }
 
     updateData = (data) => {
+
+        const readOnly = this.state.readOnly;
+
+        if(readOnly)
+            alert("Error. You are not allowed to save the data.");
 
         var id = data.id;
 
@@ -427,7 +460,7 @@ class Roles extends Component {
             headers: new Headers({
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                // 'Authorization': 'Bearer ' + this.Token
+                'Authorization': 'Bearer ' + this.Token
             })
         }).then((response) => { 
                 console.log(response);
@@ -460,6 +493,7 @@ class Roles extends Component {
                 clientsAccess,
                 usersAccess,
                 rolesAccess,
+                readOnly
              } = this.state;
 
         const columns = [{
@@ -482,7 +516,7 @@ class Roles extends Component {
                 id: 'edit-button',
                 filterable: false,
                 sortable: false,
-                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
+                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>{readOnly ? "View" : "Edit"}</button></div>)
             }
         ];
 
@@ -500,6 +534,18 @@ class Roles extends Component {
                                     label: "Full Access"
                                 }
                             ];
+
+
+        var addBtn = [];
+
+        if(!readOnly)
+        {
+            addBtn = [{id: "add-button", 
+                    class: "btn btn-success waves-effect waves-light pull-right", 
+                    title: "Add",
+                    onClick: this.addModal
+                }];
+        }
      
         return (
             <PageWrapper>
@@ -510,11 +556,7 @@ class Roles extends Component {
                             <Card 
                                 title="Roles" 
                                 subTitle="List of Roles"
-                                buttons={[{id: "add-button", 
-                                    class: "btn btn-success waves-effect waves-light pull-right", 
-                                    title: "Add",
-                                    onClick: this.addModal
-                                }]}
+                                buttons={addBtn}
                                 >
                                 <div className="table-responsive m-t-20">
                                     <ReactTable
@@ -557,7 +599,7 @@ class Roles extends Component {
                                         options={clientOptions}
                                         value={clientId}
                                         placeholder="Select Company..."
-                                        onChange={(event) => this.setState({clientId: event.target.value })}
+                                        onChange={(event) => (!readOnly) ?  this.setState({clientId: event.target.value }) : clientId}
                                     />
                                 </div>                           
                             </div>
@@ -569,7 +611,7 @@ class Roles extends Component {
                                         id="name" 
                                         placeholder="Name" 
                                         value={name} 
-                                        onChange={(event) => this.setState({name: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name }/>
                                 </div>
                             </div>
 
@@ -580,7 +622,7 @@ class Roles extends Component {
                     </div>
                     
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalRoleBtnSave}</button>
+                        <button hidden={readOnly} type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalRoleBtnSave}</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>
@@ -604,7 +646,7 @@ class Roles extends Component {
                                         options={accessOptions}
                                         value={dashboardAccess !== "" ? dashboardAccess : ACCESS_TYPE.NOACCESS}
                                         placeholder="Select Access..."
-                                        onChange={(event) => this.setState({dashboardAccess: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({dashboardAccess: event.target.value }) : dashboardAccess }
                                     />
                                 </div>                           
                             </div>
@@ -619,7 +661,7 @@ class Roles extends Component {
                                         options={accessOptions}
                                         value={transactionsAccess !== "" ? transactionsAccess : ACCESS_TYPE.NOACCESS}
                                         placeholder="Select Access..."
-                                        onChange={(event) => this.setState({transactionsAccess: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({transactionsAccess: event.target.value }) : transactionsAccess}
                                     />
                                 </div>                           
                             </div>
@@ -634,7 +676,7 @@ class Roles extends Component {
                                         options={accessOptions}
                                         value={backendReportAccess !== "" ? backendReportAccess : ACCESS_TYPE.NOACCESS}
                                         placeholder="Select Access..."
-                                        onChange={(event) => this.setState({backendReportAccess: event.target.value })}
+                                        onChange={(event) => (!readOnly) ?  this.setState({backendReportAccess: event.target.value }) : backendReportAccess}
                                     />
                                 </div>                           
                             </div>
@@ -648,7 +690,7 @@ class Roles extends Component {
                                         options={accessOptions}
                                         value={clientsAccess !== "" ? clientsAccess : ACCESS_TYPE.NOACCESS}
                                         placeholder="Select Access..."
-                                        onChange={(event) => this.setState({clientsAccess: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({clientsAccess: event.target.value }) : clientsAccess}
                                     />
                                 </div>                           
                             </div>
@@ -662,7 +704,7 @@ class Roles extends Component {
                                         options={accessOptions}
                                         value={usersAccess !== "" ? usersAccess : ACCESS_TYPE.NOACCESS}
                                         placeholder="Select Access..."
-                                        onChange={(event) => this.setState({usersAccess: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({usersAccess: event.target.value }) : usersAccess}
                                     />
                                 </div>                           
                             </div>
@@ -676,7 +718,7 @@ class Roles extends Component {
                                         options={accessOptions}
                                         value={rolesAccess !== "" ? rolesAccess : ACCESS_TYPE.NOACCESS}
                                         placeholder="Select Access..."
-                                        onChange={(event) => this.setState({rolesAccess: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({rolesAccess: event.target.value }) : rolesAccess}
                                     />
                                 </div>                           
                             </div>
@@ -684,7 +726,7 @@ class Roles extends Component {
                     </div>
                     
                     <div className="modal-footer">
-                        <button className="btn btn-primary" onClick={() => this.saveAccessControl()}>{modalRoleBtnSave}</button>
+                        <button hidden={readOnly} className="btn btn-primary" onClick={() => this.saveAccessControl()}>{modalRoleBtnSave}</button>
                         <button className="btn btn-secondary" onClick={() => this.closeAccessControl()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>

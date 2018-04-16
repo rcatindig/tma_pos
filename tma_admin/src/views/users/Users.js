@@ -16,11 +16,15 @@ import AuthService from '../../utils/AuthService';
 import { Card, PageHeader, PageWrapper, Modal, Select, Switch } from '../../components';
 
 // constants 
-import { API, SALT_ROUNDS, STATUS, USER_TYPE } from '../../constants';
+import { API, SALT_ROUNDS, STATUS, USER_TYPE, ACCESS_TYPE, MODULE } from '../../constants';
+
+// use for permission
+import { GetPermission, CheckUserType } from '../../helpers';
 
 
 // bcryptjs
 import bcrypt from 'bcryptjs';
+import { read } from 'fs';
 const salt = bcrypt.genSaltSync(SALT_ROUNDS);
 
 const client_url = API.CLIENTS;
@@ -70,7 +74,9 @@ class Users extends Component {
             typeUser: "",
             hasRoles: false,
             rolesOptions: [],
-            role_id: "",
+            role_id: "",  
+            readOnly: false,
+            accessType: ACCESS_TYPE.NOACCESS,
         }
 
         
@@ -81,7 +87,26 @@ class Users extends Component {
 
     }
 
-    fetchData = (state, instance) => {
+    fetchData = async(state, instance) => {
+
+        const userType =  await CheckUserType();
+
+        var readOnly = false;
+
+        var accessType = ACCESS_TYPE.NOACCESS;
+
+        if(userType === USER_TYPE.CLIENT)
+        {
+            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
+            if(txnAccess === ACCESS_TYPE.NOACCESS)
+                return;
+
+
+            if(txnAccess === ACCESS_TYPE.READONLY)
+                readOnly = true;
+
+            accessType = txnAccess;
+        }
 
         this.setState({ loading: true })
 
@@ -121,7 +146,9 @@ class Users extends Component {
                 self.setState({
                     data: res.transactions,
                     pages: pages,
-                    loading: false
+                    loading: false,
+                    readOnly: readOnly,
+                    accessType: accessType
                 });
             })
         .catch(function(err){
@@ -447,6 +474,12 @@ class Users extends Component {
         
 
     onChangeCountry = (event) => {
+        
+        const { country_id, readOnly } = this.state;
+
+        if(readOnly)
+            return;
+
         const countryId = event.target.value;
         this.setState({country_id: countryId});
 
@@ -502,6 +535,12 @@ class Users extends Component {
     }
 
     onChangeCompany = (event) => {
+
+        const { readOnly } = this.state;
+
+        if(readOnly)
+            return;
+
         const clientId = event.target.value;
         this.setState({client_id: clientId, roleOptions: []});
 
@@ -577,7 +616,9 @@ class Users extends Component {
                 modalUserSaveBtn,
                 showTypeModal,
                 role_id,
-                rolesOptions
+                rolesOptions,
+                readOnly,
+                accessType
              } = this.state;
 
         const columns = [{
@@ -635,9 +676,21 @@ class Users extends Component {
                 filterable: false,
                 sortable: false,
                 width: 70,
-                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
+                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>{readOnly ? 'View' : 'Edit'}</button></div>)
             }
         ];
+
+        var btns = [];
+
+
+        if(!readOnly)
+        {
+            btns = [{id: "add-button", 
+                        class: "btn btn-success waves-effect waves-light pull-right", 
+                        title: "Add",
+                        onClick: this.openModal
+                    }];
+        }
 
      
         return (
@@ -649,11 +702,7 @@ class Users extends Component {
                             <Card 
                                 title="Users"
                                 subTitle="List of Users"
-                                buttons={[{id: "add-button", 
-                                    class: "btn btn-success waves-effect waves-light pull-right", 
-                                    title: "Add",
-                                    onClick: this.openModal
-                                }]}
+                                buttons={btns}
                                 >
                                 <div className="table-responsive m-t-20">
                                     <ReactTable
@@ -709,7 +758,7 @@ class Users extends Component {
                                         id="first_name" 
                                         placeholder="First Name" 
                                         value={first_name} 
-                                        onChange={(event) => this.setState({first_name: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({first_name: event.target.value }) : first_name}/>
                                 </div>                           
                             </div>
                             <div className="form-row">
@@ -720,7 +769,7 @@ class Users extends Component {
                                         id="middle_name" 
                                         placeholder="Middle Name" 
                                         value={middle_name} 
-                                        onChange={(event) => this.setState({middle_name: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({middle_name: event.target.value }) : middle_name}/>
                                 </div> 
                             </div>
                             <div className="form-row">
@@ -731,7 +780,7 @@ class Users extends Component {
                                         id="surname" 
                                         placeholder="Surname" 
                                         value={surname} 
-                                        onChange={(event) => this.setState({surname: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({surname: event.target.value }) : surname}/>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label htmlFor="middle_name">Extension</label>
@@ -740,7 +789,7 @@ class Users extends Component {
                                         id="extension" 
                                         placeholder="Extension" 
                                         value={extension} 
-                                        onChange={(event) => this.setState({extension: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({extension: event.target.value }) : extension }/>
                                 </div> 
                             </div>
                             
@@ -752,7 +801,7 @@ class Users extends Component {
                                         id="address" 
                                         placeholder="Address" 
                                         value={address} 
-                                        onChange={(event) => this.setState({address: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({address: event.target.value }) : address }/>
                                 </div>                            
                             </div>
                             <div className="form-row">
@@ -779,7 +828,7 @@ class Users extends Component {
                                         options={this.state.statesOptions}
                                         value={state_id}
                                         placeholder="Select State/Region..."
-                                        onChange={(event) => this.setState({state_id: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({state_id: event.target.value }) : state_id}
                                     />
                                 </div>
                                 
@@ -810,7 +859,7 @@ class Users extends Component {
                                             id="username"
                                             placeholder="Username"
                                             value={username} 
-                                            onChange={(event) => this.setState({username: event.target.value })}/>
+                                            onChange={(event) => (!readOnly) ?  this.setState({username: event.target.value }) : username}/>
                                     </div>
                                     
                                 </div>
@@ -822,11 +871,11 @@ class Users extends Component {
                                             id="email"
                                             placeholder="Email"
                                             value={email} 
-                                            onChange={(event) => this.setState({email: event.target.value })}/>
+                                            onChange={(event) => (!readOnly) ? this.setState({email: event.target.value }) : email}/>
                                     </div>
                                 </div>
 
-                                <div className="form-row justify-content-center">
+                                <div className="form-row justify-content-center" hidden={readOnly}>
 
                                     <div className="switch-container">                                    
                                         <label className="switch">
@@ -858,7 +907,7 @@ class Users extends Component {
                                         <input type="password" 
                                             className="form-control"
                                             id="confirmpassword"
-                                            placeholder="Username"
+                                            placeholder="Confirm Password"
                                             value={confirmPassword} 
                                             onChange={(event) => this.setState({confirmPassword: event.target.value })}/>
                                     </div>
@@ -876,7 +925,7 @@ class Users extends Component {
                                         name="status"
                                         options={[{value: STATUS.ACTIVE, label: "Active"}, {value: STATUS.INACTIVE, label: "Inactive"}]}
                                         value={status}
-                                        onChange={(event) => this.setState({status: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({status: event.target.value }) : status}
                                     />
                                     
                                 </div>
@@ -890,7 +939,7 @@ class Users extends Component {
                                         options={rolesOptions}
                                         value={role_id}
                                         placeholder="Select Role..."
-                                        onChange={(event) => this.setState({role_id: event.target.value })}
+                                        onChange={(event) => (!readOnly) ? this.setState({role_id: event.target.value }) : role_id}
                                     />
                                 </div>
 
@@ -898,7 +947,7 @@ class Users extends Component {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalUserSaveBtn}</button>
+                        <button hidden={readOnly} type="button" className="btn btn-primary" onClick={() => this.saveData()}>{modalUserSaveBtn}</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>

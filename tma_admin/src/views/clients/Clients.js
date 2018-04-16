@@ -14,7 +14,10 @@ import AuthService from '../../utils/AuthService';
 import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
 
 // constants 
-import { API } from '../../constants';
+import { API, USER_TYPE, ACCESS_TYPE, MODULE } from '../../constants';
+
+// use for permission
+import { GetPermission, CheckUserType } from '../../helpers';
 
 const client_url = API.CLIENTS;
 const country_url = API.COUNTRIES;
@@ -50,6 +53,8 @@ class Clients extends Component {
             countryOptions: [],
             statesOptions: [],
             isChecked: true,
+            readOnly: false,
+            accessType: ACCESS_TYPE.NOACCESS,
         }
 
         
@@ -58,9 +63,30 @@ class Clients extends Component {
         this.fetchData = this.fetchData.bind(this);
     }
 
-    fetchData = (state, instance) => {
+    fetchData = async(state, instance) => {
 
-        this.setState({ loading: true })
+        const userType =  await CheckUserType();
+
+        var readOnly = false;
+
+        var accessType = ACCESS_TYPE.NOACCESS;
+
+        if(userType === USER_TYPE.CLIENT)
+        {
+            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
+            if(txnAccess === ACCESS_TYPE.NOACCESS)
+                return;
+
+
+            if(txnAccess === ACCESS_TYPE.READONLY)
+                readOnly = true;
+
+            accessType = txnAccess;
+        }
+
+        this.setState({ loading: true,
+            readOnly: readOnly,
+            accessType: accessType });
 
         let self = this;
 
@@ -357,6 +383,12 @@ class Clients extends Component {
                                     });
 
     onChangeCountry = (event) => {
+
+        const { readOnly } = this.state;
+
+        if(readOnly)
+            return;
+
         const countryId = event.target.value;
         this.setState({country_id: countryId});
 
@@ -417,6 +449,7 @@ class Clients extends Component {
                 status,
                 permit_no,
                 tin,
+                readOnly
              } = this.state;
 
         const columns = [{
@@ -446,9 +479,21 @@ class Clients extends Component {
                 id: 'edit-button',
                 filterable: false,
                 sortable: false,
-                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
+                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>{!readOnly ? 'Edit' : 'View'}</button></div>)
             }
         ];
+
+
+        var btn = [];
+
+        if(!readOnly)
+        {
+            btn = [{id: "add-button", 
+                    class: "btn btn-success waves-effect waves-light pull-right", 
+                    title: "Add",
+                    onClick: this.openModal
+                }];
+        }
 
      
         return (
@@ -460,11 +505,7 @@ class Clients extends Component {
                             <Card 
                                 title="Clients"
                                 subTitle="List of Clients"
-                                buttons={[{id: "add-button", 
-                                    class: "btn btn-success waves-effect waves-light pull-right", 
-                                    title: "Add",
-                                    onClick: this.openModal
-                                }]}
+                                buttons={btn}
                                 >
                                 <div className="table-responsive m-t-20">
                                     <ReactTable
@@ -504,7 +545,7 @@ class Clients extends Component {
                                         id="code" 
                                         placeholder="CODE" 
                                         value={code} 
-                                        onChange={(event) => this.setState({code: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({code: event.target.value }) : code}/>
                                 </div>                            
                             </div>
                             <div className="form-row">
@@ -515,7 +556,7 @@ class Clients extends Component {
                                         id="name" 
                                         placeholder="Name" 
                                         value={name} 
-                                        onChange={(event) => this.setState({name: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name}/>
                                 </div>                            
                             </div>
                             <div className="form-row">
@@ -526,7 +567,7 @@ class Clients extends Component {
                                         id="address" 
                                         placeholder="Address" 
                                         value={address} 
-                                        onChange={(event) => this.setState({address: event.target.value })}/>
+                                        onChange={(event) =>  (!readOnly) ? this.setState({address: event.target.value }) : address}/>
                                 </div>                            
                             </div>
                             <div className="form-row">
@@ -553,7 +594,7 @@ class Clients extends Component {
                                         options={this.state.statesOptions}
                                         value={state_id}
                                         placeholder="Select State/Region..."
-                                        onChange={(event) => this.setState({state_id: event.target.value })}
+                                        onChange={(event) =>  (!readOnly) ? this.setState({state_id: event.target.value }) : state_id}
                                     />
                                     
                                 </div>
@@ -567,7 +608,7 @@ class Clients extends Component {
                                         id="email"
                                         placeholder="Email"
                                         value={email} 
-                                        onChange={(event) => this.setState({email: event.target.value })}/>
+                                        onChange={(event) =>  (!readOnly) ? this.setState({email: event.target.value }) : email}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="tel_no">Telephone No.</label>
@@ -576,7 +617,7 @@ class Clients extends Component {
                                         id="tel_no" 
                                         placeholder="Telephone No." 
                                         value={tel_no} 
-                                        onChange={(event) => this.setState({tel_no: event.target.value })} />
+                                        onChange={(event) =>  (!readOnly) ? this.setState({tel_no: event.target.value }) : tel_no} />
                                 </div>
                                 
                             </div>
@@ -589,7 +630,7 @@ class Clients extends Component {
                                         id="tin"
                                         placeholder="TIN"
                                         value={tin} 
-                                        onChange={(event) => this.setState({tin: event.target.value })}/>
+                                        onChange={(event) =>  (!readOnly) ? this.setState({tin: event.target.value }) : tin}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="permit_no">Permit No.</label>
@@ -598,7 +639,7 @@ class Clients extends Component {
                                         id="permit_no" 
                                         placeholder="Permit No." 
                                         value={permit_no} 
-                                        onChange={(event) => this.setState({permit_no: event.target.value })} />
+                                        onChange={(event) =>  (!readOnly) ? this.setState({permit_no: event.target.value }) : permit_no} />
                                 </div>
                                 
                             </div>
@@ -614,7 +655,7 @@ class Clients extends Component {
                                         name="status"
                                         options={[{value: 0, label: "Active"}, {value: 1, label: "Inactive"}]}
                                         value={status}
-                                        onChange={(event) => this.setState({status: event.target.value })}
+                                        onChange={(event) =>  (!readOnly) ? this.setState({status: event.target.value }) : status}
                                     />
                                     
                                 </div>
@@ -623,7 +664,7 @@ class Clients extends Component {
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.saveData()}>Save changes</button>
+                        <button hidden={readOnly} type="button" className="btn btn-primary" onClick={() => this.saveData()}>Save changes</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>

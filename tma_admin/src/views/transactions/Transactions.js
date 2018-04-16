@@ -52,7 +52,6 @@ class Transactions extends Component {
             vat: "",
             readOnly: false,
             accessType: ACCESS_TYPE.NOACCESS,
-            actionBtnTitle: "Edit"
         }
 
         this.fetchData = this.fetchData.bind(this);
@@ -60,12 +59,6 @@ class Transactions extends Component {
 
 
     componentDidMount = async () => {
-        var brHide = false,
-            dbHide = false,
-            cltHide = false,
-            rolHide = false,
-            txnHide = false,
-            usrHide = false;
 
         const userType = await CheckUserType();
 
@@ -93,8 +86,6 @@ class Transactions extends Component {
 
 
         const userType =  await CheckUserType();
-        
-        var actionBtnTitle = 'Edit';
 
         var readOnly = false;
 
@@ -160,6 +151,12 @@ class Transactions extends Component {
     }
 
     updateData = () => {
+
+
+        const readOnly = this.state.readOnly;
+
+        if(readOnly)
+            alert("Error. You are not allowed to save the data.");
 
         var data = this.state;
         data.txndate = Moment(data.txndate).format("YYYY-MM-DD HH:mm:ss");
