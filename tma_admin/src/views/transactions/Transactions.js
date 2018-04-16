@@ -10,11 +10,17 @@ import Moment from 'moment';
 // custom components
 import { Card, PageHeader, PageWrapper, Modal } from '../../components';
 
+// use for permission
+import { GetPermission, CheckUserType } from '../../helpers';
+import { MODULE, ACCESS_TYPE, USER_TYPE } from '../../constants';
+
 // constants 
 import { API } from '../../constants';
 
 
+
 class Transactions extends Component {
+    
 
     constructor(props) {
         super(props);
@@ -43,13 +49,70 @@ class Transactions extends Component {
             totalamount: "",
             acceptedtotal: "",
             nettotal: "",
-            vat: ""
+            vat: "",
+            readOnly: false,
+            accessType: ACCESS_TYPE.NOACCESS,
+            actionBtnTitle: "Edit"
         }
 
         this.fetchData = this.fetchData.bind(this);
     }
 
-    fetchData = (state, instance) => {
+
+    componentDidMount = async () => {
+        var brHide = false,
+            dbHide = false,
+            cltHide = false,
+            rolHide = false,
+            txnHide = false,
+            usrHide = false;
+
+        const userType = await CheckUserType();
+
+        if(this.userType === USER_TYPE.CLIENT)
+        {
+            // GET ROLE PERMISSION OF THE USER
+            //var readOnly = false;
+
+
+            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
+
+            // if (txnAccess === ACCESS_TYPE.READONLY  ) 
+            //     readOnly = true;
+            
+                
+
+            this.setState({
+                //readOnly: readOnly,
+                accessType: txnAccess,
+            });
+        }
+    }
+
+    fetchData = async(state, instance) => {
+
+
+        const userType =  await CheckUserType();
+        
+        var actionBtnTitle = 'Edit';
+
+        var readOnly = false;
+
+        var accessType = ACCESS_TYPE.NOACCESS;
+
+        if(userType === USER_TYPE.CLIENT)
+        {
+            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
+            if(txnAccess === ACCESS_TYPE.NOACCESS)
+                return;
+
+
+            if(txnAccess === ACCESS_TYPE.READONLY)
+                readOnly = true;
+
+            accessType = txnAccess;
+        }
+
 
         this.setState({ loading: true })
 
@@ -85,8 +148,11 @@ class Transactions extends Component {
                 self.setState({
                     data: res.transactions,
                     pages: pages,
-                    loading: false
+                    loading: false,
+                    readOnly: readOnly,
+                    accessType: accessType
                 });
+
             })
         .catch(function(err){
             console.log(err);
@@ -230,7 +296,8 @@ class Transactions extends Component {
                 totalamount,
                 acceptedtotal,
                 nettotal,
-                vat
+                vat,
+                readOnly
              } = this.state;
 
         const columns = [{
@@ -277,7 +344,7 @@ class Transactions extends Component {
                 id: 'edit-button',
                 filterable: false,
                 sortable: false,
-                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>Edit</button></div>)
+                Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>{(readOnly) ? "View" : "Edit"}</button></div>)
             }
         ];
      
@@ -327,7 +394,7 @@ class Transactions extends Component {
                                         id="company" 
                                         placeholder="Company" 
                                         value={company} 
-                                        onChange={(event) => this.setState({company: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({company: event.target.value }) : company}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="txndate">Transaction Date</label>
@@ -336,7 +403,7 @@ class Transactions extends Component {
                                         id="txndate"
                                         placeholder="Transaction Date"
                                         value={txndate}
-                                        onChange={(event) => this.setState({txndate: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({txndate: event.target.value }) : txndate}/>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -347,7 +414,7 @@ class Transactions extends Component {
                                         id="epan" 
                                         placeholder="Epan" 
                                         value={epan}
-                                        onChange={(event) => this.setState({epan: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({epan: event.target.value }) : epan}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="licplate">Licence Plate</label>
@@ -356,7 +423,7 @@ class Transactions extends Component {
                                         id="licplate" 
                                         placeholder="License Plate" 
                                         value={licplate} 
-                                        onChange={(event) => this.setState({licplate: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({licplate: event.target.value }) : licplate}/>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -367,7 +434,7 @@ class Transactions extends Component {
                                         id="userid" 
                                         placeholder="User Id" 
                                         value={userid}
-                                        onChange={(event) => this.setState({userid: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({userid: event.target.value }) : userid}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="machineid">Machine Id</label>
@@ -376,7 +443,7 @@ class Transactions extends Component {
                                         id="machineid" 
                                         placeholder="Machine Id" 
                                         value={machineid}
-                                        onChange={(event) => this.setState({machineid: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({machineid: event.target.value }) : machineid }/>
                                 </div>
                             </div>
                             <div className="form-row">
@@ -387,7 +454,7 @@ class Transactions extends Component {
                                         id="serialno" 
                                         placeholder="Serial Number" 
                                         value={serialno}
-                                        onChange={(event) => this.setState({serialno: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({serialno: event.target.value }) : serialno}/>
                                 </div>
                                 <div className="form-group col-md-4">
                                     <label htmlFor="uniquetxnno">Unique Transaction No.</label>
@@ -396,7 +463,7 @@ class Transactions extends Component {
                                         id="uniquetxnno" 
                                         placeholder="Unique Transaction No."
                                         value={uniquetxnno}
-                                        onChange={(event) => this.setState({uniquetxnno: event.target.value })} />
+                                        onChange={(event) => (!readOnly) ? this.setState({uniquetxnno: event.target.value }) : uniquetxnno} />
                                 </div>
 
                                 <div className="form-group col-md-4">
@@ -406,7 +473,7 @@ class Transactions extends Component {
                                         id="receiptno" 
                                         placeholder="Unique Transaction No."
                                         value={receiptno}
-                                        onChange={(event) => this.setState({receiptno: event.target.value })} />
+                                        onChange={(event) => (!readOnly) ? this.setState({receiptno: event.target.value }) : receiptno} />
                                 </div>
                                 
                             </div>
@@ -418,7 +485,7 @@ class Transactions extends Component {
                                         id="entrydatetime"
                                         placeholder="MM/DD/YYYY"
                                         value={entrydatetime} 
-                                        onChange={(event) => this.setState({entrydatetime: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({entrydatetime: event.target.value }) : entrydatetime}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="exitdatetime">Exit Date Time</label>
@@ -427,7 +494,7 @@ class Transactions extends Component {
                                         id="exitdatetime" 
                                         placeholder="MM/DD/YYYY" 
                                         value={exitdatetime} 
-                                        onChange={(event) => this.setState({exitdatetime: event.target.value })} />
+                                        onChange={(event) => (!readOnly) ? this.setState({exitdatetime: event.target.value }) : exitdatetime } />
                                 </div>
                                 
                             </div>
@@ -440,7 +507,7 @@ class Transactions extends Component {
                                         id="duration"
                                         placeholder="Duration"
                                         value={duration} 
-                                        onChange={(event) => this.setState({duration: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({duration: event.target.value }) : duration}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="tariff">Tariff</label>
@@ -449,7 +516,7 @@ class Transactions extends Component {
                                         id="tariff" 
                                         placeholder="Tariff" 
                                         value={tariff} 
-                                        onChange={(event) => this.setState({tariff: event.target.value })} />
+                                        onChange={(event) => (!readOnly) ? this.setState({tariff: event.target.value }) : tariff } />
                                 </div>
                                 
                             </div>
@@ -462,7 +529,7 @@ class Transactions extends Component {
                                         id="totalamount"
                                         placeholder="Total Amount"
                                         value={totalamount} 
-                                        onChange={(event) => this.setState({totalamount: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ? this.setState({totalamount: event.target.value }) : totalamount}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="acceptedtotal">Accepted Total</label>
@@ -471,7 +538,7 @@ class Transactions extends Component {
                                         id="acceptedtotal" 
                                         placeholder="Accepted Total" 
                                         value={acceptedtotal} 
-                                        onChange={(event) => this.setState({acceptedtotal: event.target.value })} />
+                                        onChange={(event) => (!readOnly) ?  this.setState({acceptedtotal: event.target.value }) : acceptedtotal} />
                                 </div>
                             </div>
 
@@ -483,7 +550,7 @@ class Transactions extends Component {
                                         id="nettotal"
                                         placeholder="Net Total"
                                         value={nettotal} 
-                                        onChange={(event) => this.setState({nettotal: event.target.value })}/>
+                                        onChange={(event) => (!readOnly) ?  this.setState({nettotal: event.target.value }) : nettotal}/>
                                 </div>
                                 <div className="form-group col-md-6">
                                     <label htmlFor="vat">VAT</label>
@@ -492,13 +559,13 @@ class Transactions extends Component {
                                         id="vat" 
                                         placeholder="VAT" 
                                         value={vat} 
-                                        onChange={(event) => this.setState({vat: event.target.value })} />
+                                        onChange={(event) => (!readOnly) ? this.setState({vat: event.target.value }) : vat} />
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div className="modal-footer">
-                        <button type="button" className="btn btn-primary" onClick={() => this.updateData()}>Save changes</button>
+                        <button hidden={readOnly} type="button" className="btn btn-primary" onClick={() => this.updateData()}>Save changes</button>
                         <button type="button" className="btn btn-secondary" onClick={() => this.closeModal()} data-dismiss="modal" >Close</button>
                     </div>
                 </Modal>
