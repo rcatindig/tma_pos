@@ -4,7 +4,10 @@ var Role = require('../models/Role');
 var RolesMW = {
     getRoleList: function(req, res, next)
     {
-        Role.getRoleList(req.body, function (err, rows){
+       
+        var clientId = req.params.id ? req.params.id : null;
+        
+        Role.getRoleList(clientId, req.body, function (err, rows){
 
             var results = "";
             
@@ -21,7 +24,8 @@ var RolesMW = {
 
     countRoles: function(req, res)
     {
-        Role.countTotalRoles(req.body, function (err, fields){
+        var clientId = req.params.id ? req.params.id : null;
+        Role.countTotalRoles(clientId, req.body, function (err, fields){
 
             var results = "";
 

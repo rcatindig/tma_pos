@@ -49,11 +49,17 @@ var Role = {
         return db.query(sql, parameters, callback);
     },
     // USE FOR REACT TABLE
-    countTotalRoles: function (ReactTable, callback) {
+    countTotalRoles: function (clientId, ReactTable, callback) {
+
+        var where = "";
+
+        if(clientId !== null)
+            where += " WHERE client_id = '" + clientId + "'"
+
         return db.query("SELECT COUNT(*) as total  FROM roles", callback);
     },
     // GETTING ALL TRANSACTIONS - USE IN THE THE TABLE ID
-    getRoleList: function (ReactTable, callback) {
+    getRoleList: function (clientId, ReactTable, callback) {
 
         const {
             pageSize,
@@ -98,6 +104,8 @@ var Role = {
             }
         }
 
+        if(clientId !== null)
+            whereClause += "AND c.id = '" + clientId + "'"
 
         const sql = `
                 SELECT r.* , c.name as client

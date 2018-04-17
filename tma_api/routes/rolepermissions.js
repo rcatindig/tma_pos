@@ -72,7 +72,6 @@ router.post('/getPermissionByRoleAndModule', function (req, res, next) {
 		if (err) {
 			res.json(err);
 		} else {
-			console.log(fields);
 			res.json(fields); //or return count for 1 &amp;amp;amp; 0
 		}
 	});

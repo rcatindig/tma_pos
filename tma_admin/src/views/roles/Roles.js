@@ -86,13 +86,20 @@ class Roles extends Component {
     }
 
 
-    fetchData = (state, instance) => {
+    fetchData = async(state, instance) => {
 
+        const userType =  await CheckUserType();
        
 
         let self = this;
 
-        const url = role_url + 'getRoleList/';
+        var url = role_url + 'getRoleList/';
+
+        if(userType == USER_TYPE.CLIENT)
+            url += this.profile.client_id;
+
+        console.log(userType, url);
+
 
 
         this.setState({ loading: true });

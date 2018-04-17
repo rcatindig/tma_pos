@@ -89,5 +89,5 @@ router.put('/:id', function (req, res, next) {
   });
 });
 
-router.post('/getRoleList/', getRoleList, countRoles);
+router.post('/getRoleList/:id?', getRoleList, countRoles);
 module.exports = router;

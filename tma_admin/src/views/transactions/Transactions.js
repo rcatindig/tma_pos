@@ -99,9 +99,6 @@ class Transactions extends Component {
 
         const userType =  await CheckUserType();
 
-        console.log(userType);
-
-
         this.setState({ loading: true })
 
         let self = this;
@@ -294,13 +291,15 @@ class Transactions extends Component {
                 acceptedtotal,
                 nettotal,
                 vat,
-                readOnly
+                readOnly,
+                userType,
              } = this.state;
 
         const columns = [{
                 id: 'c.name',
                 Header: 'Client',
-                accessor: 'client'
+                accessor: 'client',
+                show: (userType === USER_TYPE.CLIENT) ? false : true, 
             },{
                 id: 't.company',
                 Header: 'Company',
@@ -311,7 +310,7 @@ class Transactions extends Component {
                 Header: 'Transaction Date',
                 accessor: t => {
                     return Moment(t.txndate)
-                            .local().format("MMMM DD, YYYY hh:mm a")
+                            .local().format("MMMM DD, YYYY hh:mm A")
                 }
             }, {
                 id: 't.licplate',
@@ -323,14 +322,14 @@ class Transactions extends Component {
                 Header: 'Entry Date/Time',
                 accessor: t => {
                     return Moment(t.entrydatetime)
-                            .local().format("MMMM DD, YYYY hh:mm a")
+                            .local().format("MMMM DD, YYYY hh:mm A")
                 }
             }, {
                 id: 'exitdatetime',
                 Header: 'Exit Date/Time',
                 accessor: t => {
                     return Moment(t.exitdatetime)
-                            .local().format("MMMM DD, YYYY hh:mm a")
+                            .local().format("MMMM DD, YYYY hh:mm A")
                 }
             }, {
                 Header: 'Action',
