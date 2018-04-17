@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "CREATE TABLE `role_permissions`( `role_id` int(11) NOT NULL, `module_id` varchar(45) NOT NULL, `access_type` varchar(10) NOT NULL, PRIMARY KEY (`role_id`,`module_id`), KEY `rp_module_idx` (`module_id`), KEY `rp_access_type_idx` (`access_type`), CONSTRAINT `rp_access_type` FOREIGN KEY (`access_type`) REFERENCES `access_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `rp_module` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT `rp_role` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION) ENGINE=InnoDB DEFAULT CHARSET=latin1; ",
+    "down": "DROP TABLE `role_permissions`"
+}

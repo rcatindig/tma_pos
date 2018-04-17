@@ -75,9 +75,7 @@ router.post('/create', function (req, res, next){
 			{
 				var hashPassword = "";
 
-				// hashPassword= bcrypt.hashSync(req.body.password, SALT_ROUNDS, function(err, hash){
-				// 	return hash;
-				// });
+				
 
 				user = {
 					first_name: req.body.first_name,
@@ -87,11 +85,13 @@ router.post('/create', function (req, res, next){
 					username: req.body.username,
 					password: req.body.password,
 					email: req.body.email,
+					client_id: req.body.client_id,
 					address: req.body.address,
 					country_id: req.body.country_id,
 					state_id: req.body.state_id,
 					status: req.body.status,
 					is_deleted: null,
+					is_client: req.body.is_client,
 					date_created: req.body.date_created,
 					date_modified: req.body.date_modified
 				}

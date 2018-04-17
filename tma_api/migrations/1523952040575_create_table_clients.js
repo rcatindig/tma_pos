@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "CREATE TABLE `clients`( `id` int(11) NOT NULL AUTO_INCREMENT, `code` varchar(99) DEFAULT NULL, `name` varchar(150) DEFAULT NULL, `address` varchar(200) DEFAULT NULL, `country_id` char(2) DEFAULT NULL, `state_id` int(10) DEFAULT NULL, `email` varchar(99) DEFAULT NULL, `tel_no` varchar(99) DEFAULT NULL, `tin` varchar(45) DEFAULT NULL, `permit_no` varchar(45) DEFAULT NULL, `status` tinyint(4) DEFAULT '0', `date_created` datetime NOT NULL, `date_modified` datetime NOT NULL, PRIMARY KEY (`id`), UNIQUE KEY `code_UNIQUE` (`code`), KEY `company_country_idx` (`country_id`), KEY `company_state_idx` (`state_id`), CONSTRAINT `company_country` FOREIGN KEY (`country_id`) REFERENCES `param_countries` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE, CONSTRAINT `company_state` FOREIGN KEY (`state_id`) REFERENCES `param_states` (`id`) ON DELETE NO ACTION ON UPDATE CASCADE) ENGINE=InnoDB DEFAULT CHARSET=utf8; ",
+    "down": "DROP TABLE `clients`"
+}

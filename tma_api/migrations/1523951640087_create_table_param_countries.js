@@ -1,0 +1,4 @@
+module.exports = {
+    "up": "CREATE TABLE `param_countries`( `id` char(2) NOT NULL COMMENT 'Two-letter country code (ISO 3166-1 alpha-2)', `name` varchar(64) NOT NULL COMMENT 'English country name', `full_name` varchar(128) NOT NULL COMMENT 'Full English country name', `iso3` char(3) NOT NULL COMMENT 'Three-letter country code (ISO 3166-1 alpha-3)', `number` smallint(3) unsigned zerofill NOT NULL COMMENT 'Three-digit country number (ISO 3166-1 numeric)', `display_order` int(3) NOT NULL DEFAULT '900', PRIMARY KEY (`id`)) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;",
+    "down": "DROP TABLE `param_countries`"
+}

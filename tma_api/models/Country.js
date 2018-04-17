@@ -9,7 +9,7 @@ var Country = {
     },
     getCountryById: function (id, callback) {
 
-        return db.query("select * from param_countries where id=?", [id], callback);
+        return db.query("select * from param_countries where id = ?", [id], callback);
     },
     addCountry: function (Country, callback) {
         return db.query("Insert into param_countries (username, password, active, isdeleted) values(?,?,?)", [Country.username, Country.password, Country.active, Country.isdeleted], callback);
