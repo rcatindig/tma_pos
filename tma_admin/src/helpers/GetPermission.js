@@ -31,7 +31,7 @@ const GetPermission = async(mod) => {
         module_id: mod,
     }
 
-    var access_type = ACCESS_TYPE .NOACCESS;
+    var access_type = ACCESS_TYPE.NOACCESS;
 
     const result = await fetch(url, {
             method: 'POST',

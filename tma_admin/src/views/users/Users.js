@@ -76,8 +76,7 @@ class Users extends Component {
             rolesOptions: [],
             role_id: "",  
             readOnly: false,
-            accessType: ACCESS_TYPE.NOACCESS,
-            isSetup: true,
+            accessType: ACCESS_TYPE.NOACCESS
         }
 
         
@@ -88,44 +87,43 @@ class Users extends Component {
         this.fetchData = this.fetchData.bind(this);
     }
 
-    fetchData = async(state, instance) => {
-
+    componentWillMount = async() => {
         const userType =  await CheckUserType();
 
         var readOnly = false;
 
         var accessType = ACCESS_TYPE.NOACCESS;
 
+        if(userType === USER_TYPE.CLIENT)
+        {
+            var rolAccess = await GetPermission(MODULE.ROLES);
+            if(rolAccess === ACCESS_TYPE.NOACCESS)
+                return;
+
+
+            if(rolAccess === ACCESS_TYPE.READONLY)
+                readOnly = true;
+
+            accessType = rolAccess;
+        }
+
+        this.setState({
+            readOnly: readOnly,
+            accessType: accessType,
+            userType: userType });
+    }
+
+    fetchData = async(state, instance) => {
+
+        const userType =  await CheckUserType();
+
         var url = users_url + 'getUserList/';
 
         
 
         if(userType === USER_TYPE.CLIENT)
-        {
-            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
-            if(txnAccess === ACCESS_TYPE.NOACCESS)
-                return;
+            url += "" + this.profile.client_id;  
 
-
-            if(txnAccess === ACCESS_TYPE.READONLY)
-                readOnly = true;
-
-            accessType = txnAccess;
-
-           
-
-            this.setState({isSetup: false });
-            
-            var clientId = this.profile.client_id;
-
-            url += "" + clientId; 
-
-        }
-
-        this.setState({ loading: true,
-            readOnly: readOnly,
-            accessType: accessType,
-            });
 
         let self = this;
 
@@ -636,7 +634,7 @@ class Users extends Component {
                 rolesOptions,
                 readOnly,
                 accessType,
-                isSetup,
+                userType
              } = this.state;
 
         const columns = [{
@@ -667,7 +665,7 @@ class Users extends Component {
                 id: 'c.name',
                 Header: 'Company',
                 accessor: 'company',
-                show: isSetup
+                show: userType === USER_TYPE.CLIENT ? false : true,
             }, 
             // {
             //     id: 'u.address',
@@ -853,7 +851,7 @@ class Users extends Component {
                                 
                             </div>
 
-                            <div className="form-row" hidden={!isSetup ? true : false}>
+                            <div className="form-row" hidden={userType === USER_TYPE.CLIENT ? true : false}>
                                 <div className="form-group col-md-12">
                                     <label htmlFor="first_name">Company</label>
                                     <Select

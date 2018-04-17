@@ -54,10 +54,14 @@ var RolePermission = {
             accessDataArray.push(data);
         }
 
+        console.log("ACCESS DATA ARRAY", accessDataArray);
+
         db.beginTransaction(function (err) {
             if (err) {
                 throw err;
             }
+
+            
             // delete all role permission by role_id
             db.query('DELETE FROM role_permissions WHERE role_id =  ?', [roleId], function (err, result) {
                 if (err) {
@@ -68,8 +72,10 @@ var RolePermission = {
                 // insert data
                 console.log("DATA ARRAY", accessDataArray);
                 db.query('INSERT INTO role_permissions (role_id, module_id, access_type) VALUES ?', [accessDataArray], function (err, result) {
-                    
+                    console.log(err);
                     if (err) {
+
+                        
                         db.rollback(function () {
                             throw err;
                         });
@@ -80,6 +86,7 @@ var RolePermission = {
                                 throw err;
                             });
                         }
+                        console.log("result", result);
                         callback(null, result);
                     });
                 })

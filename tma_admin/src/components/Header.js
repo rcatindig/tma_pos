@@ -1,6 +1,25 @@
 import React, {Component} from 'react';
 
+import AuthService from '../utils/AuthService';
+
+
+
 class Header extends Component {
+
+    constructor(props)
+    {
+        super(props);
+
+        this.AuthService = new AuthService();
+
+        this.logout = this.AuthService.logout;
+    }
+
+    onClickLogout = () => {
+        this.logout();
+        window.location.replace('#/login');
+    }
+ 
     render() {
         return (
             <div className="header">
@@ -175,7 +194,7 @@ class Header extends Component {
                                         <li><a onClick={() => console.log('click') }><i className="ti-wallet"></i> Balance</a></li>
                                         <li><a onClick={() => console.log('click') }><i className="ti-email"></i> Inbox</a></li>
                                         <li><a onClick={() => console.log('click') }><i className="ti-settings"></i> Setting</a></li>
-                                        <li><a onClick={() => console.log('click') }><i className="fa fa-power-off"></i> Logout</a></li>
+                                        <li><a onClick={this.onClickLogout}><i className="fa fa-power-off"></i> Logout</a></li>
                                     </ul>
                                 </div>
                             </li>

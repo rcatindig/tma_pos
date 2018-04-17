@@ -68,15 +68,15 @@ class Roles extends Component {
 
         if(userType === USER_TYPE.CLIENT)
         {
-            var txnAccess = await GetPermission(MODULE.TRANSACTIONS);
-            if(txnAccess === ACCESS_TYPE.NOACCESS)
+            var rolAccess = await GetPermission(MODULE.ROLES);
+            if(rolAccess === ACCESS_TYPE.NOACCESS)
                 return;
 
 
-            if(txnAccess === ACCESS_TYPE.READONLY)
+            if(rolAccess === ACCESS_TYPE.READONLY)
                 readOnly = true;
 
-            accessType = txnAccess;
+            accessType = rolAccess;
         }
 
         this.setState({
@@ -95,12 +95,8 @@ class Roles extends Component {
 
         var url = role_url + 'getRoleList/';
 
-        if(userType == USER_TYPE.CLIENT)
+        if(userType === USER_TYPE.CLIENT)
             url += this.profile.client_id;
-
-        console.log(userType, url);
-
-
 
         this.setState({ loading: true });
 
@@ -410,7 +406,7 @@ class Roles extends Component {
                         usersAccess = usrData[0].access_type;
 
                     if(rolData.length > 0)
-                        rolesAccess = usrData[0].access_type;
+                        rolesAccess = rolData[0].access_type;
 
                 } 
                 self.setState({ openAccessModal: true, 
@@ -504,7 +500,6 @@ class Roles extends Component {
                 loading,
                 openModal,
                 name,
-                roleId,
                 clientId,
                 clientOptions,
                 modalRoleTitle,
