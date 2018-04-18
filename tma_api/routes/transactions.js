@@ -3,7 +3,10 @@ var router = express.Router();
 var Transaction = require('../models/Transaction');
 var TransactionsMW = require('../middlewares/TransactionsMW');
 
-const { getTransactionList, countTransactions } = TransactionsMW;
+const {
+  getTransactionList,
+  countTransactions
+} = TransactionsMW;
 
 router.get('/:id?', function (req, res, next) {
 
@@ -24,7 +27,7 @@ router.get('/:id?', function (req, res, next) {
       if (err) {
         res.json(err);
       } else {
-		console.log(rows);
+        console.log(rows);
         res.json(rows);
       }
 
@@ -43,7 +46,7 @@ router.post('/', function (req, res, next) {
       console.log(err);
     } else {
       res.json(req.body); //or return count for 1 &amp;amp;amp; 0
-      
+
     }
   });
 });
@@ -75,6 +78,17 @@ router.put('/:id', function (req, res, next) {
     }
   });
 });
+
+router.post('/createNewTransaction/', function (req, res, next) {
+	Transaction.insertTransactionFromClient(req.body, function(err, result) {
+		console.log("ERROR", err);
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(result);
+		}
+	})
+})
 
 
 // Middleware
