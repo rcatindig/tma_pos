@@ -43,7 +43,6 @@ var RolePermission = {
 
         let roleId = RolePermission.role_id;
         let accessData = RolePermission.access_data;
-        console.log("ACCESSDATA", accessData);
 
         var accessDataArray = [];
 
@@ -53,8 +52,6 @@ var RolePermission = {
             var data = [roleId, aData.module_id, aData.access_type];
             accessDataArray.push(data);
         }
-
-        console.log("ACCESS DATA ARRAY", accessDataArray);
 
         db.beginTransaction(function (err) {
             if (err) {
@@ -70,12 +67,9 @@ var RolePermission = {
                     });
                 }
                 // insert data
-                console.log("DATA ARRAY", accessDataArray);
                 db.query('INSERT INTO role_permissions (role_id, module_id, access_type) VALUES ?', [accessDataArray], function (err, result) {
-                    console.log(err);
+                    
                     if (err) {
-
-                        
                         db.rollback(function () {
                             throw err;
                         });
@@ -86,7 +80,6 @@ var RolePermission = {
                                 throw err;
                             });
                         }
-                        console.log("result", result);
                         callback(null, result);
                     });
                 })
