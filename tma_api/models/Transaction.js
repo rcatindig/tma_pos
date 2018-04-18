@@ -242,144 +242,128 @@ var Transaction = {
         const serialno = Transaction.serialno;
         const machineid = Transaction.machineid;
 
-        console.log("MACHINE ID", machineid);
+        db.beginTransaction(function (err) {
+            if (err)
+                throw err;
 
-            db.beginTransaction(function (err) {
-                if (err)
-                    throw err;
-    
-                
-                    // check first if client is existing in the database using client_code
-    
-                    db.query('SELECT * FROM clients WHERE code = ? LIMIT 0,1', [client_code], function (err, result){
-                        if (err){
-                            db.rollback(function () {
-                                throw err;
-                            });
-                        }
-    
-                        console.log(result);
-    
-                        if(result.length == 0){
-    
-                            console.log("HELLO");
-                            db.rollback(function () {
-                                callback({error: "Invalid. Client Code cannot be found"}, null);
-                                //console.log("ROLLBACK");
-                                //throw new Error("Invalid. Client Code cannot be found");
-                            });
-                        }
-    
-                        const client = result;
-    
-                        console.log("HELLLOOO @");
-    
-                        // check first if machine_id is existing in the database
-                        db.query('SELECT * FROM machines WHERE machine_id = ?', [machineid], function(err, fields) {
-    
-                            if (err){
+            // check first if client is existing in the database using client_code
+
+            db.query('SELECT * FROM clients WHERE code = ? LIMIT 0,1', [client_code], function (err, result){
+                if (err){
+                    db.rollback(function () {
+                        throw err;
+                    });
+                }
+
+                if(result.length == 0){
+
+                    db.rollback(function () {
+                        callback({error: "Invalid. Client Code cannot be found"}, null);
+                    });
+                }
+
+                const client = result;
+
+                // check first if machine_id is existing in the database
+                db.query('SELECT * FROM machines WHERE machine_id = ?', [machineid], function(err, fields) {
+
+                    if (err){
+                        db.rollback(function () {
+                            throw err;
+                        });
+                    }
+
+                    
+                    if (fields.length == 0)
+                    {
+                        // if no, create machine with client_code and serial no
+                        
+                        const insertMachineSql = `INSERT INTO machines VALUES (?,?,?)`;
+                        db.query(insertMachineSql, [machineid, serialno, client_code], function(err, result) {
+                            if(err) {
                                 db.rollback(function () {
                                     throw err;
                                 });
-                            }
-        
-                            
-                            if (fields.length == 0)
-                            {
-                                // if no, create machine with client_code and serial no
-                                
-                                const insertMachineSql = `INSERT INTO machines VALUES (?,?,?)`;
-                                db.query(insertMachineSql, [machineid, serialno, client_code], function(err, result) {
-                                    if(err) {
-                                        db.rollback(function () {
-                                            throw err;
-                                        });
-    
-                                        return;
-                                    }
-    
-                                });
-                            }
-    
-                            const insertTxnSql = `INSERT INTO transactions (
-                                                        company, 
-                                                        txndate, 
-                                                        epan, 
-                                                        licplate, 
-                                                        userid, 
-                                                        machineid, 
-                                                        serialno, 
-                                                        uniquetxnno, 
-                                                        receiptno, 
-                                                        entrydatetime, 
-                                                        exitdatetime, 
-                                                        duration, 
-                                                        tariff, 
-                                                        totalamount, 
-                                                        acceptedtotal, 
-                                                        nettotal, 
-                                                        vat, 
-                                                        client_code
-                                                    ) VALUES (
-                                                        ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
-                                                    )`;
-    
-                            const parameters = [
-                                                Transaction.company, 
-                                                Transaction.txndate, 
-                                                Transaction.epan, 
-                                                Transaction.licplate, 
-                                                Transaction.userid, 
-                                                Transaction.machineid, 
-                                                Transaction.serialno, 
-                                                Transaction.uniquetxnno, 
-                                                Transaction.receiptno, 
-                                                Transaction.entrydatetime, 
-                                                Transaction.exitdatetime, 
-                                                Transaction.duration, 
-                                                Transaction.tariff, 
-                                                Transaction.totalamount, 
-                                                Transaction.acceptedtotal, 
-                                                Transaction.nettotal, 
-                                                Transaction.vat, 
-                                                Transaction.client_code
-                            ];
-    
-                            
-    
-                             // create transaction
-    
-                            db.query(insertTxnSql,parameters, function(err, result) {
 
-                                console.log("ERRRORRRRR",err);
-                                if(err) {
-                                    db.rollback(function () {
-                                        throw err;
-                                    });
-    
-                                }
-                                db.commit(function (err, count) {
-                                    if (err) {
-                                        console.log(err);
-                                        db.rollback(function () {
-                                            throw err;
-                                        });
-                                    } else
-                                        callback(null, {success: "Successfully added!"});
-                                });
+                                return;
+                            }
+
+                        });
+                    }
+
+                    const insertTxnSql = `INSERT INTO transactions (
+                                                company, 
+                                                txndate, 
+                                                epan, 
+                                                licplate, 
+                                                userid, 
+                                                machineid, 
+                                                serialno, 
+                                                uniquetxnno, 
+                                                receiptno, 
+                                                entrydatetime, 
+                                                exitdatetime, 
+                                                duration, 
+                                                tariff, 
+                                                totalamount, 
+                                                acceptedtotal, 
+                                                nettotal, 
+                                                vat, 
+                                                client_code
+                                            ) VALUES (
+                                                ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?
+                                            )`;
+
+                    const parameters = [
+                                        Transaction.company, 
+                                        Transaction.txndate, 
+                                        Transaction.epan, 
+                                        Transaction.licplate, 
+                                        Transaction.userid, 
+                                        Transaction.machineid, 
+                                        Transaction.serialno, 
+                                        Transaction.uniquetxnno, 
+                                        Transaction.receiptno, 
+                                        Transaction.entrydatetime, 
+                                        Transaction.exitdatetime, 
+                                        Transaction.duration, 
+                                        Transaction.tariff, 
+                                        Transaction.totalamount, 
+                                        Transaction.acceptedtotal, 
+                                        Transaction.nettotal, 
+                                        Transaction.vat, 
+                                        Transaction.client_code
+                    ];
+
+                    
+
+                        // create transaction
+
+                    db.query(insertTxnSql,parameters, function(err, result) {
+
+                        if(err) {
+                            db.rollback(function () {
+                                throw err;
                             });
-    
-                            
-    
-                        })
-                    })
-    
-            })    
-        
 
-        
+                        }
+                        db.commit(function (err, count) {
+                            if (err) {
+                                db.rollback(function () {
+                                    throw err;
+                                });
+                            } else
+                                callback(null, {success: "Successfully added!"});
+                        });
+                    });
 
-    
+                    
+
+                })
+            })
+
+        })    
+        
     }
 
 };

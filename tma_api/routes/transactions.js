@@ -81,7 +81,6 @@ router.put('/:id', function (req, res, next) {
 
 router.post('/createNewTransaction/', function (req, res, next) {
 	Transaction.insertTransactionFromClient(req.body, function(err, result) {
-		console.log("ERROR", err);
 		if (err) {
 			res.json(err);
 		} else {
