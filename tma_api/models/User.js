@@ -65,8 +65,6 @@ var User = {
 
         var pw = User.password;
 
-        
-
         const sql = `UPDATE users 
                         SET
                             first_name = ?,
@@ -99,7 +97,7 @@ var User = {
             User.country_id,
             User.state_id,
             User.status,
-            User.isdeleted,
+            0,
             User.is_client,
             User.is_client ? User.role_id : null,
             User.date_modified,
@@ -119,17 +117,13 @@ var User = {
                 User.country_id,
                 User.state_id,
                 User.status,
-                User.isdeleted,
+                0,
                 User.is_client,
                 User.is_client ? User.role_id : null,
                 User.date_modified,
                 id
             ];
         }
-
-        console.log(sql, parameters);
-
-        
 
 
         return db.query(sql, parameters, callback);

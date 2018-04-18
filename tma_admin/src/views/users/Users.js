@@ -350,7 +350,8 @@ class Users extends Component {
                         //confirmPassword: result.password,
                         statesOptions: [],
                         client_id:  result.client_id,
-                        userType: result.is_client,
+                        typeUser: result.is_client,
+                        //userType: result.is_client,
                         hasRoles: result.is_client === USER_TYPE.CLIENT ? true : false,
                         role_id: result.role_id == null ? "" : result.role_id,
                         modalUserTitle: result.is_client === USER_TYPE.CLIENT ? "Edit Client" : "Edit Client",
@@ -483,7 +484,11 @@ class Users extends Component {
             confirmPassword: "",
             changePassword: false,
             hidePasswordField: true,
+            client_id: "",
+            role_id: "",
             statesOptions: [],
+            hasRoles: false,
+            typeUser: ""
         });
     }
         
