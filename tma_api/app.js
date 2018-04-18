@@ -18,6 +18,7 @@ var reportsRouter = require('./routes/reports');
 var machinesRouter = require('./routes/machines');
 var rolesRouter = require('./routes/roles');
 var rolePermissionRouter = require('./routes/rolepermissions');
+var backendReportsRouter = require('./routes/backendreports');
 
 var app = express();
 
@@ -43,6 +44,7 @@ app.use('/reports', reportsRouter);
 app.use('/machines', machinesRouter);
 app.use('/roles', rolesRouter);
 app.use('/rolepermissions', rolePermissionRouter);
+app.use('/backendreports', backendReportsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

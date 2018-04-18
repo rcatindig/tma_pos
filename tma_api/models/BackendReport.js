@@ -195,20 +195,166 @@ var BackendReport = {
 
         // return db.query(sql, [username], callback);
     },
-    insertBackendReportTesting: function (BackendReport, callback) {
-        const sql = `
-            INSERT INTO backend_reports 
-                ( username, password, email) 
-            VALUES (?,?,?)
-        `;
+    // insertBackendReportTesting: function (BackendReport, callback) {
+    //     const sql = `
+    //         INSERT INTO backend_reports 
+    //             ( username, password, email) 
+    //         VALUES (?,?,?)
+    //     `;
+
+    //     const parameters = [
+    //         BackendReport.username,
+    //         BackendReport.password,
+    //         BackendReport.email,
+    //     ];
+
+    //     db.query(sql, parameters, callback)
+    // },
+
+    syncBackendReport: function (BackendReport, callback) {
 
         const parameters = [
-            BackendReport.username,
-            BackendReport.password,
-            BackendReport.email,
-        ];
+            BackendReport.serial_no,
+            BackendReport.total_revenue,
+            BackendReport.total_cash,
+            BackendReport.total_credit_card,
+            BackendReport.total_vat,
+            BackendReport.total_vat_exempt,
+            BackendReport.total_senior_citizen,
+            BackendReport.zero_rated_sales,
+            BackendReport.additional_discounts,
+            BackendReport.void_sales,
+            BackendReport.date,
+            BackendReport.machine_id,
+        ];  
 
-        db.query(sql, parameters, callback)
-    },
+        console.log(parameters);
+        
+        db.beginTransaction(function (err) {
+            if (err)
+                throw err;
+
+            db.query('SELECT * FROM clients WHERE code = ? LIMIT 0,1', [BackendReport.client_code], function (err, result){
+                if (err){
+                    db.rollback(function () {
+                        callback({status: "Ok", msg: err}, null);
+                        throw err;
+                    });
+                }
+
+
+                if(result.length == 0){
+
+                    db.rollback(function () {
+                        callback({status: "Error", msg: "Invalid Client Code"}, null);
+                    });
+                } else { 
+
+                    // check first if machine_id is existing in the database
+                    db.query('SELECT * FROM machines WHERE machine_id = ?', [BackendReport.machine_id], function(err, fields) {
+
+                        if (err){
+                            db.rollback(function () {
+                                callback({status: "Ok", msg: err}, null);
+                                throw err;
+                            });
+                        }
+
+                        
+                        if (fields.length == 0)
+                        {
+                            // if no, create machine with client_code and serial no
+                            
+                            const insertMachineSql = `INSERT INTO machines VALUES (?,?,?)`;
+                            db.query(insertMachineSql, [BackendReport.machine_id, BackendReport.serial_no, BackendReport.client_code], function(err, result) {
+                                if(err) {
+                                    db.rollback(function () {
+                                        callback({status: "Ok", msg: err}, null);
+                                        throw err;
+                                    });
+                                }
+
+                            });
+                        }
+
+                        // check if there is existing backend report per client for that day
+                        db.query('SELECT * FROM backend_reports WHERE date = ? AND machine_id = ? LIMIT 0,1', [BackendReport.date, BackendReport.machine_id], function (err, result){
+                            if (err){
+                                db.rollback(function () {
+                                    callback({status: "Error", errorMsg: err}, null);
+                                    throw err;
+                                });
+
+                            } else {
+
+                                // if no , insert
+                                if(result.length == 0){
+
+                                    var sql = `
+                                        INSERT INTO backend_reports (
+                                            serial_no,
+                                            total_revenue,
+                                            total_cash,
+                                            total_credit_card,
+                                            total_vat,
+                                            total_vat_exempt,
+                                            total_senior_citizen,
+                                            zero_rated_sales,
+                                            additional_discounts,
+                                            void_sales,
+                                            date,
+                                            machine_id
+                                        ) VALUES (
+                                            ?,?,?,?,?,?,?,?,?,?,?,?
+                                        )
+                                    `;
+                                    
+                                }  else {
+                                    
+                                    // if yes, update
+                                    var sql  = `
+                                        UPDATE 
+                                            backend_reports
+                                        SET
+                                            serial_no = ?,
+                                            total_revenue = ?,
+                                            total_cash = ?,
+                                            total_credit_card = ?,
+                                            total_vat = ?,
+                                            total_vat_exempt = ?,
+                                            total_senior_citizen = ?,
+                                            zero_rated_sales = ?,
+                                            additional_discounts = ?,
+                                            void_sales = ?
+                                        WHERE date = ? AND machine_id = ?;
+                                    `;
+                                }
+
+                                db.query(sql, parameters, function(err, result) {
+                                    if (err) {
+                                        db.rollback(function () {
+                                            callback({status: "Error", errorMsg: err}, null);
+                                            throw err;
+                                        });
+                                    } else {
+                                        db.commit(function (err, count) {
+                                            if (err) {
+                                                db.rollback(function () {
+                                                    callback({status: "Ok", msg: err}, null);
+                                                    throw err;
+                                                });
+                                            } else
+                                                callback(null, {status: "Ok", msg: "Successfully saved!"});
+                                                
+                                        });
+                                    }
+                                })
+                            }                            
+                        });
+                    });                
+                }
+            });
+        });
+    }
 };
 module.exports = BackendReport;
