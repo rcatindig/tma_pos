@@ -350,9 +350,10 @@ class Users extends Component {
                         //confirmPassword: result.password,
                         statesOptions: [],
                         client_id:  result.client_id,
-                        typeUser: result.is_client,
+                        userType: result.is_client,
+                        hasRoles: result.is_client === USER_TYPE.CLIENT ? true : false,
                         role_id: result.role_id == null ? "" : result.role_id,
-                        modalUserTitle: "Edit",
+                        modalUserTitle: result.is_client === USER_TYPE.CLIENT ? "Edit Client" : "Edit Client",
                         changePassword: false,
                         modalUserSaveBtn: "Save Changes",
                     });
@@ -397,7 +398,6 @@ class Users extends Component {
             statesOptions: [],
             client_id: userType === USER_TYPE.CLIENT ? this.profile.client_id : "",
             changePassword: false,
-            modalUserTitle: "Add",
             modalUserSaveBtn: "Save",
         });
 
@@ -538,13 +538,13 @@ class Users extends Component {
     _handleCheckboxChange = () => this.setState( { isChecked: !this.state.isChecked } );
 
     onClickAdmin = () => {
-        this.setState({showTypeModal: false, typeUser: USER_TYPE.ADMIN});
+        this.setState({showTypeModal: false, typeUser: USER_TYPE.ADMIN, hasRoles: false, modalUserTitle: "Create Admin"});
 
         this.showCreateModal();
     }
 
     onClickClient = () => {
-        this.setState({showTypeModal: false, typeUser: USER_TYPE.CLIENT, hasRoles : true});
+        this.setState({showTypeModal: false, typeUser: USER_TYPE.CLIENT, hasRoles : true, modalUserTitle: "Create Client"});
 
         this.showCreateModal();
     }
@@ -634,7 +634,8 @@ class Users extends Component {
                 rolesOptions,
                 readOnly,
                 accessType,
-                userType
+                userType,
+                hasRoles,
              } = this.state;
 
         const columns = [{
@@ -947,7 +948,7 @@ class Users extends Component {
                                     
                                 </div>
 
-                                <div className="form-group col-md-6">
+                                <div className="form-group col-md-6" hidden={hasRoles ? false : true}>
                                     <label htmlFor="role">Role</label>
                                     <Select
                                         id="role"
