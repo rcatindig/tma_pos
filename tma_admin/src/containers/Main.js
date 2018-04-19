@@ -112,7 +112,7 @@ class Main extends Component {
                         <Route path="/users" name="Users" component={usrHide ? PageNotFound : Users}/>
                         <Route path="/roles" name="Roles" component={rolHide ? PageNotFound : Roles} />
                         <Route path="/backendreport" name="BackendReport" component={brHide ? PageNotFound : BackendReport}/>
-                        <Route path="*" component={PageNotFound} />
+                        
                 </div>
             </HashRouter>
         );
