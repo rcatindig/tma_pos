@@ -628,21 +628,11 @@ class Roles extends Component {
                                             label="Name"
                                             value={name}
                                             onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name }/>
-                                        
-                                    {/*     <div className="md-input-wrapper">
-                                            <input type="text" 
-                                                    className="md-form-control"
-                                                    value={name} 
-                                                    onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name }/>
-                                            <label>First-Name</label>
-                                        </div> */}
                                     </div>
                             </div>        
-                                     
 
                             {this.showAccessButton()}
-
-                            
+ 
                         </form>
                     </div>
                     
@@ -659,23 +649,21 @@ class Roles extends Component {
                     size="small"
                     handleCloseClick={this.closeAccessControl}
                     >
-                    <div className="modal-body role-access-modal">
-                        <form className="form-control">
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="dashboardAccess">Dashboard</label>
-                                    <Select
-                                        id="dashboardAccess"
-                                        className="form-control"
-                                        name="dashboardAccess"
-                                        options={accessOptions}
-                                        value={dashboardAccess !== "" ? dashboardAccess : ACCESS_TYPE.NOACCESS}
-                                        placeholder="Select Access..."
-                                        onChange={(event) => (!readOnly) ? this.setState({dashboardAccess: event.target.value }) : dashboardAccess }
-                                    />
-                                </div>                           
+                    <div className="modal-body">
+                        <form>
+                            
+                            <div className="col-sm-12">
+                                <Select
+                                    id="company"
+                                    className="form-control"
+                                    options={accessOptions}
+                                    value={dashboardAccess !== "" ? dashboardAccess : ACCESS_TYPE.NOACCESS}
+                                    label="Dashboard"
+                                    onChange={(event) => (!readOnly) ? this.setState({dashboardAccess: event.target.value }) : dashboardAccess }
+                                />
                             </div>
-
+                                                           
+                            
                             <div className="form-row">
                                 <div className="form-group col-md-12">
                                     <label htmlFor="transactionsAccess">Transactions</label>

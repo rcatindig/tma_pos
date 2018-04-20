@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 
 class Modal extends Component {
@@ -9,7 +9,12 @@ class Modal extends Component {
         size: "medium"
     };
 
+    renderBackdrop = (show) => {
 
+        
+        document.getElementById("modal-backdrop").style.display = show ? "block" : "none";
+        
+    }
 
     render() {
 
@@ -33,25 +38,38 @@ class Modal extends Component {
 
         }
 
-        return(
-            
-            <div className="modal modal-flex" id="static-labels-Modal" tabIndex="-1" role="dialog" style={{display: show ? 'block': 'none' }}>
-                <div className={`modal-dialog ${modalSize}`} role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCloseClick}>
-                                <span aria-hidden="true">×</span>
-                            </button>
-                            <h5 className="modal-title">{title}</h5>
-                        </div>
+        
+        // this.renderBackdrop(show);
 
-                        {children}
+        // console.log(show);
+        
+        return(
+            <Fragment>
+            <div className="modal-dim" style={{display: show ? "block": "none"}}>
+                <div className="modal modal-flex in" id="static-labels-Modal" role="dialog" style={{display: "block"}} >
+                    <div className={`modal-dialog ${modalSize}`} role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={handleCloseClick}>
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                                <h5 className="modal-title">{title}</h5>
+                            </div>
+
+                            {children}
+
+                        </div>
 
                     </div>
 
                 </div>
-
             </div>
+            
+
+            {/* {this.renderBackdrop(show)} */}
+
+            {/* <div className="modal-backdrop fade in" style={{display : show ? "block" : "none"}}></div> */}
+            </Fragment>
             // <div className={ show ? "ui dimmer modals page transition visible active" : "ui dimmer modals page transition  hidden" }>
             //     <div className={"modal " + className} tabIndex="-1" role="dialog" style={{display: show ? 'block': 'none' }}>
             //         <div className={"modal-dialog " + modalSize} role="document">
