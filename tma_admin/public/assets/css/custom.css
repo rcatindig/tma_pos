@@ -137,3 +137,11 @@ input:checked+.slider:before {
     border-radius: 12px;
     margin: 12px;
 }
+
+.react-datepicker-wrapper {
+    width: 100%;
+}
+
+.react-datepicker__input-container {
+    width: 100% !important;
+}

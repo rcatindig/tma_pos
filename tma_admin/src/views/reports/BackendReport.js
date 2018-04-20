@@ -184,63 +184,60 @@ class BackendReport extends Component {
                 <PageHeader title="Backend Reports"/>
                 <div className="container-fluid">
                     <div className="row justify-content-center">
-                        <div className="col-lg-6">
+                        <div className="offset-md-3 col-md-6 ">
                             <Card 
                                 title="Backend Report"
                                 subTitle="Generate backend report."
                                 >
 
-                                <div className="form-group row">
-                                    <label htmlFor="client" className="offset-1 col-2 col-form-label">Client</label>
-                                    <div className="col-8">
+
+                                <div>
+                                </div>
+
+
+                                <div className="row">
+
+                                    <div className="col-md-12">
                                         <Select
                                                 id="client"
-                                                className="form-control"
                                                 name="client"
                                                 options={clientOptions}
                                                 value={client_id}
-                                                placeholder="Select Client..."
+                                                label="Client"
                                                 onChange={this.onChangeClient}
                                             />
                                     </div>
                                 </div>
 
-                                <div className="form-group row">
-                                    <label htmlFor="machine" className="offset-1 col-2 col-form-label">Machine</label>
-                                    <div className="col-8">
+                                <div className="row">
+                                    <div className="col-md-12">
                                         <Select
                                                 id="machine"
-                                                className="form-control"
                                                 name="machine"
                                                 options={machineOptions}
                                                 value={machine_id}
-                                                placeholder="Select Machine..."
+                                                label="Machine"
                                                 onChange={(event) => this.setState({machine_id: event.target.value})}
                                             />
                                     </div>
                                 </div>
 
-                                <div className="form-group row">
-                                    <label htmlFor="fromDate" className="offset-1 col-2 col-form-label">From</label>
-                                    <div className="col-8">
+                                <div className="row">
+                                    <div className="col-md-6">
                                         <DateSelect
+                                            label="From"
                                             id="fromDate"
-                                            className="form-control"
+                                            className="md-form-control"
                                             onChange={(date) => this.setState({fromDate: date}) }
                                             selected={fromDate}
                                         />
                                         
                                     </div>
-                                </div>
-
-                                
-
-                                <div className="form-group row">
-                                    <label htmlFor="toDate" className="offset-1 col-2 col-form-label">To</label>
-                                    <div className="col-8">
+                                    <div className="col-md-6">
                                         <DateSelect
+                                            label="To"
                                             id="toDate"
-                                            className="form-control"
+                                            className="md-form-control"
                                             onChange={(date) => this.setState({toDate: date}) }
                                             selected={toDate}
                                         />
@@ -249,7 +246,7 @@ class BackendReport extends Component {
                                 </div>
 
                                 
-                                <div className="row justify-content-center">
+                                <div className="row text-center">
                                     <button type="submit" className="btn btn-success" onClick={this.generateReport}> <i className="fa fa-cogs"></i> Generate Report</button>
                                 </div>
 
