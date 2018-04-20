@@ -570,7 +570,7 @@ class Roles extends Component {
      
         return (
             <PageWrapper>
-                <PageHeader title="Roles"/>
+                <PageHeader title="List of Roles"/>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12">
@@ -612,7 +612,7 @@ class Roles extends Component {
                         <form >
                             <div className="row">
 
-                                    <div className="col-sm-12">
+                                    <div className="col-sm-12" hidden={userType === USER_TYPE.CLIENT ? true : false}>
                                         <Select
                                             id="company"
                                             className="form-control"
@@ -646,94 +646,83 @@ class Roles extends Component {
                     className="modal-component"
                     title="Access"
                     show={openAccessModal}
-                    size="small"
+                    size="medium"
                     handleCloseClick={this.closeAccessControl}
                     >
                     <div className="modal-body">
                         <form>
                             
-                            <div className="col-sm-12">
-                                <Select
-                                    id="company"
-                                    className="form-control"
-                                    options={accessOptions}
-                                    value={dashboardAccess !== "" ? dashboardAccess : ACCESS_TYPE.NOACCESS}
-                                    label="Dashboard"
-                                    onChange={(event) => (!readOnly) ? this.setState({dashboardAccess: event.target.value }) : dashboardAccess }
-                                />
-                            </div>
-                                                           
-                            
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="transactionsAccess">Transactions</label>
+                            <div className="row">
+                                <div className="col-sm-12 col-md-6">
+                                    <Select
+                                        id="dashboardAccess"
+                                        className="form-control"
+                                        options={accessOptions}
+                                        value={dashboardAccess !== "" ? dashboardAccess : ACCESS_TYPE.NOACCESS}
+                                        label="Dashboard"
+                                        onChange={(event) => (!readOnly) ? this.setState({dashboardAccess: event.target.value }) : dashboardAccess }
+                                    />
+                                </div>
+
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="transactionsAccess"
                                         className="form-control"
-                                        name="transactionsAccess"
                                         options={accessOptions}
                                         value={transactionsAccess !== "" ? transactionsAccess : ACCESS_TYPE.NOACCESS}
-                                        placeholder="Select Access..."
-                                        onChange={(event) => (!readOnly) ? this.setState({transactionsAccess: event.target.value }) : transactionsAccess}
+                                        label="Transactions"
+                                        onChange={(event) => (!readOnly) ? this.setState({transactionsAccess: event.target.value }) : transactionsAccess }
                                     />
-                                </div>                           
+                                </div>
                             </div>
-
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="backendReportAccess">Backend Report</label>
+                            
+                                                           
+                            <div className="row">
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="backendReportAccess"
                                         className="form-control"
-                                        name="backendReportAccess"
                                         options={accessOptions}
                                         value={backendReportAccess !== "" ? backendReportAccess : ACCESS_TYPE.NOACCESS}
-                                        placeholder="Select Access..."
-                                        onChange={(event) => (!readOnly) ?  this.setState({backendReportAccess: event.target.value }) : backendReportAccess}
+                                        label="Backend Reports"
+                                        onChange={(event) => (!readOnly) ? this.setState({backendReportAccess: event.target.value }) : backendReportAccess }
                                     />
-                                </div>                           
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="clientsAccess">Clients</label>
+                                </div>
+
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="clientsAccess"
                                         className="form-control"
-                                        name="clientsAccess"
                                         options={accessOptions}
                                         value={clientsAccess !== "" ? clientsAccess : ACCESS_TYPE.NOACCESS}
-                                        placeholder="Select Access..."
-                                        onChange={(event) => (!readOnly) ? this.setState({clientsAccess: event.target.value }) : clientsAccess}
+                                        label="Clients"
+                                        onChange={(event) => (!readOnly) ? this.setState({clientsAccess: event.target.value }) : clientsAccess }
                                     />
-                                </div>                           
+                                </div>
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="usersAccess">Users</label>
+
+                            <div className="row">
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="usersAccess"
                                         className="form-control"
-                                        name="usersAccess"
                                         options={accessOptions}
                                         value={usersAccess !== "" ? usersAccess : ACCESS_TYPE.NOACCESS}
-                                        placeholder="Select Access..."
-                                        onChange={(event) => (!readOnly) ? this.setState({usersAccess: event.target.value }) : usersAccess}
+                                        label="Users"
+                                        onChange={(event) => (!readOnly) ? this.setState({usersAccess: event.target.value }) : usersAccess }
                                     />
-                                </div>                           
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="rolesAccess">Roles</label>
+                                </div>
+
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="rolesAccess"
                                         className="form-control"
-                                        name="rolesAccess"
                                         options={accessOptions}
                                         value={rolesAccess !== "" ? rolesAccess : ACCESS_TYPE.NOACCESS}
-                                        placeholder="Select Access..."
-                                        onChange={(event) => (!readOnly) ? this.setState({rolesAccess: event.target.value }) : rolesAccess}
+                                        label="Roles"
+                                        onChange={(event) => (!readOnly) ? this.setState({rolesAccess: event.target.value }) : rolesAccess }
                                     />
-                                </div>                           
+                                </div>
                             </div>
                         </form>
                     </div>

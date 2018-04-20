@@ -8,7 +8,7 @@ import 'react-table/react-table.css';
 import Moment from 'moment';
 
 // custom components
-import { Card, PageHeader, PageWrapper, Modal } from '../../components';
+import { Card, PageHeader, PageWrapper, Modal, MdInput } from '../../components';
 
 // use for permission
 import { GetPermission, CheckUserType } from '../../helpers';
@@ -348,7 +348,7 @@ class Transactions extends Component {
                     <div className="row">
                         <div className="col-12">
                             <Card title="List of Transactions" >
-                                <div className="table-responsive m-t-20">
+                                <div className="table-responsive">
                                     <ReactTable
                                         className="-striped -highlight"
                                         manual
@@ -361,7 +361,7 @@ class Transactions extends Component {
                                         minRows={0}
                                         filterable
                                         resizable={true}
-                                        style={{fontFamily: "Lato,'Helvetica Neue', Arial,Helvetica,sans-serif", fontSize: "14px"}}
+                                        style={{fontFamily: "'Open Sans', sans-serif", fontSize: "13px"}}
                                     />
                                 </div>
                             </Card>
@@ -377,184 +377,137 @@ class Transactions extends Component {
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
-                    <div className="modal-body transaction-modal">
-                        <form className="form-control">
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="company">Company</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="company" 
-                                        placeholder="Company" 
-                                        value={company} 
-                                        onChange={(event) => (!readOnly) ? this.setState({company: event.target.value }) : company}/>
+                    <div className="modal-body modal-transactions">
+                        <form>
+                            <div className="row">
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Company"
+                                            value={company}
+                                            onChange={(event) => (!readOnly) ? this.setState({company: event.target.value }) : company }/>
                                 </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="txndate">Transaction Date</label>
-                                    <input type="text" 
-                                        className="form-control"
-                                        id="txndate"
-                                        placeholder="Transaction Date"
-                                        value={txndate}
-                                        onChange={(event) => (!readOnly) ? this.setState({txndate: event.target.value }) : txndate}/>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Transaction Date"
+                                            value={txndate}
+                                            onChange={(event) => (!readOnly) ? this.setState({txndate: event.target.value }) : txndate }/>
                                 </div>
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="epan">EPAN</label>
-                                    <input type="text"
-                                        className="form-control" 
-                                        id="epan" 
-                                        placeholder="Epan" 
-                                        value={epan}
-                                        onChange={(event) => (!readOnly) ? this.setState({epan: event.target.value }) : epan}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="licplate">Licence Plate</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="licplate" 
-                                        placeholder="License Plate" 
-                                        value={licplate} 
-                                        onChange={(event) => (!readOnly) ? this.setState({licplate: event.target.value }) : licplate}/>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="userid">User Id</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="userid" 
-                                        placeholder="User Id" 
-                                        value={userid}
-                                        onChange={(event) => (!readOnly) ? this.setState({userid: event.target.value }) : userid}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="machineid">Machine Id</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="machineid" 
-                                        placeholder="Machine Id" 
-                                        value={machineid}
-                                        onChange={(event) => (!readOnly) ? this.setState({machineid: event.target.value }) : machineid }/>
-                                </div>
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-4">
-                                    <label htmlFor="serialno">Serial Number</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="serialno" 
-                                        placeholder="Serial Number" 
-                                        value={serialno}
-                                        onChange={(event) => (!readOnly) ? this.setState({serialno: event.target.value }) : serialno}/>
-                                </div>
-                                <div className="form-group col-md-4">
-                                    <label htmlFor="uniquetxnno">Unique Transaction No.</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="uniquetxnno" 
-                                        placeholder="Unique Transaction No."
-                                        value={uniquetxnno}
-                                        onChange={(event) => (!readOnly) ? this.setState({uniquetxnno: event.target.value }) : uniquetxnno} />
-                                </div>
 
-                                <div className="form-group col-md-4">
-                                    <label htmlFor="receiptno">Receipt No.</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="receiptno" 
-                                        placeholder="Unique Transaction No."
-                                        value={receiptno}
-                                        onChange={(event) => (!readOnly) ? this.setState({receiptno: event.target.value }) : receiptno} />
+                            <div className="row">
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="EPAN"
+                                            value={epan}
+                                            onChange={(event) => (!readOnly) ? this.setState({epan: event.target.value }) : epan }/>
                                 </div>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Licence Plate"
+                                            value={licplate}
+                                            onChange={(event) => (!readOnly) ? this.setState({licplate: event.target.value }) : licplate }/>
+                                </div>
+                            </div>
+                            
+                            <div className="row">
                                 
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Machine ID"
+                                            value={machineid}
+                                            onChange={(event) => (!readOnly) ? this.setState({machineid: event.target.value }) : machineid }/>
+                                </div>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Serial Number"
+                                            value={serialno}
+                                            onChange={(event) => (!readOnly) ? this.setState({serialno: event.target.value }) : serialno }/>
+                                </div>
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="entrydatetime">Entry Date Time</label>
-                                    <input type="text" 
-                                        className="form-control"
-                                        id="entrydatetime"
-                                        placeholder="MM/DD/YYYY"
-                                        value={entrydatetime} 
-                                        onChange={(event) => (!readOnly) ? this.setState({entrydatetime: event.target.value }) : entrydatetime}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="exitdatetime">Exit Date Time</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="exitdatetime" 
-                                        placeholder="MM/DD/YYYY" 
-                                        value={exitdatetime} 
-                                        onChange={(event) => (!readOnly) ? this.setState({exitdatetime: event.target.value }) : exitdatetime } />
-                                </div>
+
+                            <div className="row">
                                 
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Transaction Number"
+                                            value={uniquetxnno}
+                                            onChange={(event) => (!readOnly) ? this.setState({uniquetxnno: event.target.value }) : uniquetxnno }/>
+                                </div>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Receipt Number"
+                                            value={receiptno}
+                                            onChange={(event) => (!readOnly) ? this.setState({receiptno: event.target.value }) : receiptno }/>
+                                </div>
                             </div>
+                            
 
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="duration">Duration</label>
-                                    <input type="text" 
-                                        className="form-control"
-                                        id="duration"
-                                        placeholder="Duration"
-                                        value={duration} 
-                                        onChange={(event) => (!readOnly) ? this.setState({duration: event.target.value }) : duration}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="tariff">Tariff</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="tariff" 
-                                        placeholder="Tariff" 
-                                        value={tariff} 
-                                        onChange={(event) => (!readOnly) ? this.setState({tariff: event.target.value }) : tariff } />
-                                </div>
+                            <div className="row">
                                 
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Entry Date Time"
+                                            value={entrydatetime}
+                                            onChange={(event) => (!readOnly) ? this.setState({entrydatetime: event.target.value }) : entrydatetime }/>
+                                </div>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Exit Date Time"
+                                            value={exitdatetime}
+                                            onChange={(event) => (!readOnly) ? this.setState({exitdatetime: event.target.value }) : exitdatetime }/>
+                                </div>
+                            </div>
+                            
+                            <div className="row">
+                                
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Duration"
+                                            value={duration}
+                                            onChange={(event) => (!readOnly) ? this.setState({duration: event.target.value }) : duration }/>
+                                </div>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Tariff"
+                                            value={tariff}
+                                            onChange={(event) => (!readOnly) ? this.setState({tariff: event.target.value }) : tariff }/>
+                                </div>
+                            </div>
+                            
+
+                            <div className="row">
+                                
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Total Amount"
+                                            value={totalamount}
+                                            onChange={(event) => (!readOnly) ? this.setState({totalamount: event.target.value }) : totalamount }/>
+                                </div>
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Accepted Total"
+                                            value={acceptedtotal}
+                                            onChange={(event) => (!readOnly) ? this.setState({acceptedtotal: event.target.value }) : acceptedtotal }/>
+                                </div>
                             </div>
 
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="totalamount">Total Amount</label>
-                                    <input type="text" 
-                                        className="form-control"
-                                        id="totalamount"
-                                        placeholder="Total Amount"
-                                        value={totalamount} 
-                                        onChange={(event) => (!readOnly) ? this.setState({totalamount: event.target.value }) : totalamount}/>
+                            <div className="row">
+                                
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="Net Total"
+                                            value={nettotal}
+                                            onChange={(event) => (!readOnly) ? this.setState({nettotal: event.target.value }) : nettotal }/>
                                 </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="acceptedtotal">Accepted Total</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="acceptedtotal" 
-                                        placeholder="Accepted Total" 
-                                        value={acceptedtotal} 
-                                        onChange={(event) => (!readOnly) ?  this.setState({acceptedtotal: event.target.value }) : acceptedtotal} />
+                                <div className="col-sm-12 col-md-6">
+                                    <MdInput
+                                            label="VAT"
+                                            value={vat}
+                                            onChange={(event) => (!readOnly) ? this.setState({vat: event.target.value }) : vat }/>
                                 </div>
                             </div>
 
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="nettotal">Net Total</label>
-                                    <input type="text" 
-                                        className="form-control"
-                                        id="nettotal"
-                                        placeholder="Net Total"
-                                        value={nettotal} 
-                                        onChange={(event) => (!readOnly) ?  this.setState({nettotal: event.target.value }) : nettotal}/>
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="vat">VAT</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="vat" 
-                                        placeholder="VAT" 
-                                        value={vat} 
-                                        onChange={(event) => (!readOnly) ? this.setState({vat: event.target.value }) : vat} />
-                                </div>
-                            </div>
+                            
                         </form>
                     </div>
                     <div className="modal-footer">

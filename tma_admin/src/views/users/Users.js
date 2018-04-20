@@ -13,7 +13,7 @@ import Moment from 'moment';
 import AuthService from '../../utils/AuthService';
 
 // custom components
-import { Card, PageHeader, PageWrapper, Modal, Select, Switch } from '../../components';
+import { Card, PageHeader, PageWrapper, Modal, Select, Switch, MdInput } from '../../components';
 
 // constants 
 import { API, SALT_ROUNDS, STATUS, USER_TYPE, ACCESS_TYPE, MODULE } from '../../constants';
@@ -727,7 +727,7 @@ class Users extends Component {
                                 subTitle="List of Users"
                                 buttons={btns}
                                 >
-                                <div className="table-responsive m-t-20">
+                                <div className="table-responsive">
                                     <ReactTable
                                         className="-striped -highlight"
                                         manual
@@ -740,7 +740,7 @@ class Users extends Component {
                                         minRows={0}
                                         filterable
                                         resizable={true}
-                                        style={{fontFamily: "Lato,'Helvetica Neue', Arial,Helvetica,sans-serif", fontSize: "14px"}}
+                                        style={{fontFamily: "'Open Sans', sans-serif", fontSize: "13px"}}
                                     />
                                 </div>
                             </Card>
@@ -771,136 +771,109 @@ class Users extends Component {
                     show={openModal}
                     handleCloseClick={this.closeModal}
                     >
-                    <div className="modal-body transaction-modal">
-                        <form className="form-control">
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="first_name">First Name</label>
-                                    <input type="text"
-                                        className="form-control" 
-                                        id="first_name" 
-                                        placeholder="First Name" 
-                                        value={first_name} 
-                                        onChange={(event) => (!readOnly) ? this.setState({first_name: event.target.value }) : first_name}/>
-                                </div>                           
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="middle_name">Middle Name</label>
-                                    <input type="text"
-                                        className="form-control" 
-                                        id="middle_name" 
-                                        placeholder="Middle Name" 
-                                        value={middle_name} 
-                                        onChange={(event) => (!readOnly) ? this.setState({middle_name: event.target.value }) : middle_name}/>
-                                </div> 
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-8">
-                                    <label htmlFor="surname">Surname</label>
-                                    <input type="text"
-                                        className="form-control" 
-                                        id="surname" 
-                                        placeholder="Surname" 
-                                        value={surname} 
-                                        onChange={(event) => (!readOnly) ? this.setState({surname: event.target.value }) : surname}/>
+                    <div className="modal-body modal-transactions">
+                        <form>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <MdInput
+                                            label="First Name"
+                                            value={first_name}
+                                            onChange={(event) => (!readOnly) ? this.setState({first_name: event.target.value }) : first_name }/>
                                 </div>
-                                <div className="form-group col-md-4">
-                                    <label htmlFor="middle_name">Extension</label>
-                                    <input type="text"
-                                        className="form-control" 
-                                        id="extension" 
-                                        placeholder="Extension" 
-                                        value={extension} 
-                                        onChange={(event) => (!readOnly) ? this.setState({extension: event.target.value }) : extension }/>
-                                </div> 
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <MdInput
+                                            label="Middle Name"
+                                            value={middle_name}
+                                            onChange={(event) => (!readOnly) ? this.setState({middle_name: event.target.value }) : middle_name }/>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-sm-8">
+                                    <MdInput
+                                            label="Surname"
+                                            value={surname}
+                                            onChange={(event) => (!readOnly) ? this.setState({surname: event.target.value }) : surname }/>
+                                </div>
+                                <div className="col-sm-4">
+                                    <MdInput
+                                            label="Extension"
+                                            value={extension}
+                                            onChange={(event) => (!readOnly) ? this.setState({extension: event.target.value }) : extension }/>
+                                </div>
                             </div>
                             
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="address">Address</label>
-                                    <input type="text"
-                                        className="form-control" 
-                                        id="address" 
-                                        placeholder="Address" 
-                                        value={address} 
-                                        onChange={(event) => (!readOnly) ? this.setState({address: event.target.value }) : address }/>
-                                </div>                            
+                            
+                            <div className="row">
+                                <div className="col-sm-12">
+                                    <MdInput
+                                            label="Address"
+                                            value={address}
+                                            onChange={(event) => (!readOnly) ? this.setState({address: event.target.value }) : address }/>
+                                </div>                   
                             </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="country">Country</label>
+
+                            <div className="row">
+                                
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="country"
-                                        className="form-control"
                                         name="country"
                                         options={this.state.countryOptions}
                                         value={country_id}
                                         onChange={this.onChangeCountry}
-                                        placeholder="Select Country..."
+                                        label="Country"
                                     />
-                                    
-                                </div>
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="state">State / Region</label>
-
+                                </div>  
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="state"
                                         className="form-control"
                                         name="state"
                                         options={this.state.statesOptions}
                                         value={state_id}
-                                        placeholder="Select State/Region..."
+                                        label="State/Region"
                                         onChange={(event) => (!readOnly) ? this.setState({state_id: event.target.value }) : state_id}
                                     />
-                                </div>
-                                
-                            </div>
+                                </div>  
 
-                            <div className="form-row" hidden={userType === USER_TYPE.CLIENT ? true : false}>
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="first_name">Company</label>
+                            </div>
+                            
+
+                            <div className="row" hidden={userType === USER_TYPE.CLIENT ? true : false}>
+                                <div className="col-sm-12">
+                                    
                                     <Select
                                         id="company"
-                                        className="form-control"
                                         name="company"
                                         options={clientOptions}
                                         value={client_id}
-                                        placeholder="Select Company..."
+                                        label="Company"
                                         onChange={this.onChangeCompany}
                                     />
                                 </div>                           
                             </div>
-                            
-                            <fieldset>
-                                <legend>User Credentials</legend>
-                                <div className="form-row">
-                                    <div className="form-group col-md-12">
-                                        <label htmlFor="username">Username</label>
-                                        <input type="text" 
-                                            className="form-control"
-                                            id="username"
-                                            placeholder="Username"
-                                            value={username} 
-                                            onChange={(event) => (!readOnly) ?  this.setState({username: event.target.value }) : username}/>
-                                    </div>
-                                    
-                                </div>
-                                <div className="form-row">
-                                    <div className="form-group col-md-12">
-                                        <label htmlFor="email">Email</label>
-                                        <input type="text" 
-                                            className="form-control"
-                                            id="email"
-                                            placeholder="Email"
-                                            value={email} 
-                                            onChange={(event) => (!readOnly) ? this.setState({email: event.target.value }) : email}/>
-                                    </div>
-                                </div>
 
-                                <div className="form-row justify-content-center" hidden={readOnly}>
+                            <div className="user-credentials-div">
+                                <h4 className="text-center">USER CREDENTIALS</h4>
 
-                                    <div className="switch-container">                                    
+                                <div className="row">
+                                    <div className="col-sm-12 col-md-6">
+                                        <MdInput
+                                                label="Username"
+                                                value={username}
+                                                onChange={(event) => (!readOnly) ? this.setState({username: event.target.value }) : username }/>
+                                    </div>                   
+                                    <div className="col-sm-12 col-md-6">
+                                        <MdInput
+                                                label="Email"
+                                                value={email}
+                                                onChange={(event) => (!readOnly) ? this.setState({email: event.target.value }) : email }/>
+                                    </div>                   
+                                </div>
+                                <div className="row " hidden={readOnly}>
+                                    <div className="switch-container justify-content-center">                                    
                                         <label className="switch">
                                             <input type="checkbox" 
                                                 defaultChecked={changePassword} 
@@ -910,63 +883,51 @@ class Users extends Component {
                                         </label>
                                         <label className="switch-label-right">
                                             Edit Password
-                                        </label>
-                                        
+                                        </label>   
                                     </div>
                                 </div>
-                                
-                                <div className="form-row" hidden={hidePasswordField}>
-                                    <div className="form-group col-md-6">
-                                        <label htmlFor="password">Password</label>
-                                        <input type="password" 
-                                            className="form-control"
-                                            id="password"
-                                            placeholder="Password"
-                                            value={password} 
-                                            onChange={(event) => this.setState({password: event.target.value })}/>
-                                    </div>
-                                    <div className="form-group col-md-6 ">
-                                        <label htmlFor="confirmpassword">Confirm Password</label>
-                                        <input type="password" 
-                                            className="form-control"
-                                            id="confirmpassword"
-                                            placeholder="Confirm Password"
-                                            value={confirmPassword} 
-                                            onChange={(event) => this.setState({confirmPassword: event.target.value })}/>
-                                    </div>
-                                </div>
-                            </fieldset>
-                            
-                            <div className="form-row">
 
-                                <div className="form-group col-md-6">
-                                    <label htmlFor="status">Status</label>
+                                <div className="row" hidden={hidePasswordField}>
+                                    <div className="col-sm-12 col-md-6">
+                                        <MdInput
+                                                label="Password"
+                                                value={password}
+                                                onChange={(event) => (!readOnly) ? this.setState({password: event.target.value }) : password }/>
+                                    </div>                   
+                                    <div className="col-sm-12 col-md-6">
+                                        <MdInput
+                                                label="Confirm Password"
+                                                value={confirmPassword}
+                                                onChange={(event) => (!readOnly) ? this.setState({confirmPassword: event.target.value }) : confirmPassword }/>
+                                    </div>                   
+                                </div>
+
+                                
+                            </div>
+
+                            <div className="row" >
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="status"
-                                        placeholder="Select Status..."
-                                        className="form-control"
                                         name="status"
                                         options={[{value: STATUS.ACTIVE, label: "Active"}, {value: STATUS.INACTIVE, label: "Inactive"}]}
                                         value={status}
+                                        label="Status"
                                         onChange={(event) => (!readOnly) ? this.setState({status: event.target.value }) : status}
                                     />
-                                    
-                                </div>
-
-                                <div className="form-group col-md-6" hidden={hasRoles ? false : true}>
-                                    <label htmlFor="role">Role</label>
+                                </div>  
+                                <div className="col-sm-12 col-md-6">
                                     <Select
                                         id="role"
-                                        className="form-control"
                                         name="role"
                                         options={rolesOptions}
                                         value={role_id}
-                                        placeholder="Select Role..."
+                                        label="Role"
                                         onChange={(event) => (!readOnly) ? this.setState({role_id: event.target.value }) : role_id}
                                     />
-                                </div>
-
+                                </div>                           
                             </div>
+                           
                         </form>
                     </div>
                     <div className="modal-footer">

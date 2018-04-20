@@ -17,7 +17,7 @@ class Select extends Component {
         return (
 
             <div className="md-input-wrapper" >
-                <select className={`md-form-control ${value !== "" ? "md-valid" : ""}`} id={id} value={value} onChange={onChange}>
+                <select id={id} className={`md-form-control ${value !== "" ? "md-valid" : ""}`} id={id} value={value} onChange={onChange}>
                     <option value=""></option>
                     {options.map(function(a) {
                         return (

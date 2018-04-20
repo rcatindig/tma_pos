@@ -46,7 +46,7 @@ class Modal extends Component {
         return(
             <Fragment>
             <div className="modal-dim" style={{display: show ? "block": "none"}}>
-                <div className="modal modal-flex in" id="static-labels-Modal" role="dialog" style={{display: "block"}} >
+                <div className="modal in" id="static-labels-Modal" role="dialog" style={{display: "block"}} >
                     <div className={`modal-dialog ${modalSize}`} role="document">
                         <div className="modal-content">
                             <div className="modal-header">
