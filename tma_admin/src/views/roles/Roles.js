@@ -592,7 +592,7 @@ class Roles extends Component {
                                         minRows={0}
                                         filterable
                                         resizable={true}
-                                        style={{fontFamily: "Lato,'Helvetica Neue', Arial,Helvetica,sans-serif", fontSize: "14px"}}
+                                        style={{fontFamily: "'Open Sans', sans-serif", fontSize: "13px"}}
                                     />
                                 </div>
                             </Card>

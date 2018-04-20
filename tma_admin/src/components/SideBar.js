@@ -143,7 +143,7 @@ class SideBar extends Component {
                         <li className="treeview">
                             
                             <a className="waves-effect waves-dark">
-                                <i className="icon-briefcase"></i>
+                                <i className="icon-pie-chart"></i>
                                 <span> Reports</span>
                                 <i className="icon-arrow-down"></i>
                             </a>
@@ -175,7 +175,7 @@ class SideBar extends Component {
                         <li className="nav-level">Setup</li>
                         <li className="treeview">
                             <Link to="/redirect/clients" className="waves-effect waves-dark">
-                                <i className="icon-briefcase"></i>
+                                <i className="icon-globe"></i>
                                 <span> Clients</span>
                             </Link>
                             <Link to="/redirect/users" className="waves-effect waves-dark">
@@ -183,7 +183,7 @@ class SideBar extends Component {
                                 <span> Users</span>
                             </Link>
                             <Link to="/redirect/roles" className="waves-effect waves-dark">
-                                <i className="icon-briefcase"></i>
+                                <i className="icon-badge"></i>
                                 <span> Roles</span>
                             </Link>
                         </li>
