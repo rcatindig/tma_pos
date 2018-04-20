@@ -105,7 +105,7 @@ class Main extends Component {
                             <Redirect from="/redirect/roles" to="/roles" />
                             <Redirect from="/redirect" to="/" />
                         </Switch>
-                       
+                        
                         <Route path="/" exact={true} name="Dashboard" component={dbHide ? PageNotFound : Dashboard}/>
                         <Route path="/transactions" name="Transactions" component={txnHide ? PageNotFound : Transactions}/>
                         <Route path="/clients" name="Clients" component={cltHide ? PageNotFound : Clients}/>

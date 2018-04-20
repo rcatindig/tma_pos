@@ -87,33 +87,109 @@ class SideBar extends Component {
             txnHide,
             usrHide } = this.state;
         return (
-            <div className="left-sidebar">
-                <div className="scroll-sidebar">
-                    <nav className="sidebar-nav">
-                        <ul id="sidebarnav">
-                            <li className="nav-devider"></li>
-                            <li className="nav-label">Home</li>
-                            <li hidden={dbHide}><Link to="/redirect"><i className="fa fa-tachometer"></i><span className="hide-menu">Dashboard</span></Link></li>
-                            <li className="nav-label">Main</li>
-                            <li hidden={txnHide}><Link to="/redirect/transactions"><i className="fa fa-car"></i><span className="hide-menu">Transactions</span></Link></li>
-                            {/* <li><Link to="/redirect/machines"><i className="fa fa-server"></i>Machines</Link></li> */}
-                            <li><a className="has-arrow  " onClick={() => console.log('collapse') } aria-expanded="false"><i className="fa fa-wpforms"></i><span className="hide-menu">Reports</span></a>
-                                <ul aria-expanded="false" className="collapse">
-                                    <li hidden={brHide}><Link to="/redirect/backendreport">Backend Report</Link></li>
-                                    <li><a href="uc-calender.html">Transaction Report</a></li>
-                                    <li><a href="uc-datamap.html">Entry Report</a></li>
-                                    <li><a href="uc-nestedable.html">Exit Report</a></li>
-                                </ul>
-                            </li>
-                            <li className="nav-label">Setup</li>
-                            <li hidden={cltHide}><Link to="/redirect/clients"><i className="fa fa-industry"></i><span className="hide-menu">Clients</span></Link></li>
-                            <li hidden={usrHide}><Link to="/redirect/users"><i className="fa fa-user-circle"></i><span className="hide-menu">Users</span></Link></li>
-                            <li hidden={rolHide}><Link to="/redirect/roles"><i className="fa fa-user-secret"></i><span className="hide-menu">Roles</span></Link></li>
+            <aside className="main-sidebar hidden-print ">
+                <section className="sidebar" id="sidebar-scroll">
+
+                    <div className="user-panel">
+                        <div className="f-left image">
+                            <img src="assets/images/avatar-1.png" alt="User Image" className="img-circle" />
+                        </div>
+                        <div className="f-left info">
+                            <p>John Doe</p>
+                            <p className="designation">UX Designer
+                                <i className="icofont icofont-caret-down m-l-5"></i>
+                            </p>
+                        </div>
+                    </div>
+                    <ul className="nav sidebar-menu extra-profile-list">
+                        <li>
+                            <a className="waves-effect waves-dark" href="profile.html">
+                                <i className="icon-user"></i>
+                                <span className="menu-text">View Profile</span>
+                                <span className="selected"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a className="waves-effect waves-dark" href="javascript:void(0)">
+                                <i className="icon-settings"></i>
+                                <span className="menu-text">Settings</span>
+                                <span className="selected"></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a className="waves-effect waves-dark" href="javascript:void(0)">
+                                <i className="icon-logout"></i>
+                                <span className="menu-text">Logout</span>
+                                <span className="selected"></span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul className="sidebar-menu">
+                        <li className="nav-level">Home</li>
+                        <li className="active treeview">
+                            <Link to="/redirect" className="waves-effect waves-dark">
+                                <i className="icon-speedometer"></i>
+                                <span> Dashboard</span>
+                            </Link>
+                        </li>
+                        
+                        <li className="nav-level">Main</li>
+                        <li className="treeview">
+                            <Link to="/redirect/transactions" className="waves-effect waves-dark">
+                                <i className="icon-briefcase"></i>
+                                <span> Transactions</span>
+                            </Link>
+                        </li>
+                        <li className="treeview">
                             
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+                            <a className="waves-effect waves-dark">
+                                <i className="icon-briefcase"></i>
+                                <span> Reports</span>
+                                <i className="icon-arrow-down"></i>
+                            </a>
+                            <ul className="treeview-menu">
+                                <li>
+                                    <Link to="/redirect/backendreport" className="waves-effect waves-dark">
+                                        <i className="icon-arrow-right"></i> Backend Report
+                                    </Link>
+                                </li>
+                                <li>
+                                    <a className="waves-effect waves-dark" href="button.html">
+                                        <i className="icon-arrow-right"></i> Transaction Report</a>
+                                </li>
+                                <li>
+                                    <a className="waves-effect waves-dark" href="label-badge.html">
+                                        <i className="icon-arrow-right"></i> Entry Report</a>
+                                </li>
+                                <li>
+                                    <a className="waves-effect waves-dark" href="bootstrap-ui.html">
+                                        <i className="icon-arrow-right"></i> Exit Report</a>
+                                </li>
+                                <li>
+                                    <a className="waves-effect waves-dark" href="box-shadow.html">
+                                        <i className="icon-arrow-right"></i> Box Shadow</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li className="nav-level">Setup</li>
+                        <li className="treeview">
+                            <Link to="/redirect/clients" className="waves-effect waves-dark">
+                                <i className="icon-briefcase"></i>
+                                <span> Clients</span>
+                            </Link>
+                            <Link to="/redirect/users" className="waves-effect waves-dark">
+                                <i className="icon-people"></i>
+                                <span> Users</span>
+                            </Link>
+                            <Link to="/redirect/roles" className="waves-effect waves-dark">
+                                <i className="icon-briefcase"></i>
+                                <span> Roles</span>
+                            </Link>
+                        </li>
+                    </ul>
+                </section>
+            </aside>
             
         );
     }

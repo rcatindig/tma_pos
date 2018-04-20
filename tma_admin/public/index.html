@@ -2,73 +2,118 @@
 <html lang="en">
 
 <head>
+	<title>TMA Tech</title>
+	<!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+     <![endif]-->
+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<!-- Tell the browser to be responsive to screen width -->
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="">
-	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
 	<!-- Favicon icon -->
-	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
-	<title>TMAPOS - Admin</title>
-	<!-- Bootstrap Core CSS -->
-	<link href="css/lib/bootstrap/bootstrap.min.css" rel="stylesheet">
-	<!-- Custom CSS -->
+	<link rel="shortcut icon" href="assets/images/favicon.png" type="image/x-icon">
+	<link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 
-	<link href="css/lib/calendar2/semantic.ui.min.css" rel="stylesheet">
-	<link href="css/lib/calendar2/pignose.calendar.min.css" rel="stylesheet">
-	<link href="css/lib/owl.carousel.min.css" rel="stylesheet" />
-	<link href="css/lib/owl.theme.default.min.css" rel="stylesheet" />
-	<link href="css/helper.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
-	<link href="css/custom.css" rel="stylesheet">
-	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:** -->
-	<!--[if lt IE 9]>
-    <script src="https:**oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https:**oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+	<!-- Google font-->
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+	<!-- iconfont -->
+	<link rel="stylesheet" type="text/css" href="assets/icon/icofont/css/icofont.css">
+
+	<!-- simple line icon -->
+	<link rel="stylesheet" type="text/css" href="assets/icon/simple-line-icons/css/simple-line-icons.css">
+
+	<!-- Required Fremwork -->
+	<link rel="stylesheet" type="text/css" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+
+	<!-- Weather css -->
+	<link href="assets/css/svg-weather.css" rel="stylesheet">
+
+	<!-- Echart js -->
+	<script src="assets/plugins/charts/echarts/js/echarts-all.js"></script>
+
+	<!-- Style.css -->
+	<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+
+	<!-- Responsive.css-->
+	<link rel="stylesheet" type="text/css" href="assets/css/responsive.css">
+
+	<!--color css-->
+	<link rel="stylesheet" type="text/css" href="assets/css/color/color-1.min.css" id="color" />
+
+	<!--custom css-->
+	<link rel="stylesheet" type="text/css" href="assets/css/custom.css"/>
+
 </head>
 
-<body class="fix-header fix-sidebar" id="root">
-
-
-	<!-- Preloader - style you can find in spinners.css -->
-    <div class="preloader">
-		<svg class="circular" viewBox="25 25 50 50">
-			<circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+<body class="sidebar-mini fixed">
+	<div class="loader-bg">
+		<div class="loader-bar">
+		</div>
 	</div>
-
-	<!-- Preloader - style you can find in spinners.css -->
-	<div id="main-wrapper">
+	<div id="wrapper" class="wrapper">
 		<noscript>
 			You need to enable JavaScript to run this app.
 		</noscript>
+
+
 	</div>
+
+	<!-- Required Jqurey -->
+	<script src="assets/plugins/jquery/dist/jquery.min.js"></script>
+	<script src="assets/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script src="assets/plugins/tether/dist/js/tether.min.js"></script>
+
+	<!-- Required Fremwork -->
+	<script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- waves effects.js -->
+	<script src="assets/plugins/Waves/waves.min.js"></script>
+
+	<!-- Scrollbar JS-->
+	<script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
+	<script src="assets/plugins/jquery.nicescroll/jquery.nicescroll.min.js"></script>
+
+	<!--classic JS-->
+	<script src="assets/plugins/classie/classie.js"></script>
+
+	<!-- notification -->
+	<script src="assets/plugins/notification/js/bootstrap-growl.min.js"></script>
+
+	<!-- Rickshaw Chart js -->
+	<script src="assets/plugins/d3/d3.js"></script>
+	<script src="assets/plugins/rickshaw/rickshaw.js"></script>
+
+	<!-- Sparkline charts -->
+	<script src="assets/plugins/jquery-sparkline/dist/jquery.sparkline.js"></script>
+
+	<!-- Counter js  -->
+	<script src="assets/plugins/waypoints/jquery.waypoints.min.js"></script>
+	<script src="assets/plugins/countdown/js/jquery.counterup.js"></script>
+
+	<!-- custom js -->
+	<!-- <script type="text/javascript" src="assets/pages/elements.js"></script> -->
+	<script src="assets/js/menu.min.js"></script>
+
+	<script type="text/javascript" src="assets/js/main.min.js"></script>
+	<!-- <script type="text/javascript" src="assets/pages/dashboard.js"></script> -->
 	
 	
 
-
-
-	<!-- End Wrapper -->
-	<!-- All Jquery -->
-	<script src="js/lib/jquery/jquery.min.js"></script>
-	<!-- Bootstrap tether Core JavaScript -->
-	<script src="js/lib/bootstrap/js/popper.min.js"></script>
-	<script src="js/lib/bootstrap/js/bootstrap.min.js"></script>
-	<!-- slimscrollbar scrollbar JavaScript -->
-	<script src="js/jquery.slimscroll.js"></script>
-	<!--Menu sidebar -->
-	<script src="js/sidebarmenu.js"></script>
-	<!--stickey kit -->
-	<script src="js/lib/sticky-kit-master/dist/sticky-kit.min.js"></script>
-	<!--Custom JavaScript -->
-
-	<script src="js/scripts.js"></script>
-	<!-- scripit init-->
-
-	<!-- <script src="js/custom.min.js"></script> -->
-
+	<script>
+		var $window = $(window);
+		var nav = $('.fixed-button');
+		$window.scroll(function () {
+			if ($window.scrollTop() >= 200) {
+				nav.addClass('active');
+			} else {
+				nav.removeClass('active');
+			}
+		});
+	</script>
 </body>
 
 </html>

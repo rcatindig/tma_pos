@@ -4,10 +4,13 @@ class PageWrapper extends Component {
 
     render() {
         return (
-            <div className="page-wrapper">
-                { this.props.children }
-                <footer className="footer"> © 2018 All rights reserved. Powered by <a href="http://www.tmatech.com.au">TMA Tech</a></footer>
+
+            <div className="content-wrapper">
+                <div className="container-fluid">                    
+                    { this.props.children }
+                </div>
             </div>
+            
         );
     }
 }

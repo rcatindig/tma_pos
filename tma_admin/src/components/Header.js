@@ -22,186 +22,166 @@ class Header extends Component {
  
     render() {
         return (
-            <div className="header">
-                <nav className="navbar top-navbar navbar-expand-md navbar-light">
-                    <div className="navbar-header">
-                        <a className="navbar-brand" href="index.html">
-                            <b><img src="images/tmalogo-small.png" alt="homepage" className="dark-logo" /></b>
-                        </a>
-                    </div>
-                    <div className="navbar-collapse">
-                        <ul className="navbar-nav mr-auto mt-md-0">
-                            <li className="nav-item"> <a className="nav-link nav-toggler hidden-md-up text-muted  " href="javascript:void(0)"><i className="mdi mdi-menu"></i></a> </li>
-                            <li className="nav-item m-l-10"> <a className="nav-link sidebartoggler hidden-sm-down text-muted  " href="javascript:void(0)"><i className="ti-menu"></i></a> </li>
-                            
-                            <li className="nav-item dropdown mega-dropdown"> <a className="nav-link dropdown-toggle text-muted  " onClick={() => console.log('click') } data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="fa fa-th-large"></i></a>
-                                <div className="dropdown-menu animated zoomIn">
-                                    <ul className="mega-dropdown-menu row">
+            <header className="main-header-top hidden-print">
+                <a href="index.html" className="logo">
+                    <img className="img-fluid able-logo" src="assets/images/logo.png" alt="Theme-logo" />
+                </a>
+                <nav className="navbar navbar-static-top">
+                    <a data-toggle="offcanvas" className="sidebar-toggle"></a>
+                    <div className="navbar-custom-menu f-right">
+                        <ul className="top-nav">
 
+                            <li className="dropdown pc-rheader-submenu message-notification search-toggle">
+                                <a href="#!" id="morphsearch-search" className="drop icon-circle txt-white">
+                                    <i className="icofont icofont-search-alt-1"></i>
+                                </a>
+                            </li>
+                            <li className="dropdown notification-menu">
+                                <a href="#!" data-toggle="dropdown" aria-expanded="false" className="dropdown-toggle">
+                                    <i className="icon-bell"></i>
+                                    <span className="badge badge-danger header-badge">9</span>
+                                </a>
+                                <ul className="dropdown-menu">
+                                    <li className="not-head">You have
+                                        <b className="text-primary">4</b> new notifications.</li>
+                                    <li className="bell-notification">
+                                        <a href="javascript:;" className="media">
+                                            <span className="media-left media-icon">
+                                                <img className="img-circle" src="assets/images/avatar-1.png" alt="User Image" />
+                                            </span>
+                                            <div className="media-body">
+                                                <span className="block">Lisa sent you a mail</span>
+                                                <span className="text-muted block-time">2min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li className="bell-notification">
+                                        <a href="javascript:;" className="media">
+                                            <span className="media-left media-icon">
+                                                <img className="img-circle" src="assets/images/avatar-2.png" alt="User Image" />
+                                            </span>
+                                            <div className="media-body">
+                                                <span className="block">Server Not Working</span>
+                                                <span className="text-muted block-time">20min ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li className="bell-notification">
+                                        <a href="javascript:;" className="media">
+                                            <span className="media-left media-icon">
+                                                <img className="img-circle" src="assets/images/avatar-3.png" alt="User Image" />
+                                            </span>
+                                            <div className="media-body">
+                                                <span className="block">Transaction xyz complete</span>
+                                                <span className="text-muted block-time">3 hours ago</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li className="not-footer">
+                                        <a href="#!">See all notifications.</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li className="pc-rheader-submenu ">
+                                <a href="#!" className="drop icon-circle displayChatbox">
+                                    <i className="icon-bubbles"></i>
+                                    <span className="badge badge-danger header-badge blink">5</span>
+                                </a>
 
-                                        <li className="col-lg-3  m-b-30">
-                                            <h4 className="m-b-20">CONTACT US</h4>
-                                            <form>
-                                                <div className="form-group">
-                                                    <input type="text" className="form-control" id="exampleInputname1" placeholder="Enter Name" />
-                                                </div>
-                                                <div className="form-group">
-                                                    <input type="email" className="form-control" placeholder="Enter email" /> 
-                                                </div>
-                                                <div className="form-group">
-                                                    <textarea className="form-control" id="exampleTextarea" rows="3" placeholder="Message"></textarea>
-                                                </div>
-                                                <button type="submit" className="btn btn-info">Submit</button>
-                                            </form>
-                                        </li>
-                                        <li className="col-lg-3 col-xlg-3 m-b-30">
-                                            <h4 className="m-b-20">List style</h4>
-                                            <ul className="list-style-none">
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                            </ul>
-                                        </li>
-                                        <li className="col-lg-3 col-xlg-3 m-b-30">
-                                            <h4 className="m-b-20">List style</h4>
-                                            <ul className="list-style-none">
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                            </ul>
-                                        </li>
-                                        <li className="col-lg-3 col-xlg-3 m-b-30">
-                                            <h4 className="m-b-20">List style</h4>
-                                            <ul className="list-style-none">
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                                <li><a href="javascript:void(0)"><i className="fa fa-check text-success"></i> This Is Another Link</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                </div>
+                            </li>
+                            <li className="dropdown">
+                                <a href="#!" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" className="dropdown-toggle drop icon-circle drop-image">
+                                    <span>
+                                        <img className="img-circle " src="assets/images/avatar-1.png" style={{width:"40px"}} alt="User Image" />
+                                    </span>
+                                    <span>John
+                                        <b>Doe</b>
+                                        <i className=" icofont icofont-simple-down"></i>
+                                    </span>
+
+                                </a>
+                                <ul className="dropdown-menu settings-menu">
+                                    <li>
+                                        <a href="#!">
+                                            <i className="icon-settings"></i> Settings</a>
+                                    </li>
+                                    <li>
+                                        <a href="profile.html">
+                                            <i className="icon-user"></i> Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="message.html">
+                                            <i className="icon-envelope-open"></i> My Messages</a>
+                                    </li>
+                                    <li className="p-0">
+                                        <div className="dropdown-divider m-0"></div>
+                                    </li>
+                                    <li>
+                                        <a href="lock-screen.html">
+                                            <i className="icon-lock"></i> Lock Screen</a>
+                                    </li>
+                                    <li>
+                                        <a href="#!">
+                                            <i className="icon-logout"></i> Logout</a>
+                                    </li>
+
+                                </ul>
                             </li>
                         </ul>
-                        <ul className="navbar-nav my-lg-0">
+                        <div id="morphsearch" className="morphsearch">
+                            <form className="morphsearch-form">
 
-                            <li className="nav-item hidden-sm-down search-box"> <a className="nav-link hidden-sm-down text-muted  " href="javascript:void(0)"><i className="ti-search"></i></a>
-                                <form className="app-search">
-                                    <input type="text" className="form-control" placeholder="Search here" /> <a className="srh-btn"><i className="ti-close"></i></a>
-                                </form>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle text-muted text-muted  " onClick={() => console.log('click') } data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="fa fa-bell"></i>
-                                    <div className="notify"> <span className="heartbit"></span> <span className="point"></span> </div>
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right mailbox animated zoomIn">
-                                    <ul>
-                                        <li>
-                                            <div className="drop-title">Notifications</div>
-                                        </li>
-                                        <li>
-                                            <div className="message-center">
-                                            
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="btn btn-danger btn-circle m-r-10"><i className="fa fa-link"></i></div>
-                                                    <div className="mail-contnet">
-                                                        <h5>This is title</h5> <span className="mail-desc">Just see the my new admin!</span> <span className="time">9:30 AM</span>
-                                                    </div>
-                                                </a>
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="btn btn-success btn-circle m-r-10"><i className="ti-calendar"></i></div>
-                                                    <div className="mail-contnet">
-                                                        <h5>This is another title</h5> <span className="mail-desc">Just a reminder that you have event</span> <span className="time">9:10 AM</span>
-                                                    </div>
-                                                </a>
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="btn btn-info btn-circle m-r-10"><i className="ti-settings"></i></div>
-                                                    <div className="mail-contnet">
-                                                        <h5>This is title</h5> <span className="mail-desc">You can customize this template as you want</span> <span className="time">9:08 AM</span>
-                                                    </div>
-                                                </a>
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="btn btn-primary btn-circle m-r-10"><i className="ti-user"></i></div>
-                                                    <div className="mail-contnet">
-                                                        <h5>This is another title</h5> <span className="mail-desc">Just see the my admin!</span> <span className="time">9:02 AM</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a className="nav-link text-center" href="javascript:void(0);"> <strong>Check all notifications</strong> <i className="fa fa-angle-right"></i> </a>
-                                        </li>
-                                    </ul>
+                                <input className="morphsearch-input" type="search" placeholder="Search..." />
+
+                                <button className="morphsearch-submit" type="submit">Search</button>
+
+                            </form>
+                            <div className="morphsearch-content">
+                                <div className="dummy-column">
+                                    <h2>People</h2>
+                                    <a className="dummy-media-object" href="#!">
+                                        <img className="round" src="http://0.gravatar.com/avatar/81b58502541f9445253f30497e53c280?s=50&d=identicon&r=G" alt="Sara Soueidan"
+                                        />
+                                        <h3>Sara Soueidan</h3>
+                                    </a>
+
+                                    <a className="dummy-media-object" href="#!">
+                                        <img className="round" src="http://1.gravatar.com/avatar/9bc7250110c667cd35c0826059b81b75?s=50&d=identicon&r=G" alt="Shaun Dona"
+                                        />
+                                        <h3>Shaun Dona</h3>
+                                    </a>
                                 </div>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle text-muted  " onClick={() => console.log('click') } id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i className="fa fa-envelope"></i>
-                                    <div className="notify"> <span className="heartbit"></span> <span className="point"></span> </div>
-                                </a>
-                                <div className="dropdown-menu dropdown-menu-right mailbox animated zoomIn" aria-labelledby="2">
-                                    <ul>
-                                        <li>
-                                            <div className="drop-title">You have 4 new messages</div>
-                                        </li>
-                                        <li>
-                                            <div className="message-center">
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="user-img"> <img src="images/users/5.jpg" alt="user" className="img-circle" />
-                                                    <span className="profile-status online pull-right"></span> </div>
-                                                    <div className="mail-contnet">
-                                                        <h5>Michael Qin</h5> <span className="mail-desc">Just see the my admin!</span> <span className="time">9:30 AM</span>
-                                                    </div>
-                                                </a>
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="user-img"> <img src="images/users/2.jpg" alt="user" className="img-circle" />
-                                                    <span className="profile-status busy pull-right"></span> </div>
-                                                    <div className="mail-contnet">
-                                                        <h5>John Doe</h5> <span className="mail-desc">I've sung a song! See you at</span> <span className="time">9:10 AM</span>
-                                                    </div>
-                                                </a>
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="user-img"> <img src="images/users/3.jpg" alt="user" className="img-circle" />
-                                                    <span className="profile-status away pull-right"></span> </div>
-                                                    <div className="mail-contnet">
-                                                        <h5>Mr. John</h5> <span className="mail-desc">I am a singer!</span> <span className="time">9:08 AM</span>
-                                                    </div>
-                                                </a>
-                                                <a onClick={() => console.log('click') }>
-                                                    <div className="user-img"> <img src="images/users/4.jpg" alt="user" className="img-circle" />
-                                                    <span className="profile-status offline pull-right"></span> </div>
-                                                    <div className="mail-contnet">
-                                                        <h5>Michael Qin</h5> <span className="mail-desc">Just see the my admin!</span> <span className="time">9:02 AM</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <a className="nav-link text-center" href="javascript:void(0);"> <strong>See all e-Mails</strong> <i className="fa fa-angle-right"></i> </a>
-                                        </li>
-                                    </ul>
+                                <div className="dummy-column">
+                                    <h2>Popular</h2>
+                                    <a className="dummy-media-object" href="#!">
+                                        <img src="assets/images/avatar-1.png" alt="PagePreloadingEffect" />
+                                        <h3>Page Preloading Effect</h3>
+                                    </a>
+
+                                    <a className="dummy-media-object" href="#!">
+                                        <img src="assets/images/avatar-1.png" alt="DraggableDualViewSlideshow" />
+                                        <h3>Draggable Dual-View Slideshow</h3>
+                                    </a>
                                 </div>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle text-muted  " onClick={() => console.log('click') } data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="images/users/5.jpg" alt="user" className="profile-pic" /></a>
-                                <div className="dropdown-menu dropdown-menu-right animated zoomIn">
-                                    <ul className="dropdown-user">
-                                        <li><a onClick={() => console.log('click') }><i className="ti-user"></i> Profile</a></li>
-                                        <li><a onClick={() => console.log('click') }><i className="ti-wallet"></i> Balance</a></li>
-                                        <li><a onClick={() => console.log('click') }><i className="ti-email"></i> Inbox</a></li>
-                                        <li><a onClick={() => console.log('click') }><i className="ti-settings"></i> Setting</a></li>
-                                        <li><a onClick={this.onClickLogout}><i className="fa fa-power-off"></i> Logout</a></li>
-                                    </ul>
+                                <div className="dummy-column">
+                                    <h2>Recent</h2>
+                                    <a className="dummy-media-object" href="#!">
+                                        <img src="assets/images/avatar-1.png" alt="TooltipStylesInspiration" />
+                                        <h3>Tooltip Styles Inspiration</h3>
+                                    </a>
+                                    <a className="dummy-media-object" href="#!">
+                                        <img src="assets/images/avatar-1.png" alt="NotificationStyles" />
+                                        <h3>Notification Styles Inspiration</h3>
+                                    </a>
                                 </div>
-                            </li>
-                        </ul>
+                            </div>
+                            <span className="morphsearch-close">
+                                <i className="icofont icofont-search-alt-1"></i>
+                            </span>
+                        </div>
                     </div>
                 </nav>
-            </div>
+            </header>
         );
     }
 }

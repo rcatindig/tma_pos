@@ -347,7 +347,7 @@ class Transactions extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-12">
-                            <Card title="Transactions" subTitle="List of Transactions">
+                            <Card title="List of Transactions" >
                                 <div className="table-responsive m-t-20">
                                     <ReactTable
                                         className="-striped -highlight"

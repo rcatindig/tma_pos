@@ -9,3 +9,4 @@ export * from './Switch';
 export * from './DateSelect';
 export * from './Loading';
 export * from './PageNotFound';
+export * from './MdInput';

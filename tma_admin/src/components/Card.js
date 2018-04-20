@@ -13,35 +13,36 @@ class Card extends Component {
     renderHeaderWrapper = () => {
 
         const { title, subTitle, buttons } = this.props;
-
-        if(buttons.length > 0)
+        if(title !== "" || subTitle !== "")
         {
-            return (
-                    <div className="row">
-                        <div className="col-md-7">
-                            <h4 className="card-title">{ title }</h4>
-                            <h6 className="card-subtitle">{ subTitle }</h6>
-                        </div>
-                        <div className="col-md-5">
-                        {buttons.map(function(a) {
-                            return (
-                                <button key={a.id} className={a.class} onClick={a.onClick}>{a.title}</button>
-                            );
-                        })}
+            if(buttons.length > 0)
+            {
+                return (
+
+                    <div className="card-header"><h5 className="card-header-text">{ title }</h5>
+                        <div className="f-right">
+                            {buttons.map(function(a) {
+                                return (
+                                    <button key={a.id} className={a.class} onClick={a.onClick}>{a.title}</button>
+                                );
+                            })}
                         </div>
                     </div>
-                    
-            );
-        } else {
+                        
+                );
+            } else {
 
-            return (
-                <div>     
-                    <h4 className="card-title">{ title }</h4>
-                    <h6 className="card-subtitle">{ subTitle }</h6>
-                </div>
-            );
-            
+                return (
+
+                    <div className="card-header">
+                        <h5 className="card-header-text">{ title }</h5>
+                    </div>
+                );
+                
+            }
         }
+
+        
         
         
     }
@@ -53,7 +54,7 @@ class Card extends Component {
         {
             //this.renderWrapper();
             return (
-                <div className="card-body">
+                <div className="card">
 
                         { this.renderHeaderWrapper() }
                     
@@ -72,11 +73,14 @@ class Card extends Component {
     
     render () {
         
-        const { otherClass } = this.props;
+        const { otherClass, children } = this.props;
 
         return(
             <div className={"card " + otherClass}>
-                {this.renderContent()}
+                { this.renderHeaderWrapper() }
+                <div className="card-block">
+                    { children }
+                </div>
             </div>
         );
     }

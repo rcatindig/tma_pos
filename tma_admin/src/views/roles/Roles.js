@@ -8,7 +8,7 @@ import 'react-table/react-table.css';
 import Moment from 'moment';
 
 // custom components
-import { Card, PageHeader, PageWrapper, Modal, Select } from '../../components';
+import { Card, PageHeader, PageWrapper, Modal, Select, MdInput } from '../../components';
 
 import AuthService from '../../utils/AuthService';
 
@@ -536,6 +536,7 @@ class Roles extends Component {
                 id: 'edit-button',
                 filterable: false,
                 sortable: false,
+                width: 80,
                 Cell: ({row}) => (<div className="action-container"><button className="table-edit-button" onClick={(e) => this.handleEditButtonClick(e, row)}>{readOnly ? "View" : "Edit"}</button></div>)
             }
         ];
@@ -608,32 +609,36 @@ class Roles extends Component {
                     handleCloseClick={this.closeModal}
                     >
                     <div className="modal-body ">
-                        <form className="form-control">
-                            <div className="form-row" hidden={userType === USER_TYPE.CLIENT ? true : false}>
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="first_name">Company</label>
-                                    <Select
-                                        id="company"
-                                        className="form-control"
-                                        name="company"
-                                        options={clientOptions}
-                                        value={clientId}
-                                        placeholder="Select Company..."
-                                        onChange={(event) => (!readOnly) ?  this.setState({clientId: event.target.value }) : clientId}
-                                    />
-                                </div>                           
-                            </div>
-                            <div className="form-row">
-                                <div className="form-group col-md-12">
-                                    <label htmlFor="name">Name</label>
-                                    <input type="text" 
-                                        className="form-control" 
-                                        id="name" 
-                                        placeholder="Name" 
-                                        value={name} 
-                                        onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name }/>
-                                </div>
-                            </div>
+                        <form >
+                            <div className="row">
+
+                                    <div className="col-sm-12">
+                                        <Select
+                                            id="company"
+                                            className="form-control"
+                                            options={clientOptions}
+                                            value={clientId}
+                                            label="Company"
+                                            onChange={(event) => (!readOnly) ?  this.setState({clientId: event.target.value }) : clientId}
+                                        />
+                                    </div>
+
+                                    <div className="col-sm-12">
+                                        <MdInput
+                                            label="Name"
+                                            value={name}
+                                            onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name }/>
+                                        
+                                    {/*     <div className="md-input-wrapper">
+                                            <input type="text" 
+                                                    className="md-form-control"
+                                                    value={name} 
+                                                    onChange={(event) => (!readOnly) ? this.setState({name: event.target.value }) : name }/>
+                                            <label>First-Name</label>
+                                        </div> */}
+                                    </div>
+                            </div>        
+                                     
 
                             {this.showAccessButton()}
 
