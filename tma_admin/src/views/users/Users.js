@@ -890,15 +890,17 @@ class Users extends Component {
                                 <div className="row" hidden={hidePasswordField}>
                                     <div className="col-sm-12 col-md-6">
                                         <MdInput
-                                                label="Password"
-                                                value={password}
-                                                onChange={(event) => (!readOnly) ? this.setState({password: event.target.value }) : password }/>
+                                            label="Password"
+                                            value={password}
+                                            type="password"
+                                            onChange={(event) => (!readOnly) ? this.setState({password: event.target.value }) : password }/>
                                     </div>                   
                                     <div className="col-sm-12 col-md-6">
                                         <MdInput
-                                                label="Confirm Password"
-                                                value={confirmPassword}
-                                                onChange={(event) => (!readOnly) ? this.setState({confirmPassword: event.target.value }) : confirmPassword }/>
+                                            label="Confirm Password"
+                                            value={confirmPassword}
+                                            type="password"
+                                            onChange={(event) => (!readOnly) ? this.setState({confirmPassword: event.target.value }) : confirmPassword }/>
                                     </div>                   
                                 </div>
 

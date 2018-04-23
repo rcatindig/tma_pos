@@ -54,8 +54,6 @@ var User = {
             User.date_modified
         ];
 
-        console.log(sql, parameters);
-
         db.query(sql, parameters, callback);
     },
     deleteUser: function (id, callback) {
@@ -152,8 +150,6 @@ var User = {
 
         let whereClause = "";
         let orderBy = "";
-
-        console.log(clientId);
 
         if (clientId !== null)
             whereClause =  whereClause + " AND u.client_id = '" + clientId + "'";

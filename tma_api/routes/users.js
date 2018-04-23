@@ -64,7 +64,6 @@ router.post('/', function (req, res, next) {
 
 router.post('/create', function (req, res, next){
 
-	console.log(req.body);
 	if (!req.body.username || !req.body.password) {
 		return res.status(400).send("You must send the username and the password");
 	}
@@ -74,8 +73,6 @@ router.post('/create', function (req, res, next){
 			if(!user)
 			{
 				var hashPassword = "";
-
-				
 
 				user = {
 					first_name: req.body.first_name,
@@ -92,6 +89,7 @@ router.post('/create', function (req, res, next){
 					status: req.body.status,
 					is_deleted: null,
 					is_client: req.body.is_client,
+					role_id: req.body.role_id,
 					date_created: req.body.date_created,
 					date_modified: req.body.date_modified
 				}
@@ -106,9 +104,6 @@ router.post('/create', function (req, res, next){
 						email: user.email
 					};
 
-					// res.status(201).send({
-					// 	id_token: createToken(newUser)
-					// });
 					res.json(req.body);
 				})
 			} else {

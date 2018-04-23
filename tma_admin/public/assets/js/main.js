@@ -39,7 +39,7 @@ $(window).on('load', function() {
         });
     };
 
-    notify('Welcome to Able Admin', 'inverse');
+    notify('Welcome to TMA POS Admin', 'inverse');
     $('.loader-bg').fadeOut('slow');
 
 });
