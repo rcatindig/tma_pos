@@ -4,6 +4,8 @@ import { BrowserRouter as Route, Link } from 'react-router-dom';
 import { GetPermission, CheckUserType } from '../helpers';
 import { MODULE, ACCESS_TYPE, USER_TYPE } from '../constants';
 
+import AuthService from '../utils/AuthService';
+
 
 class SideBar extends Component {
 
@@ -19,6 +21,10 @@ class SideBar extends Component {
             txnHide: false,
             usrHide: false,
         }
+        this.AuthService = new AuthService();
+        this.profile = this.AuthService.getProfile();
+
+
     }
 
     componentDidMount = async () => {
@@ -86,6 +92,9 @@ class SideBar extends Component {
             rolHide,
             txnHide,
             usrHide } = this.state;
+
+        const { first_name, surname } = this.profile;
+
         return (
             <aside className="main-sidebar hidden-print ">
                 <section className="sidebar" id="sidebar-scroll">
@@ -95,7 +104,7 @@ class SideBar extends Component {
                             <img src="assets/images/avatar-1.png" alt="User Image" className="img-circle" />
                         </div>
                         <div className="f-left info">
-                            <p>John Doe</p>
+                            <p>{`${first_name} ${surname}`}</p>
                             <p className="designation">UX Designer
                                 <i className="icofont icofont-caret-down m-l-5"></i>
                             </p>

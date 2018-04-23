@@ -13,6 +13,7 @@ class Header extends Component {
         this.AuthService = new AuthService();
 
         this.logout = this.AuthService.logout;
+        this.profile = this.AuthService.getProfile();
     }
 
     onClickLogout = () => {
@@ -21,6 +22,7 @@ class Header extends Component {
     }
  
     render() {
+        const { first_name, surname } = this.profile;
         return (
             <header className="main-header-top hidden-print">
                 <a href="index.html" className="logo">
@@ -94,8 +96,8 @@ class Header extends Component {
                                     <span>
                                         <img className="img-circle " src="assets/images/avatar-1.png" style={{width:"40px"}} alt="User Image" />
                                     </span>
-                                    <span>John
-                                        <b>Doe</b>
+                                    <span>{first_name}
+                                        <b>{surname}</b>
                                         <i className=" icofont icofont-simple-down"></i>
                                     </span>
 
