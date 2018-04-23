@@ -121,7 +121,7 @@ class Header extends Component {
                                             <i className="icon-lock"></i> Lock Screen</a>
                                     </li>
                                     <li>
-                                        <a href="#!">
+                                        <a onClick={() => this.onClickLogout()}>
                                             <i className="icon-logout"></i> Logout</a>
                                     </li>
 
