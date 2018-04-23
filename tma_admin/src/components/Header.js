@@ -24,7 +24,7 @@ class Header extends Component {
         return (
             <header className="main-header-top hidden-print">
                 <a href="index.html" className="logo">
-                    <img className="img-fluid able-logo" src="assets/images/logo.png" alt="Theme-logo" />
+                    <img className="img-fluid able-logo" src="assets/images/tma-logo-white.png" alt="Theme-logo" />
                 </a>
                 <nav className="navbar navbar-static-top">
                     <a data-toggle="offcanvas" className="sidebar-toggle"></a>

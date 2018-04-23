@@ -11,17 +11,18 @@ class MdInput extends Component {
 
     static defaultProps = {
         value: "",
-        label: "Label"
+        label: "Label",
+        type: "text"
     };
 
     render () {
 
-        const { value, onChange, label } = this.props;
+        const { value, onChange, label, type } = this.props;
 
         
 
         return (
-            <div className="md-input-wrapper"><input type="text" 
+            <div className="md-input-wrapper"><input type={type}
                     className={`md-form-control ${value !== "" ? "md-valid" : ""}`}
                     value={value}
                     onChange={onChange}
