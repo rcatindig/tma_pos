@@ -1,5 +1,5 @@
 import decode from 'jwt-decode';
-import { API, API_SERVER } from '../constants'
+import { API_SERVER } from '../constants'
 
 
 export default class AuthService {

@@ -2,6 +2,7 @@ export const API_SERVER = "http://localhost:3001/";
 
 // api urls
 export const API = {
+    DASHBOARD:          API_SERVER + 'dashboard/',
     TRANSACTIONS:       API_SERVER + 'transactions/',
     USERS:              API_SERVER + 'users/',
     CLIENTS:            API_SERVER + 'clients/',

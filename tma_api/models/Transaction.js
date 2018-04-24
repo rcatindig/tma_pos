@@ -369,7 +369,40 @@ var Transaction = {
 
         })    
         
-    }
+    },
+
+    getThisWeekTransaction: function (callback) {
+
+        // get first date of the week
+        var firstDate = moment().startOf('isoWeek').format("YYYY-MM-DD");
+
+        // get last date of the week
+        var lastDate = moment().endOf('isoWeek').add(1, 'days').format("YYYY-MM-DD");
+
+        const sql = `
+            SELECT count(id) as total  FROM transactions
+            WHERE txndate >= ? AND txndate < ?
+        `;
+
+
+        return db.query(sql, [firstDate, lastDate], callback);
+    },
+    getLastWeekTransaction: function (callback) {
+
+        // get first date of the week
+        var lastDate = moment().startOf('isoWeek').format("YYYY-MM-DD");
+
+        // get last date of the week
+        var firstDate = moment().startOf('isoWeek').subtract(7, 'days').format("YYYY-MM-DD");
+
+        const sql = `
+            SELECT count(id) as total  FROM transactions
+            WHERE txndate >= ? AND txndate < ?
+        `;
+
+
+        return db.query(sql, [firstDate, lastDate], callback);
+    },
 
 };
 module.exports = Transaction;

@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var cors=require('cors');
+var http = require('http');
 
 // router
 var indexRouter = require('./routes/index');
@@ -19,8 +20,20 @@ var machinesRouter = require('./routes/machines');
 var rolesRouter = require('./routes/roles');
 var rolePermissionRouter = require('./routes/rolepermissions');
 var backendReportsRouter = require('./routes/backendreports');
+var dashboardRouter = require('./routes/dashboard');
+
+// websocket
+var ws = require('./ws/websocket');
+
+
+
 
 var app = express();
+var server = http.Server(app);
+var io = require('socket.io')(server);
+
+require('./ws/websocket')(io);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +58,8 @@ app.use('/machines', machinesRouter);
 app.use('/roles', rolesRouter);
 app.use('/rolepermissions', rolePermissionRouter);
 app.use('/backendreports', backendReportsRouter);
+app.use('/dashboard', dashboardRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -62,8 +77,16 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-var server = app.listen(3001, function() {
+// io.on('connection', function(socket) {
+//   console.log('a user connected');
+// });
+
+// var server = app.listen(3001, function() {
+//   console.log('Ready on port %d', server.address().port);
+// });
+
+server.listen(3001, function() {
   console.log('Ready on port %d', server.address().port);
-});
+})
 
 module.exports = app;

@@ -68,18 +68,17 @@ class SideBar extends Component {
                 
             if (usrAccess === ACCESS_TYPE.NOACCESS || usrAccess === ""  ) 
                 usrHide = true;
-                
-
-            this.setState({
-                brHide,
-                dbHide,
-                cltHide,
-                rolHide,
-                txnHide,
-                usrHide
-            });
+            
         }
 
+        this.setState({
+            brHide,
+            dbHide,
+            cltHide,
+            rolHide,
+            txnHide,
+            usrHide
+        });
         
 
     }

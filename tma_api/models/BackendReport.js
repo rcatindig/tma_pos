@@ -1,4 +1,5 @@
 var db = require('../dbconnection'); //reference of dbconnection.js
+var moment = require('moment');
 
 var BackendReport = {
 
@@ -228,7 +229,6 @@ var BackendReport = {
             BackendReport.machine_id,
         ];  
 
-        console.log(parameters);
         
         db.beginTransaction(function (err) {
             if (err)
@@ -355,6 +355,37 @@ var BackendReport = {
                 }
             });
         });
-    }
+    },
+    getThisWeekRevenue: function (callback) {
+
+        // get first date of the week
+        var firstDate = moment().startOf('isoWeek').format("YYYY-MM-DD");
+
+        // get last date of the week
+        var lastDate = moment().endOf('isoWeek').add(1, 'days').format("YYYY-MM-DD");
+
+        const sql = `
+            SELECT SUM(total_revenue) as revenue  FROM backend_reports
+            WHERE date >= ? AND date < ?
+        `;
+
+        return db.query(sql, [firstDate, lastDate], callback);
+    },
+    getLastWeekRevenue: function (callback) {
+
+        // get first date of the week
+        var lastDate = moment().startOf('isoWeek').format("YYYY-MM-DD");
+
+        // get last date of the week
+        var firstDate = moment().startOf('isoWeek').subtract(7, 'days').format("YYYY-MM-DD");
+
+        const sql = `
+            SELECT SUM(total_revenue) as revenue  FROM backend_reports
+            WHERE date >= ? AND date < ?
+        `;
+
+
+        return db.query(sql, [firstDate, lastDate], callback);
+    },
 };
 module.exports = BackendReport;

@@ -4,15 +4,18 @@
   "private": true,
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "classie": "^1.0.0",
     "jwt-decode": "^2.2.0",
     "moment": "^2.21.0",
     "react": "^16.2.0",
     "react-bootstrap-sweetalert": "^4.3.1",
+    "react-countup": "^3.0.3",
     "react-datepicker": "^1.4.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
-    "react-table": "^6.8.0"
+    "react-table": "^6.8.0",
+    "socket.io-client": "^2.1.0"
   },
   "scripts": {
     "start": "set PORT=3005 && react-scripts start",

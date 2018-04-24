@@ -11,7 +11,7 @@ class PageNotFound extends Component {
     componentDidMount() {
 
         function randomNum() {
-            "use strict";
+            // "use strict";
             return Math.floor(Math.random() * 9)+1;
         } 
 
@@ -19,7 +19,7 @@ class PageNotFound extends Component {
             selector1 = document.querySelector('.firstDigit');
         loop3 = setInterval(function()
         {
-            "use strict";
+            // "use strict";
             if(i > 40)
             {
                 clearInterval(loop3);
@@ -32,7 +32,7 @@ class PageNotFound extends Component {
         }, time);
         loop2 = setInterval(function()
         {
-            "use strict";
+            // "use strict";
             if(i > 80)
             {
                 clearInterval(loop2);
