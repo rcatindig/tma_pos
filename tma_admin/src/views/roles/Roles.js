@@ -343,7 +343,7 @@ class Roles extends Component {
             return (
                 <div className="access-control">
                     <button  className="btn btn-warning btn-flat btn-addon m-b-10 m-l-5" onClick={this.showAccessControl}>
-                        <i className="fa fa-lock"></i> User Access
+                        <i className="fa fa-lock"></i> Role Access
                     </button>
                 </div>
             );

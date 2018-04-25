@@ -15,24 +15,19 @@ class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-        
-        
-
-        //this.mounted = false;
 
         this.AuthService = new AuthService();
         this.Token = this.AuthService.getToken();
-
-        
-        
         
     }
 
     state = {
         lastWeekRevenue: 0,
         thisWeekRevenue: 0,
+        todayRevenue: 0,
         lastWeekTransaction: 0,
         thisWeekTransaction: 0,
+        thisMonthRevenue: 0,
     }
 
     componentWillMount = () => {
@@ -50,29 +45,21 @@ class Dashboard extends Component {
                 return results.json();
             }).then(res => {
 
-                // alert(res.thisWeekRevenue);
-
-                
-
                 this.setState({
                     thisWeekRevenue: res.thisWeekRevenue,
                     lastWeekRevenue: res.lastWeekRevenue,
                     thisWeekTransaction: res.thisWeekTransaction,
-                    lastWeekTransaction: res.lastWeekTransaction
+                    lastWeekTransaction: res.lastWeekTransaction,
+                    todayRevenue: res.todayRevenue,
+                    thisMonthRevenue: res.thisMonthRevenue,
                 })
 
-                
-                
             })
         .catch(function(err){
             console.log(err);
         });
 
-        
     }
-
-
-    
 
     componentDidMount() {
         var addScript = document.createElement('script');
@@ -85,23 +72,14 @@ class Dashboard extends Component {
         socket.on('connect', function(data) {
             socket.on('this_week_revenue',  data => self.setState({thisWeekRevenue: data}));
             socket.on('last_week_revenue', data => self.setState({lastWeekRevenue: data}));
+            socket.on('today_revenue', data => self.setState({todayRevenue: data}));
             socket.on('this_week_transaction',  data => self.setState({thisWeekTransaction: data}));
             socket.on('last_week_transaction', data => self.setState({lastWeekTransaction: data}));
+            socket.on('this_month_revenue', data => self.setState({thisMonthRevenue: data}));
         });
 
         
     }
-    
-
-    // componentWillMount () {
-    
-    //     socket.emit('update_dashboard', "1");
-        
-    // }
-
-    // componentWillUnmount = () => {
-    //     socket.disconnect();
-    // }
 
     render() {
 
@@ -110,7 +88,7 @@ class Dashboard extends Component {
 
         // socket.emit('update_revenue', '5000000');
 
-        const { lastWeekRevenue, thisWeekRevenue, thisWeekTransaction, lastWeekTransaction } = this.state;
+        const { lastWeekRevenue, thisWeekRevenue, todayRevenue, thisWeekTransaction, lastWeekTransaction, thisMonthRevenue } = this.state;
         return (
 
             <PageWrapper>
@@ -122,10 +100,20 @@ class Dashboard extends Component {
                     <div className="col-lg-3 col-sm-6">
                         <div className="col-sm-12 card dashboard-product">
                             <span>Revenues</span>
-                            <h2 className="dashboard-total-products">$<CountUp start={0} end={thisWeekRevenue} separator=","/></h2>
-                            <span className="label label-warning">Total</span>This Week
+                            <h2 className="dashboard-total-products">$<CountUp start={0} end={todayRevenue} separator=","/></h2>
+                            <span className="label label-warning">Total</span>Today
                             <div className="side-box bg-warning">
-                                <i className="icon-social-soundcloud"></i>
+                                <i className="icon-layers"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-lg-3 col-sm-6">
+                        <div className="col-sm-12 card dashboard-product">
+                            <span>Revenues</span>
+                            <h2 className="dashboard-total-products">$<CountUp start={0} end={thisWeekRevenue} separator=","/></h2>
+                            <span className="label label-primary">Total</span>This Week
+                            <div className="side-box bg-primary">
+                                <i className="icon-layers"></i>
                             </div>
                         </div>
                     </div>
@@ -133,30 +121,20 @@ class Dashboard extends Component {
                         <div className="col-sm-12 card dashboard-product">
                             <span>Revenues</span>
                             <h2 className="dashboard-total-products">$<CountUp start={0} end={lastWeekRevenue} separator=","/></h2>
-                            <span className="label label-primary">Total</span>Last Week
-                            <div className="side-box bg-primary">
-                                <i className="icon-social-soundcloud"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-3 col-sm-6">
-                        <div className="col-sm-12 card dashboard-product">
-                            <span>Transactions</span>
-                            <h2 className="dashboard-total-products"><CountUp start={0} end={thisWeekTransaction} separator=","/></h2>
-                            <span className="label label-success">Total</span>This Week
+                            <span className="label label-success">Total</span>Last Week
                             <div className="side-box bg-success">
-                                <i className="icon-bubbles"></i>
+                                <i className="icon-layers"></i>
                             </div>
                         </div>
                     </div>
                     
                     <div className="col-lg-3 col-sm-6">
                         <div className="col-sm-12 card dashboard-product">
-                            <span>Transactions</span>
-                            <h2 className="dashboard-total-products"><CountUp start={0} end={lastWeekTransaction} separator=","/></h2>
-                            <span className="label label-danger">Total</span>Last Week
+                            <span>Revenues</span>
+                            <h2 className="dashboard-total-products">$<CountUp start={0} end={thisMonthRevenue} separator=","/></h2>
+                            <span className="label label-danger">Total</span>This Month
                             <div className="side-box bg-danger">
-                                <i className="icon-bubbles"></i>
+                                <i className="icon-layers"></i>
                             </div>
                         </div>
                     </div>

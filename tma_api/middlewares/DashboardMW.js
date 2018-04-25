@@ -32,6 +32,34 @@ var DashboardMW = {
             }
         })   
     },
+    getTodayRevenue: function(req, res, next)
+    {
+        BackendReport.getTodayRevenue(function(err, fields) {
+                    
+            if (err) {
+                console.log(err);
+            } else {
+                req.todayRevenue = fields[0].revenue;
+                next();
+                    
+                //res.json(result);
+            }
+        })   
+    },
+    getThisMonthRevenue: function(req, res, next)
+    {
+        BackendReport.getThisMonthRevenue(function(err, fields) {
+                    
+            if (err) {
+                console.log(err);
+            } else {
+                req.thisMonthRevenue = fields[0].revenue;
+                next();
+                    
+                //res.json(result);
+            }
+        })   
+    },
     getThisWeekTransaction: function(req, res, next)
     {
         Transaction.getThisWeekTransaction(function(err, fields) {

@@ -33,7 +33,21 @@ module.exports = function(io) {
                         console.log(err)
                     else
                        socket.broadcast.emit('last_week_revenue', fields[0].revenue);
-                })
+                });
+
+                BackendReport.getTodayRevenue(function(err, fields) {
+                    if(err) 
+                        console.log(err)
+                    else
+                       socket.broadcast.emit('today_revenue', fields[0].revenue);
+                });
+
+                BackendReport.getThisMonthRevenue(function(err, fields) {
+                    if(err) 
+                        console.log(err)
+                    else
+                       socket.broadcast.emit('this_month_revenue', fields[0].revenue);
+                });
             }
         });
 

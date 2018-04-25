@@ -387,5 +387,35 @@ var BackendReport = {
 
         return db.query(sql, [firstDate, lastDate], callback);
     },
+    getThisMonthRevenue: function (callback) {
+
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
+        firstDay = moment(firstDay).format('YYYY-MM-DD');
+        lastDay = moment(lastDay).format('YYYY-MM-DD');
+
+        const sql = `
+            SELECT SUM(total_revenue) as revenue  FROM backend_reports
+            WHERE date >= ? AND date < ?
+        `;
+
+
+        return db.query(sql, [firstDay, lastDay], callback);
+    },
+    getTodayRevenue: function (callback) {
+        var today = moment().format('YYYY-MM-DD');
+
+        const sql = `
+            SELECT SUM(total_revenue) as revenue  FROM backend_reports
+            WHERE date = ? 
+        `;
+
+
+        console.log(sql, today);
+        return db.query(sql, [today], callback);
+
+    }
 };
 module.exports = BackendReport;
