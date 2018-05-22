@@ -6,9 +6,71 @@ import CountUp from 'react-countup';
 
 import AuthService from '../../utils/AuthService';
 
+import ReactHighCharts from 'react-highcharts';
+
 
 
 const socket = io(API_SERVER + 'db/');
+
+const config =  {
+    chart: {
+      type: 'column'
+    },
+    title: {
+      text: 'Monthly Total Revenues'
+    },
+    xAxis: {
+      categories: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ],
+      crosshair: true
+    },
+    yAxis: {
+      min: 0,
+      title: {
+        text: 'Revenue'
+      }
+    },
+    tooltip: {
+      headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+      pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+      footerFormat: '</table>',
+      shared: true,
+      useHTML: true
+    },
+    plotOptions: {
+      column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+      }
+    },
+    series: [{
+      name: '2016',
+      data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+  
+    }, {
+      name: '2017',
+      data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+  
+    }, {
+        name: '2018',
+        data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8, 51.1]
+    
+    }]
+  }
+
 
 
 class Dashboard extends Component {
@@ -83,7 +145,8 @@ class Dashboard extends Component {
 
     render() {
 
- 
+        
+        
         
 
         // socket.emit('update_revenue', '5000000');
@@ -158,7 +221,8 @@ class Dashboard extends Component {
                             </div>
                             <div className="card-block row">
                                 <div className="col-sm-12">
-                                    <div id="areachart"></div>
+                                    <ReactHighCharts config={config}/>
+                                    {/* <div id="areachart"></div> */}
                                 </div>
                             </div>
                             <div className="card-block">

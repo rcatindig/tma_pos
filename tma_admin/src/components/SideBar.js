@@ -142,7 +142,7 @@ class SideBar extends Component {
                         </li>
                         
                         <li className="nav-level">Main</li>
-                        <li className="treeview">
+                        <li className="treeview" hidden={txnHide}>
                             <Link to="/redirect/transactions" className="waves-effect waves-dark">
                                 <i className="icon-briefcase"></i>
                                 <span> Transactions</span>
@@ -156,7 +156,7 @@ class SideBar extends Component {
                                 <i className="icon-arrow-down"></i>
                             </a>
                             <ul className="treeview-menu">
-                                <li>
+                                <li hidden={brHide}>
                                     <Link to="/redirect/backendreport" className="waves-effect waves-dark">
                                         <i className="icon-arrow-right"></i> Backend Report
                                     </Link>
@@ -182,15 +182,15 @@ class SideBar extends Component {
 
                         <li className="nav-level">Setup</li>
                         <li className="treeview">
-                            <Link to="/redirect/clients" className="waves-effect waves-dark">
+                            <Link to="/redirect/clients" className="waves-effect waves-dark"  hidden={cltHide}>
                                 <i className="icon-globe"></i>
                                 <span> Clients</span>
                             </Link>
-                            <Link to="/redirect/users" className="waves-effect waves-dark">
+                            <Link to="/redirect/users" className="waves-effect waves-dark"  hidden={usrHide}>
                                 <i className="icon-people"></i>
                                 <span> Users</span>
                             </Link>
-                            <Link to="/redirect/roles" className="waves-effect waves-dark">
+                            <Link to="/redirect/roles" className="waves-effect waves-dark"  hidden={rolHide}>
                                 <i className="icon-badge"></i>
                                 <span> Roles</span>
                             </Link>
